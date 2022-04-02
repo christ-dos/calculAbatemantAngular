@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse" id="navbarColor02">
        <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-             <a class="nav-link" >Ajouter Enfant <span class="sr-only">(current)</span></a>
+             <a class="nav-link" (click)="onOpenModel(null,'add')">Ajouter Enfant <span class="sr-only">(current)</span></a>
           </li>
        </ul>
        <form class="form-inline my-2 my-lg-0">
@@ -34,16 +34,131 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><i class="fa  fa-pencil-square-o float-right"></i>Début du Contrat : {{child?.beginContract}}</li>
              <li class="list-group-item"><i class="fa  fa-euro float-right"></i>Salaire Imposable: </li>
-             <li class="list-group-item"><i class="fa  fa-euro float-right"></i>Somme à déclarer:2000</li>
+             <li class="list-group-item"><i class="fa  fa-euro float-right"></i>Somme à déclarer: 2000</li>
           </ul>
           <div class="card-body">
              <div class="float-right btn-group btn-group-sm">
-                <a class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
-                <a  class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                <a (click)="onOpenModel(child,'edit')"class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                <a  (click)="onOpenModel(child,'delete')"class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-trash"></i></a>
              </div>
           </div>
        </div>
     </div>
   </div>
+  <!-- Add Child Modal -->
+<div class="modal fade" id="addChildModal" tabindex="-1" role="dialog" aria-labelledby="addChildModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="addChildModalLabel">Ajouter un Enfant</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <form>
+           <div class="form-group">
+              <label for="lastname">Nom</label>
+              <input type="text" ngModel name="lastname" class="form-control" id="lastname" placeholder="Nom" required>
+           </div>
+           <div class="form-group">
+              <label for="firstname">Prénom</label>
+              <input type="text" ngModel name="firstname" class="form-control" id="firstname" placeholder="Prénom" required>
+           </div>
+           <div class="form-group">
+              <label for="birthDate">Date de naissance</label>
+              <input type="text" ngModel name="birthDate" class="form-control" id="birthDate" placeholder="Date de naissance" required>
+           </div>
+           <div class="form-group">
+              <label for="beginContract">Début du Contrat</label>
+              <input type="text" ngModel name="beginContract" class="form-control" id="beginContract" placeholder="Début du Contrat" required>
+           </div>
+           <div class="form-group">
+              <label for="imageUrl">Image URL</label>
+              <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
+           </div>
+           <div class="modal-footer">
+              <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+              <button type="submit" class="btn btn-primary">Enregistrer</button>
+           </div>
+           </form>
+        </div>
+     </div>
+   </div>
+   </div>
+ 
+ <!-- Edit Child Modal -->
+ <div class="modal fade" id="updateChildModal" tabindex="-1" role="dialog" aria-labelledby="childEditModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="updateChildModalLabel">Edit Child</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form>
+               <div class="form-group">
+                  <label for="lastname">Lastname</label>
+                  <input type="text" ngModel name="lastname" class="form-control" id="lastname" placeholder="Lastname" required>
+               </div>
+               <div class="form-group">
+                  <label for="firstname">Firstname</label>
+                  <input type="text" ngModel name="firstname" class="form-control" id="firstname" placeholder="Firstname" required>
+               </div>
+               <input type="hidden" name="id" class="form-control" id="id" placeholder="Id">
+               <div class="form-group">
+                  <label for="birthDate">Birth date</label>
+                  <input type="text" ngModel name="birthDate" class="form-control" id="birthDate" placeholder="Birth Date" required>
+               </div>
+               <div class="form-group">
+                  <label for="beginContract">Begin Contract</label>
+                  <input type="text" ngModel name="beginContract" class="form-control" id="beginContract" placeholder="Begin Contract" required>
+               </div>
+               <div class="form-group">
+                  <label for="imageUrl">Image URL</label>
+                  <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                  <button  data-dismiss="modal" class="btn btn-primary" >Save changes</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+ </div>
+ 
+ <!-- Delete Child Modal -->
+ <div class="modal fade" id="deleteChildModal" tabindex="-1" role="dialog" aria-labelledby="deleteChildModelLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="deleteChildModelLabel">Delete Child</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <p>Are you sure you want to delete child</p>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+               <button class="btn btn-danger" data-dismiss="modal">Yes</button>
+            </div>
+         </div>
+      </div>
+   </div>
+ </div>
+ </div>
+ 
+ <!-- Notification for no Child -->
+ <div *ngIf="children?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+ <div class="alert alert-info" role="alert">
+   <h4 class="alert-heading">NO Child !</h4>
+   <p>No Child were found.</p>
+ </div>
+ </div>
+ © 2022 
   
   

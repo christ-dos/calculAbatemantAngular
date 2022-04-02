@@ -11,13 +11,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class AppComponent implements OnInit{
  
+  public children: Child[] = [];
   
-  public children!: Child[];
 
   constructor(private childService: ChildService){}
 
   ngOnInit(): void {
-       this.getChildren();
+     this.getChildren();
   }
 
   public getChildren(): void{
@@ -25,9 +25,25 @@ export class AppComponent implements OnInit{
       (response: Child[]) =>{
         this.children = response;
       }
-      // (error: HttpErrorResponse) =>{
-      //   alert(error.message);
-      // }
     )
+  }
+
+  public onOpenModel(child: Child | null, mode: string): void{
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    if(mode === 'add'){
+      button.setAttribute('data-target','#addChildModal')
+    }
+    if(mode === 'edit'){
+      button.setAttribute('data-target','#updateChildModal')
+    }
+    if(mode === 'delete'){
+      button.setAttribute('data-target','#deleteChildModal')
+    }
+    container?.appendChild(button);
+    button.click();
   }
 }
