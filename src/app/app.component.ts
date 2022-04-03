@@ -13,10 +13,10 @@ import { NgForm } from '@angular/forms';
 export class AppComponent implements OnInit{
  
   public children: Child[] = [];
-  public editChild!: Child | null;
+  public editChild!: Child ;
+  public deleteChild!: Child;
   
-
-  constructor(private childService: ChildService){}
+ constructor(private childService: ChildService){}
 
   ngOnInit(): void {
     this.getChildren();
@@ -50,7 +50,16 @@ export class AppComponent implements OnInit{
        );
       }
 
-  public onOpenModel(child: Child | null, mode: string): void{
+      public onDeleteChild(childId: number): void{
+        this.childService.deleteChild(childId).subscribe(
+           (response: void) => {
+             console.log(response);
+              this.getChildren();
+           }
+         );
+        }
+
+  public onOpenModel(child: any , mode: string): void{
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
     button.type = 'button';
@@ -64,6 +73,7 @@ export class AppComponent implements OnInit{
       button.setAttribute('data-target','#updateChildModal')
     }
     if(mode === 'delete'){
+      this.deleteChild = child
       button.setAttribute('data-target','#deleteChildModal')
     }
     container?.appendChild(button);

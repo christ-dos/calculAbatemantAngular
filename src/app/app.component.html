@@ -92,7 +92,7 @@
    <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="updateChildModalLabel">Editer un Enfant</h5>
+            <h5 class="modal-title" id="updateChildModalLabel">Editer un Enfant {{editChild?.lastname}} {{editChild?.firstname}}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -141,10 +141,10 @@
             </button>
          </div>
          <div class="modal-body">
-            <p>Etes-vous vraiment sûr de vouloir supprimer cette enfant ? </p>
+            <p>Etes-vous vraiment sûr de vouloir supprimer l'enfant {{deleteChild?.lastname}} {{deleteChild?.firstname}}? </p>
             <div class="modal-footer">
                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-               <button class="btn btn-danger" data-dismiss="modal">Oui</button>
+               <button (click)="onDeleteChild(deleteChild.id)" class="btn btn-danger" data-dismiss="modal">Oui</button>
             </div>
          </div>
       </div>
