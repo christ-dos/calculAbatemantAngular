@@ -56,10 +56,10 @@
            </button>
         </div>
         <div class="modal-body">
-           <form>
+           <form #addForm = "ngForm" (ngSubmit)="onAddChild(addForm)">
            <div class="form-group">
               <label for="lastname">Nom</label>
-              <input type="text" ngModel name="lastname" class="form-control" id="lastname" placeholder="Nom" required>
+              <input type="text" ngModel  name="lastname" class="form-control" id="lastname" placeholder="Nom" required>
            </div>
            <div class="form-group">
               <label for="firstname">Prénom</label>
@@ -67,11 +67,11 @@
            </div>
            <div class="form-group">
               <label for="birthDate">Date de naissance</label>
-              <input type="text" ngModel name="birthDate" class="form-control" id="birthDate" placeholder="Date de naissance" required>
+              <input type="text" ngModel name="birthDate" class="form-control" id="birthDate" placeholder="17/09/2000" required>
            </div>
            <div class="form-group">
               <label for="beginContract">Début du Contrat</label>
-              <input type="text" ngModel name="beginContract" class="form-control" id="beginContract" placeholder="Début du Contrat" required>
+              <input type="text" ngModel name="beginContract" class="form-control" id="beginContract" placeholder="01/09/2020" required>
            </div>
            <div class="form-group">
               <label for="imageUrl">Image URL</label>
@@ -79,7 +79,7 @@
            </div>
            <div class="modal-footer">
               <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-              <button type="submit" class="btn btn-primary">Enregistrer</button>
+              <button [disabled]="addForm.invalid"  type="submit" class="btn btn-primary">Enregistrer</button>
            </div>
            </form>
         </div>
@@ -98,31 +98,31 @@
             </button>
          </div>
          <div class="modal-body">
-            <form>
+            <form #editForm="ngForm">
                <div class="form-group">
                   <label for="lastname">Nom</label>
-                  <input type="text" ngModel name="lastname" class="form-control" id="lastname" placeholder="Nom" required>
+                  <input type="text" ngModel="{{editChild?.lastname}}" name="lastname" class="form-control" id="lastname" placeholder="Nom" required>
                </div>
                <div class="form-group">
                   <label for="firstname">Prénom</label>
-                  <input type="text" ngModel name="firstname" class="form-control" id="firstname" placeholder="Prénom" required>
+                  <input type="text" ngModel="{{editChild?.firstname}}" name="firstname" class="form-control" id="firstname" placeholder="Prénom" required>
                </div>
-               <input type="hidden" name="id" class="form-control" id="id" placeholder="Id">
+               <input type="hidden" ngModel="{{editChild?.id}}"  name="id" class="form-control" id="id" placeholder="Id">
                <div class="form-group">
                   <label for="birthDate">Date de naissance</label>
-                  <input type="text" ngModel name="birthDate" class="form-control" id="birthDate" placeholder="Date de naissance" required>
+                  <input type="text" ngModel="{{editChild?.birthDate}}" name="birthDate" class="form-control" id="birthDate" placeholder="Date de naissance" required>
                </div>
                <div class="form-group">
                   <label for="beginContract">Début du Contrat</label>
-                  <input type="text" ngModel name="beginContract" class="form-control" id="beginContract" placeholder="Début du Contrat" required>
+                  <input type="text" ngModel="{{editChild?.beginContract}}" name="beginContract" class="form-control" id="beginContract" placeholder="Début du Contrat" required>
                </div>
                <div class="form-group">
                   <label for="imageUrl">Image URL</label>
-                  <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
+                  <input type="text" ngModel="{{editChild?.imageUrl}}" name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
                </div>
                <div class="modal-footer">
                   <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Fermer</button>
-                  <button  data-dismiss="modal" class="btn btn-primary" >Enregistrer</button>
+                  <button  data-dismiss="modal" class="btn btn-primary" (click)="onUpdateChild(editForm.value)">Enregistrer</button>
                </div>
             </form>
          </div>
@@ -135,16 +135,16 @@
    <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="deleteChildModelLabel">Delete Child</h5>
+            <h5 class="modal-title" id="deleteChildModelLabel">Supprimer un Enfant</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
          <div class="modal-body">
-            <p>Are you sure you want to delete child</p>
+            <p>Etes-vous vraiment sûr de vouloir supprimer cette enfant ? </p>
             <div class="modal-footer">
                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-               <button class="btn btn-danger" data-dismiss="modal">Yes</button>
+               <button class="btn btn-danger" data-dismiss="modal">Oui</button>
             </div>
          </div>
       </div>
@@ -155,8 +155,8 @@
  <!-- Notification for no Child -->
  <div *ngIf="children?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
  <div class="alert alert-info" role="alert">
-   <h4 class="alert-heading">NO Child !</h4>
-   <p>No Child were found.</p>
+   <h4 class="alert-heading">Aucun Enfant !</h4>
+   <p>Aucun enfant trouvé.</p>
  </div>
  </div>
  © 2022 

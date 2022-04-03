@@ -5,7 +5,7 @@ export class Child{
        public firstname: string,
        public birthDate: string,
        public beginContract: string,
-       public  imageUrl: string,
+       public imageUrl: string,
        public userEmail: string
   ){} //todo clean 
         // id: number;

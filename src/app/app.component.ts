@@ -3,6 +3,7 @@ import { Child } from './models/child.model';
 import { ChildService } from './services/child.service';
 import { Observable } from "rxjs";
 import { HttpErrorResponse } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -12,12 +13,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AppComponent implements OnInit{
  
   public children: Child[] = [];
+  public editChild!: Child | null;
   
 
   constructor(private childService: ChildService){}
 
   ngOnInit(): void {
-     this.getChildren();
+    this.getChildren();
   }
 
   public getChildren(): void{
@@ -27,6 +29,26 @@ export class AppComponent implements OnInit{
       }
     )
   }
+
+  public onAddChild(addForm: NgForm): void{
+    document.getElementById('add-employee-form')?.click();
+     this.childService.addChild(addForm.value).subscribe(
+       (response: Child) => {
+         console.log(response);
+          this.getChildren();
+          addForm.reset();
+       }
+     );
+    }
+
+    public onUpdateChild(child: Child): void{
+      this.childService.updateChild(child).subscribe(
+         (response: Child) => {
+           console.log(response);
+            this.getChildren();
+         }
+       );
+      }
 
   public onOpenModel(child: Child | null, mode: string): void{
     const container = document.getElementById('main-container');
@@ -38,6 +60,7 @@ export class AppComponent implements OnInit{
       button.setAttribute('data-target','#addChildModal')
     }
     if(mode === 'edit'){
+      this.editChild = child;
       button.setAttribute('data-target','#updateChildModal')
     }
     if(mode === 'delete'){
