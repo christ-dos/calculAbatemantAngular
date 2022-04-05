@@ -6,7 +6,9 @@ export class Child{
        public birthDate: string,
        public beginContract: string,
        public imageUrl: string,
-       public userEmail: string
+       public userEmail: string,
+       public taxableSalary: number,
+       public ReportableAmounts: number
   ){} //todo clean 
         // id: number;
         // lastname: string;

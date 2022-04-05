@@ -4,6 +4,8 @@ import { ChildService } from './services/child.service';
 import { Observable } from "rxjs";
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
+import { waitForAsync } from '@angular/core/testing';
+
 
 @Component({
   selector: 'app-root',
@@ -15,17 +17,45 @@ export class AppComponent implements OnInit{
   public children: Child[] = [];
   public editChild!: Child ;
   public deleteChild!: Child;
+  public currentyear!: String;
+  public taxableSalary!: number;
+  public reportableAmounts!: number;
+  
   
  constructor(private childService: ChildService){}
 
   ngOnInit(): void {
     this.getChildren();
+    this.currentyear = new String(new Date().getFullYear());
   }
 
   public getChildren(): void{
     this.childService.getAllChildren().subscribe(
       (response: Child[]) =>{
+        console.log("responsegetChild: " + response);
         this.children = response;
+        this.children.forEach((child) =>{
+          this.getTaxableSalary(child);
+          this.getAnnualReportableAmounts(child, 1, 0.5);
+        });
+      }
+    )
+  }
+
+  public getTaxableSalary(child: Child): void{
+    this.childService.getTaxableSalary(child.id, this.currentyear).subscribe(
+      (response: number) =>{
+        this.taxableSalary = Math.round(response * 100)/100;
+        child.taxableSalary = this.taxableSalary;
+      }
+    )
+  }
+
+  public getAnnualReportableAmounts(child: Child, feeLunch: number, feeTaste: number): void{
+    this.childService.getAnnualReportableAmounts(child.id, this.currentyear,feeLunch,feeTaste ).subscribe(
+      (response: number) =>{
+        this.reportableAmounts = Math.round(response * 100)/100;
+        child.ReportableAmounts = this.reportableAmounts;
       }
     )
   }
