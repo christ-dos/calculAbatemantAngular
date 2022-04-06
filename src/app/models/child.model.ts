@@ -8,7 +8,7 @@ export class Child{
        public imageUrl: string,
        public userEmail: string,
        public taxableSalary: number,
-       public ReportableAmounts: number
+       public reportableAmounts: number
   ){} //todo clean 
         // id: number;
         // lastname: string;

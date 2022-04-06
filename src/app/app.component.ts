@@ -5,6 +5,10 @@ import { Observable } from "rxjs";
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { waitForAsync } from '@angular/core/testing';
+import { Monthly } from './models/Monthly.model';
+import { MonthlyService } from './services/monthly.service';
+
+
 
 
 @Component({
@@ -12,29 +16,33 @@ import { waitForAsync } from '@angular/core/testing';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
- 
+export class AppComponent implements OnInit {
+
   public children: Child[] = [];
-  public editChild!: Child ;
+  public editChild!: Child;
   public deleteChild!: Child;
   public currentyear!: String;
+  public currentMonth!: String;
   public taxableSalary!: number;
   public reportableAmounts!: number;
-  
-  
- constructor(private childService: ChildService){}
+  public addMonthlyChild!: Child;
+
+
+  constructor(private childService: ChildService,
+    private monthlyService: MonthlyService) { }
 
   ngOnInit(): void {
     this.getChildren();
     this.currentyear = new String(new Date().getFullYear());
+    this.currentMonth = new String(new Date().getMonth());
   }
 
-  public getChildren(): void{
+  public getChildren(): void {
     this.childService.getAllChildren().subscribe(
-      (response: Child[]) =>{
+      (response: Child[]) => {
         console.log("responsegetChild: " + response);
         this.children = response;
-        this.children.forEach((child) =>{
+        this.children.forEach((child) => {
           this.getTaxableSalary(child);
           this.getAnnualReportableAmounts(child, 1, 0.5);
         });
@@ -42,69 +50,84 @@ export class AppComponent implements OnInit{
     )
   }
 
-  public getTaxableSalary(child: Child): void{
+  public getTaxableSalary(child: Child): void {
     this.childService.getTaxableSalary(child.id, this.currentyear).subscribe(
-      (response: number) =>{
-        this.taxableSalary = Math.round(response * 100)/100;
+      (response: number) => {
+        this.taxableSalary = response;
         child.taxableSalary = this.taxableSalary;
       }
     )
   }
 
-  public getAnnualReportableAmounts(child: Child, feeLunch: number, feeTaste: number): void{
-    this.childService.getAnnualReportableAmounts(child.id, this.currentyear,feeLunch,feeTaste ).subscribe(
-      (response: number) =>{
-        this.reportableAmounts = Math.round(response * 100)/100;
-        child.ReportableAmounts = this.reportableAmounts;
+  public getAnnualReportableAmounts(child: Child, feeLunch: number, feeTaste: number): void {
+    this.childService.getAnnualReportableAmounts(child.id, this.currentyear, feeLunch, feeTaste).subscribe(
+      (response: number) => {
+        this.reportableAmounts = response;
+        child.reportableAmounts = this.reportableAmounts;
       }
     )
   }
 
-  public onAddChild(addForm: NgForm): void{
-    document.getElementById('add-employee-form')?.click();
-     this.childService.addChild(addForm.value).subscribe(
-       (response: Child) => {
-         console.log(response);
-          this.getChildren();
-          addForm.reset();
-       }
-     );
-    }
-
-    public onUpdateChild(child: Child): void{
-      this.childService.updateChild(child).subscribe(
-         (response: Child) => {
-           console.log(response);
-            this.getChildren();
-         }
-       );
+  public onAddChild(addForm: NgForm): void {
+    document.getElementById('cancel-add-child-form')?.click();
+    this.childService.addChild(addForm.value).subscribe(
+      (response: Child) => {
+        console.log(response);
+        this.getChildren();
+        addForm.reset();
       }
+    );
+  }
 
-      public onDeleteChild(childId: number): void{
-        this.childService.deleteChild(childId).subscribe(
-           (response: void) => {
-             console.log(response);
-              this.getChildren();
-           }
-         );
-        }
+  public onAddMonthly(addMonthlyForm: NgForm): void {
+    document.getElementById('cancel-add-Monthly-form')?.click();
+    this.monthlyService.addMonthly(addMonthlyForm.value).subscribe(
+      (response: Monthly) => {
+        console.log(response);
+        this.getChildren();
+        addMonthlyForm.reset();
+      }
+    );
+  }
 
-  public onOpenModel(child: any , mode: string): void{
+  public onUpdateChild(child: Child): void {
+    this.childService.updateChild(child).subscribe(
+      (response: Child) => {
+        console.log(response);
+        this.getChildren();
+      }
+    );
+  }
+
+  public onDeleteChild(childId: number): void {
+    this.childService.deleteChild(childId).subscribe(
+      (response: void) => {
+        console.log(response);
+        this.getChildren();
+      }
+    );
+  }
+
+  public onOpenModel(child: any, mode: string): void {
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
-    if(mode === 'add'){
-      button.setAttribute('data-target','#addChildModal')
+    if (mode === 'add') {
+      button.setAttribute('data-target', '#addChildModal');
     }
-    if(mode === 'edit'){
+    if (mode === 'edit') {
       this.editChild = child;
-      button.setAttribute('data-target','#updateChildModal')
+      button.setAttribute('data-target', '#updateChildModal');
     }
-    if(mode === 'delete'){
-      this.deleteChild = child
-      button.setAttribute('data-target','#deleteChildModal')
+    if (mode === 'delete') {
+      this.deleteChild = child;
+      button.setAttribute('data-target', '#deleteChildModal');
+    }
+    if(mode === "addMonthly"){
+      this.addMonthlyChild = child;
+      button.setAttribute('data-target', '#addMonthlyModal');
     }
     container?.appendChild(button);
     button.click();
