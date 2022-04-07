@@ -62,7 +62,7 @@
 <div class="modal fade" id="addChildModal" tabindex="-1" role="dialog" aria-labelledby="addChildModalLabel" aria-hidden="true">
    <div class="modal-dialog" role="document">
      <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-danger text-light">
            <h5 class="modal-title" id="addChildModalLabel">Ajouter un Enfant</h5>
            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
            <span aria-hidden="true">&times;</span>
@@ -92,7 +92,7 @@
            </div>
            <div class="modal-footer">
               <button type="button" id="cancel-add-child-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-              <button [disabled]="addForm.invalid"  type="submit" class="btn btn-primary">Enregistrer</button>
+              <button [disabled]="addForm.invalid"  type="submit" class="btn btn-danger">Enregistrer</button>
            </div>
            </form>
         </div>
@@ -111,51 +111,53 @@
            </button>
         </div>
         <div class="modal-body">
-           <form #addMonthlyForm ="ngForm" (ngSubmit)="onAddMonthly(addMonthlyForm)">
-           <div class="form-group row">
-              <div class="col-6">
-               <label for="month">Mois</label>
-               <input type="text" ngModel  name="month" class="form-control" id="month" placeholder="Janvier" required>
-              </div>
-              <div class="col-6">
-               <label for="year">Année</label>
-              <input type="text" ngModel name="year" class="form-control" id="year" placeholder="2022" required>
-              </div>
-             
-              
-           </div>
-           <div class="form-group">
-            
-           </div>
-           <div class="form-group">
-              <label for="taxableSalary">Salaire Imposable</label>
-              <input type="number" ngModel name="taxableSalary" class="form-control" id="taxableSalary" placeholder="650.20 €" required>
-           </div>
-           <div>
-            <button type="button" id="calcul-taxable-salary-sibling-form" class="btn btn-secondary" data-dismiss="modal">Calculer salaire Imposable fraterie</button> 
-           </div>
-           <div class="form-group">
-              <label for="dayWorked">Jours Travaillés(si plus de 8h par jour)</label>
-              <input type="number" ngModel name="dayWorked" class="form-control" id="dayWorked" placeholder="20" required>
-           </div>
-           <div class="form-group">
-              <label for="hoursWorked">Heures Travaillés(si moins de 8h par jour)</label>
-              <input type="number" ngModel name="hoursWorked" class="form-control" id="hoursWorked" placeholder="8.00">
-           </div>
-           <div class="form-group">
-            <label for="lunch">Nombre de Repas</label>
-            <input type="number" ngModel name="lunch" class="form-control" id="lunch" placeholder="20" required>
-         </div>
-         <div class="form-group">
-            <label for="taste">Nombre de Goûter</label>
-            <input type="number" ngModel name="taste" class="form-control" id="taste" placeholder="20" required>
-         </div>
-         <input type="hidden" ngModel="{{addMonthlyChild?.id}}"  name="childId" class="form-control" id="childId" placeholder="ChildId">
+            <form #addMonthlyForm ="ngForm" (ngSubmit)="onAddMonthly(addMonthlyForm)">
+            <div class="form-group row">
+               <div class="col-6">
+                  <label for="month">Mois</label>
+                  <input type="text" ngModel="{{currentMonth | date: 'MMMM' | uppercase}}"  name="month" class="form-control" id="month" placeholder="JANVIER" required>
+               </div>
+               <div class="col-6">
+                  <label for="year">Année</label>
+                  <input type="text" ngModel="{{currentYear}}" name="year" class="form-control" id="year" placeholder="2022" required>
+               </div>
+            </div>
+            <div class="form-group row">
+               <div class="col-6">
+                  <label for="taxableSalary">Salaire Imposable</label>
+                  <input type="number" ngModel name="taxableSalary" class="form-control" id="taxableSalary" placeholder="650.20 €" required>
+               </div>  
+               <div class="col-6">
+                  <label for="calcul-taxable-salary-sibling-form">Salaire Imposable Fraterie</label>
+                  <button type="button" id="calcul-taxable-salary-sibling-form" class="btn btn-danger" data-dismiss="modal">Calculer Salaire Imposable</button> 
+               </div>
+            </div>
+            <div class="form-group row">
+               <div class="col-6">
+                  <label for="dayWorked">Jours (plus de 8h par jour)</label>
+                  <input type="number" ngModel name="dayWorked" class="form-control" id="dayWorked" placeholder="20" required>
+               </div>
+               <div class="col-6">
+                  <label for="hoursWorked">Heures (moins de 8h par jour)</label>
+                  <input type="number" ngModel name="hoursWorked" class="form-control" id="hoursWorked" placeholder="8.00">
+               </div>
+            </div>
+            <div class="form-group row">
+               <div class="col-6">
+               <label for="lunch">Repas</label>
+               <input type="number" ngModel name="lunch" class="form-control" id="lunch" placeholder="20" >
+               </div>
+               <div class="col-6">
+               <label for="taste">Goûters</label>
+               <input type="number" ngModel name="taste" class="form-control" id="taste" placeholder="20" >
+               <input type="hidden" ngModel="{{addMonthlyChild?.id}}"  name="childId" class="form-control" id="childId" placeholder="ChildId">
+               </div>
+            </div>
          <div class="modal-footer">
             <button type="button" id="cancel-add-Monthly-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-            <button [disabled]="addMonthlyForm.invalid"  type="submit" class="btn btn-primary">Enregistrer</button>
+            <button [disabled]="addMonthlyForm.invalid"  type="submit" class="btn bg-danger text-light">Enregistrer</button>
          </div>
-           </form>
+         </form>
         </div>
      </div>
    </div>
@@ -164,7 +166,7 @@
  <div class="modal fade" id="updateChildModal" tabindex="-1" role="dialog" aria-labelledby="childEditModalLabel" aria-hidden="true">
    <div class="modal-dialog" role="document">
       <div class="modal-content">
-         <div class="modal-header">
+         <div class="modal-header bg-danger text-light">
             <h5 class="modal-title" id="updateChildModalLabel">Editer un Enfant {{editChild?.lastname}} {{editChild?.firstname}}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -195,7 +197,7 @@
                </div>
                <div class="modal-footer">
                   <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Fermer</button>
-                  <button  data-dismiss="modal" class="btn btn-primary" (click)="onUpdateChild(editForm.value)">Enregistrer</button>
+                  <button  data-dismiss="modal" class="btn btn-danger" (click)="onUpdateChild(editForm.value)">Enregistrer</button>
                </div>
             </form>
          </div>
@@ -207,7 +209,7 @@
  <div class="modal fade" id="deleteChildModal" tabindex="-1" role="dialog" aria-labelledby="deleteChildModelLabel" aria-hidden="true">
    <div class="modal-dialog" role="document">
       <div class="modal-content">
-         <div class="modal-header">
+         <div class="modal-header bg-danger text-light">
             <h5 class="modal-title" id="deleteChildModelLabel">Supprimer un Enfant</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>

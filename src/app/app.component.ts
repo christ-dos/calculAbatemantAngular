@@ -3,7 +3,7 @@ import { Child } from './models/child.model';
 import { ChildService } from './services/child.service';
 import { Observable } from "rxjs";
 import { HttpErrorResponse } from '@angular/common/http';
-import { NgForm } from '@angular/forms';
+import { NgForm, NgModel } from '@angular/forms';
 import { waitForAsync } from '@angular/core/testing';
 import { Monthly } from './models/Monthly.model';
 import { MonthlyService } from './services/monthly.service';
@@ -21,8 +21,8 @@ export class AppComponent implements OnInit {
   public children: Child[] = [];
   public editChild!: Child;
   public deleteChild!: Child;
-  public currentyear!: String;
-  public currentMonth!: String;
+  public currentYear!: String;
+  public currentMonth!: Date;
   public taxableSalary!: number;
   public reportableAmounts!: number;
   public addMonthlyChild!: Child;
@@ -33,8 +33,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.getChildren();
-    this.currentyear = new String(new Date().getFullYear());
-    this.currentMonth = new String(new Date().getMonth());
+    this.currentYear = new String(new Date().getFullYear());
+    this.currentMonth = new Date();
   }
 
   public getChildren(): void {
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
   }
 
   public getTaxableSalary(child: Child): void {
-    this.childService.getTaxableSalary(child.id, this.currentyear).subscribe(
+    this.childService.getTaxableSalary(child.id, this.currentYear).subscribe(
       (response: number) => {
         this.taxableSalary = response;
         child.taxableSalary = this.taxableSalary;
@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
   }
 
   public getAnnualReportableAmounts(child: Child, feeLunch: number, feeTaste: number): void {
-    this.childService.getAnnualReportableAmounts(child.id, this.currentyear, feeLunch, feeTaste).subscribe(
+    this.childService.getAnnualReportableAmounts(child.id, this.currentYear, feeLunch, feeTaste).subscribe(
       (response: number) => {
         this.reportableAmounts = response;
         child.reportableAmounts = this.reportableAmounts;
@@ -81,6 +81,8 @@ export class AppComponent implements OnInit {
 
   public onAddMonthly(addMonthlyForm: NgForm): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
+    console.log(addMonthlyForm.value.month);
+    
     this.monthlyService.addMonthly(addMonthlyForm.value).subscribe(
       (response: Monthly) => {
         console.log(response);
@@ -125,7 +127,7 @@ export class AppComponent implements OnInit {
       this.deleteChild = child;
       button.setAttribute('data-target', '#deleteChildModal');
     }
-    if(mode === "addMonthly"){
+    if (mode === "addMonthly") {
       this.addMonthlyChild = child;
       button.setAttribute('data-target', '#addMonthlyModal');
     }
@@ -133,3 +135,7 @@ export class AppComponent implements OnInit {
     button.click();
   }
 }
+function addMonthlyFormValues(addMonthlyFormValues: any) {
+  throw new Error('Function not implemented.');
+}
+
