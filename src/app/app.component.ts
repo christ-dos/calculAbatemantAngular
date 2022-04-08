@@ -1,14 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Child } from './models/child.model';
 import { ChildService } from './services/child.service';
-import { Observable } from "rxjs";
-import { HttpErrorResponse } from '@angular/common/http';
-import { NgForm, NgModel } from '@angular/forms';
-import { waitForAsync } from '@angular/core/testing';
-import { Monthly } from './models/Monthly.model';
+import { NgForm } from '@angular/forms';
 import { MonthlyService } from './services/monthly.service';
-
-
+import { Monthly } from './models/monthly.model';
 
 
 @Component({
@@ -26,6 +21,7 @@ export class AppComponent implements OnInit {
   public taxableSalary!: number;
   public reportableAmounts!: number;
   public addMonthlyChild!: Child;
+  public taxableSalarySibling!: number;
 
 
   constructor(private childService: ChildService,
@@ -44,7 +40,8 @@ export class AppComponent implements OnInit {
         this.children = response;
         this.children.forEach((child) => {
           this.getTaxableSalary(child);
-          this.getAnnualReportableAmounts(child, 1, 0.5);
+          this.getAnnualReportableAmounts(child, 1, 0.5); // todo ne plus mettre tarif repas et gouter en dur 
+          //a recuperer de la vue
         });
       }
     )
@@ -81,16 +78,28 @@ export class AppComponent implements OnInit {
 
   public onAddMonthly(addMonthlyForm: NgForm): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
-    console.log(addMonthlyForm.value.month);
-    
     this.monthlyService.addMonthly(addMonthlyForm.value).subscribe(
       (response: Monthly) => {
         console.log(response);
+        console.log(addMonthlyForm.value);
         this.getChildren();
         addMonthlyForm.reset();
       }
     );
   }
+
+  public onCalculateTaxableSalarySibling(taxableSalarySiblingForm: NgForm){
+    document.getElementById('cancel-taxable-salary-sibling-form')?.click();
+    this.monthlyService.getTaxableSalarySibling(
+      taxableSalarySiblingForm.value.netSalary,taxableSalarySiblingForm.value.netBrutCoefficient,taxableSalarySiblingForm.value.maintenanceCost)
+    .subscribe(
+      (response: number) => {
+        this.taxableSalarySibling = response
+        console.log(response);
+        taxableSalarySiblingForm.reset();
+  }
+  );
+}
 
   public onUpdateChild(child: Child): void {
     this.childService.updateChild(child).subscribe(
@@ -130,6 +139,9 @@ export class AppComponent implements OnInit {
     if (mode === "addMonthly") {
       this.addMonthlyChild = child;
       button.setAttribute('data-target', '#addMonthlyModal');
+    }
+    if (mode === "taxableSalarySibling") {
+      button.setAttribute('data-target', '#taxableSalarySiblingModal');
     }
     container?.appendChild(button);
     button.click();
