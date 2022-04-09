@@ -6,10 +6,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import * as fr from '@angular/common/locales/fr';
 
 import { AppComponent } from './app.component';
+import { CalculAbatementHeaderComponent } from './calcul-abatement-header/calcul-abatement-header.component';
+import { CalculAbatementHomeComponent } from './calcul-abatement-home/calcul-abatement-home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CalculAbatementHeaderComponent,
+    CalculAbatementHomeComponent
   ],
   imports: [
     BrowserModule, 
