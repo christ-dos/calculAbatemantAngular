@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Child } from '../models/child.model';
 
 @Component({
@@ -23,13 +24,7 @@ export class CalculAbatementHeaderComponent implements OnInit {
     if (mode === 'add') {
       button.setAttribute('data-target', '#addChildModal');
     }
-    if (mode === "addMonthly") {
-      this.addMonthlyChild = child;
-      button.setAttribute('data-target', '#addMonthlyModal');
-    }
-    if (mode === "taxableSalarySibling") {
-      button.setAttribute('data-target', '#taxableSalarySiblingModal');
-    }
+    
     container?.appendChild(button);
     button.click();
   }

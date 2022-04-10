@@ -21,6 +21,10 @@ export class MonthlyService {
     public getTaxableSalarySibling(netSalary: number, netBrutCoefficient: number, maintenanceCost: number): Observable<number> {
         return this.http.get<number>(`${this.apiCalculAbatementUrl}/monthly/taxablesalarysibling?netSalary=${netSalary}&netBrutCoefficient=${netBrutCoefficient}&maintenanceCost=${maintenanceCost}`);
     }
+
+    public getMonthliesByYearAndChildId(year: String, childId: number): Observable<Monthly[]> {
+        return this.http.get<Monthly[]>(`${this.apiCalculAbatementUrl}/monthly/all/year/childid?year=${year}&childId=${childId}`);
+    }
 }
 
 

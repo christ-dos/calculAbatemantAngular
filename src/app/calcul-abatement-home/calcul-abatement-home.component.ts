@@ -13,11 +13,12 @@ import { MonthlyService } from '../services/monthly.service';
 })
 export class CalculAbatementHomeComponent implements OnInit {
 
-  constructor(private childService: ChildService,
+  constructor(
+    private childService: ChildService,
     private monthlyService: MonthlyService, 
     public appComponent: AppComponent) {}
 
-    public children: Child[] = [];
+    public children!: Child[];
     public editChild!: Child;
     public deleteChild!: Child;
    
@@ -25,6 +26,7 @@ export class CalculAbatementHomeComponent implements OnInit {
     public reportableAmounts!: number;
     public addMonthlyChild!: Child;
     public taxableSalarySibling!: number;
+    
 
   ngOnInit(): void {
     this.getChildren();
@@ -33,7 +35,7 @@ export class CalculAbatementHomeComponent implements OnInit {
   public getChildren(): void {
     this.childService.getAllChildren().subscribe(
       (response: Child[]) => {
-        response.forEach(x=>console.log(x));
+        console.log(response);
         this.children = response;
         this.children.forEach((child) => {
           this.getTaxableSalary(child);
@@ -47,6 +49,7 @@ export class CalculAbatementHomeComponent implements OnInit {
   public getTaxableSalary(child: Child): void {
     this.childService.getTaxableSalary(child.id, this.appComponent.currentYear).subscribe(
       (response: number) => {
+        console.log(response);
         this.taxableSalary = response;
         child.taxableSalary = this.taxableSalary;
       }
@@ -56,6 +59,7 @@ export class CalculAbatementHomeComponent implements OnInit {
   public getAnnualReportableAmounts(child: Child, feeLunch: number, feeTaste: number): void {
     this.childService.getAnnualReportableAmounts(child.id, this.appComponent.currentYear, feeLunch, feeTaste).subscribe(
       (response: number) => {
+        console.log(response);
         this.reportableAmounts = response;
         child.reportableAmounts = this.reportableAmounts;
       }

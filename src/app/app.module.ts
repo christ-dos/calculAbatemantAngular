@@ -8,17 +8,21 @@ import * as fr from '@angular/common/locales/fr';
 import { AppComponent } from './app.component';
 import { CalculAbatementHeaderComponent } from './calcul-abatement-header/calcul-abatement-header.component';
 import { CalculAbatementHomeComponent } from './calcul-abatement-home/calcul-abatement-home.component';
+import { AppRoutingModule } from './app-routing.module';
+import { CalculAbatementMonthlyComponent } from './calcul-abatement-monthly/calcul-abatement-monthly.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CalculAbatementHeaderComponent,
-    CalculAbatementHomeComponent
+    CalculAbatementHomeComponent,
+    CalculAbatementMonthlyComponent
   ],
   imports: [
     BrowserModule, 
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr-FR'}
