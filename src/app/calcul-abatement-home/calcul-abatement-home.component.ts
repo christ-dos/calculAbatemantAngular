@@ -26,7 +26,7 @@ export class CalculAbatementHomeComponent implements OnInit {
     public reportableAmounts!: number;
     public addMonthlyChild!: Child;
     public taxableSalarySibling!: number;
-    
+
 
   ngOnInit(): void {
     this.getChildren();

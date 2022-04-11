@@ -13,13 +13,13 @@ import { MonthlyService } from '../services/monthly.service';
   styleUrls: ['./calcul-abatement-monthly.component.css']
 })
 export class CalculAbatementMonthlyComponent implements OnInit {
-  //public calculAbatementHomeComponent!: CalculAbatementHomeComponent;
+  public calculAbatementHomeComponent!: CalculAbatementHomeComponent;
 
   constructor(private monthlyService: MonthlyService, 
     private appComponent: AppComponent,
     private childService: ChildService
     ) { 
-     // this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService, monthlyService, appComponent);
+      this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService, monthlyService, appComponent);
     }
 
   public monthlies!: Monthly[];
@@ -27,12 +27,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   public childId!: number;
   
   ngOnInit(): void {
-    this.children = [
-      {"id": 3,"lastname": "Riboulet", "firstname": "Manon","birthDate": "30/11/2017", "beginContract": "01/03/2017", "imageUrl":"http://image.jpeg", "userEmail":"christine@email.fr","taxableSalary": 500, "reportableAmounts": 300},
-      {"id": 2,"lastname": "Riboulet", "firstname": "Romy","birthDate": "30/11/2017", "beginContract": "01/03/2017", "imageUrl":"http://image.jpeg", "userEmail":"christine@email.fr","taxableSalary": 500, "reportableAmounts": 300}
-    ]
-    console.log("children: " + this.children);
-    
+  this.getChildren();
   }
 
   public onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm: NgForm): void{
@@ -44,6 +39,14 @@ export class CalculAbatementMonthlyComponent implements OnInit {
       }
     )
   }
+
+  public getChildren(): void {
+    this.childService.getAllChildren().subscribe(
+      (response: Child[]) => {
+        console.log(response);
+        this.children = response;
+        });
+      }
 
 
 

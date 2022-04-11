@@ -13,16 +13,21 @@ import { CalculAbatementHomeComponent } from './calcul-abatement-home/calcul-aba
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
-  constructor() { }
+  
+  constructor() { 
+  
+  }
   public currentYear!: String;
   public currentMonth!: Date;
 
-  public children: Child[] = [];
+  public children!: Child[];
+  
   ngOnInit(): void {
     this.currentYear = new String(new Date().getFullYear());
     this.currentMonth = new Date();
+   
   }
+
 
   
 
