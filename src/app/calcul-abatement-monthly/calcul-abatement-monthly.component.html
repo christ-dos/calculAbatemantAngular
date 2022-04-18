@@ -3,7 +3,7 @@
     <form #monthliesByYearAndByChildIdForm="ngForm" (ngSubmit)="onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm)">
         <div class="form-group row justify-content-center">
             <div class="col-3 mt-4">
-                <label for="childName" class="d-inline-block text-truncate ml-1">Enfant</label>
+                <label for="childName" class="d-inline-block text-truncate ml-1">Selectionner un enfant</label>
                 <select  class="form-select form-control text-truncate mb-5" aria-label="Default select example" name="selectChild" id="selectChild" [(ngModel)]="childId">
                     <option *ngFor="let child of children"  [value]="child?.id"  name="id" id="id" >{{child.firstname}} {{child.lastname}}</option>
                 </select>
@@ -19,10 +19,10 @@
     </form>
     <div class="row">
         <div class="col-12 p-0">
-            <span  class="material-icons pink-color fs-3 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
+            <span *ngIf="childId != undefined" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons pink-color fs-2 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
         </div>
         <table class="table table-condensed table-striped borderless mb-0">
-            <thead class="thead bg-danger text-light">
+            <thead class="thead magenta-color text-light">
             <tr>
                 <th scope="col" class=" pt-4 pb-4 text-center">Mois</th>
                 <th scope="col" class=" pt-4 pb-4 text-center">Salaire Imposable</th>
@@ -35,15 +35,16 @@
             </thead>
             <tbody>
             <tr *ngFor="let monthly of monthlies">
-                <td class="text-center bg-danger text-light" >{{monthly.month}}</td>
+                <td class="text-center magenta-color text-light" >{{monthly.month}}</td>
                 <td class="text-center">{{monthly.taxableSalary}} </td>
                 <td class="text-center">{{monthly.dayWorked}}</td>
                 <td class="text-center">{{monthly.hoursWorked}}</td>
                 <td class="text-center">{{monthly.lunch}}</td>
                 <td class="text-center">{{monthly.taste}}</td>
                 <td style="width: 15%" class="text-center">
-                    <a class="btn bg-danger tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil text-light"></i></a>
-                    <a class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-trash text-light"></i></a>
+                    
+                    <a class="btn  tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil text-danger "></i></a>
+                    <a class="btn tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-trash text-secondary"></i></a>
                   
 				</td>
             </tr>
@@ -51,3 +52,107 @@
         </table>
     </div>
 </div>
+
+<!-- Add Monthly Modal -->
+<div class="modal fade" id="addMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="addMonthlyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header bg-danger bg-gradient text-light">
+            <h5 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle: {{addMonthlyChild?.lastname}} {{addMonthlyChild?.firstname}}</h5>
+            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+             <form #addMonthlyForm ="ngForm" (ngSubmit)="this.onAddMonthly(addMonthlyForm)">
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="month">Mois</label>
+                   <input type="text" ngModel="{{appComponent.currentMonth | date: 'MMMM' | uppercase}}"  onkeyup="this.value = this.value.toUpperCase()" name="month" class="form-control" id="month" placeholder="JANVIER" required>
+                </div>
+                <div class="col-6">
+                   <label for="year">Année</label>
+                   <input type="text" ngModel="{{appComponent.currentYear}}" name="year" class="form-control" id="year" placeholder="2022" required>
+                </div>
+             </div>
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="taxableSalary">Salaire Imposable</label>
+                   <input type="number" ngModel="{{taxableSalarySibling}}" name="taxableSalary" class="form-control" id="taxableSalary" placeholder="650.20 €" required>
+                </div>  
+                <div class="col-6">
+                   <label for="calcul-taxable-salary-sibling-form" class="d-inline-block text-truncate">Salaire Imposable Fraterie</label>
+                   <button (click)="onOpenModel(null,'taxableSalarySibling')" type="button" id="calcul-taxable-salary-sibling-form" class="btn btn-danger d-inline-block text-truncate m-0" data-toggle="modal" >Calculer</button> 
+                </div>
+             </div>
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="dayWorked">Jours (plus de 8h par jour)</label>
+                   <input type="number" ngModel name="dayWorked" class="form-control" id="dayWorked" placeholder="20" required>
+                </div>
+                <div class="col-6">
+                   <label for="hoursWorked">Heures (moins de 8h par jour)</label>
+                   <input type="number" ngModel name="hoursWorked" class="form-control" id="hoursWorked" placeholder="8.00">
+                </div>
+             </div>
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="lunch">Repas</label>
+                   <input type="number" ngModel name="lunch" class="form-control" id="lunch" placeholder="20" >
+                </div>
+                <div class="col-6">
+                   <label for="taste">Goûters</label>
+                   <input type="number" ngModel name="taste" class="form-control" id="taste" placeholder="20" >
+                   <input type="hidden" ngModel="{{childId}}"  name="childId" class="form-control" id="childId" placeholder="ChildId">
+                </div>
+             </div>
+          <div class="modal-footer">
+             <button type="button" id="cancel-add-Monthly-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+             <button [disabled]="addMonthlyForm.invalid"  type="submit" class="btn bg-danger text-light">Enregistrer</button>
+          </div>
+          </form>
+          </div>
+      </div>
+    </div>
+</div>
+<!-- Add Monthly Modal end -->
+
+<!-- Calculate Taxable Salary Sibling Modal -->
+<div class="modal fade" id="taxableSalarySiblingModal" tabindex="-1" role="dialog" aria-labelledby="taxableSalarySiblingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header bg-gradient text-light" style="background-color: rgba(206, 50, 50, 0.856);">
+            <h5 class="modal-title" id="taxableSalarySiblingModalLabel">Calculer Salaire Imposable net (cas fraterie)</h5>
+            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close" style="background-color: rgba(206, 50, 50, 0.856);">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #taxableSalarySiblingForm ="ngForm" (ngSubmit)="onCalculateTaxableSalarySibling(taxableSalarySiblingForm)">
+            <div class="form-group row">
+             <div class="col-4">
+                <label for="netSalary" class="d-inline-block text-truncate">Salaire net</label>
+                <input type="number" ngModel  name="netSalary" class="form-control" id="netSalary" placeholder="600.20€" required>
+             </div>
+             <div class="col-4">
+               <label for="maintenanceCost" class="d-inline-block text-truncate">Frais Entretiens</label>
+               <input type="number" ngModel name="maintenanceCost" class="form-control" id="maintenanceCost" placeholder="30.50€" required>
+             </div>
+             <div class="col-4">
+               <label for="netBrutCoefficient" class="d-inline-block text-truncate">Coeff. net/brut</label>
+               <input type="number" ngModel name="netBrutCoefficient" class="form-control" id="netBrutCoefficient" placeholder="0.7001" required>
+             </div>
+            </div>
+            
+          <div class="modal-footer">
+               <button type="button" id="cancel-taxable-salary-sibling-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+               <button [disabled]="taxableSalarySiblingForm.invalid"  type="submit" class="btn btn-danger">Enregistrer</button>
+            </div>
+            </form>
+         </div>
+      </div>
+    </div>
+</div>
+<!-- Calculate Taxable Salary Sibling Modal -->
+
+

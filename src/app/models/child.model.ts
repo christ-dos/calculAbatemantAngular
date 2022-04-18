@@ -1,3 +1,5 @@
+import { Monthly } from "./monthly.model";
+
 export class Child{
    
   constructor( public id: number,
@@ -8,7 +10,8 @@ export class Child{
        public imageUrl: string,
        public userEmail: string,
        public taxableSalary: number,
-       public reportableAmounts: number
+       public reportableAmounts: number,
+       public monthlies: Monthly
   ){} //todo clean 
         // id: number;
         // lastname: string;

@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,6 +10,7 @@ import { CalculAbatementHeaderComponent } from './calcul-abatement-header/calcul
 import { CalculAbatementHomeComponent } from './calcul-abatement-home/calcul-abatement-home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CalculAbatementMonthlyComponent } from './calcul-abatement-monthly/calcul-abatement-monthly.component';
+import { ErrorIntercept } from './error.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,11 @@ import { CalculAbatementMonthlyComponent } from './calcul-abatement-monthly/calc
     AppRoutingModule
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'fr-FR'}
+    { provide: LOCALE_ID, useValue: 'fr-FR'},
+    { provide: HTTP_INTERCEPTORS,
+      useClass: ErrorIntercept,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
