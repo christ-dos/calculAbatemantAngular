@@ -207,11 +207,13 @@
                    <label for="taste">Goûters</label>
                    <input type="number" ngModel="{{editMonthly?.taste}}" name="taste" class="form-control" id="taste" placeholder="20" >
                    <input type="hidden" ngModel="{{editMonthly?.childId}}" name="childId" class="form-control" id="childId" placeholder="ChildId">
+                   <input type="hidden" ngModel="{{editMonthly?.monthlyId}}" name="monthlyId" class="form-control" id="monthlyId" placeholder="MonthlyId">
+               
                 </div>
              </div>
           <div class="modal-footer">
-             <button type="button" id="cancel-add-Monthly-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-             <button [disabled]="addMonthlyForm.invalid"  type="submit" class="btn bg-danger text-light">Enregistrer</button>
+             <button type="button" id="cancel-edit-Monthly-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+             <button data-dismiss="modal"  class="btn bg-danger text-light"  (click)="onUpdateMonthly(editMonthlyForm.value)">Enregistrer</button>
           </div>
           </form>
           </div>

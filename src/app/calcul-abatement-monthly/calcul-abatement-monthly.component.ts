@@ -93,6 +93,15 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   );
 }
 
+  public onUpdateMonthly(monthly: Monthly): void {
+    this.monthlyService.updateMonthly(monthly).subscribe(
+      (response: Monthly) => {
+        console.log(response);
+        this.getMonthliesByYearAndChildId(monthly.year,monthly.childId);
+      }
+    );
+  }
+
   public onDeleteMonthly(monthlyId: number): void {
     this.monthlyService.deleteMonthly(monthlyId).subscribe(
       (response: void) => {

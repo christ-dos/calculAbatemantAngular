@@ -18,6 +18,10 @@ export class MonthlyService {
         return this.http.post<Monthly>(`${this.apiCalculAbatementUrl}/monthly/add`, monthly);
     }
 
+    public updateMonthly(monthly: Monthly): Observable<Monthly> {
+        return this.http.put<Monthly>(`${this.apiCalculAbatementUrl}/monthly/update`, monthly);
+    }
+
     public deleteMonthly(monthlyId: number): Observable<void>{
         return this.http.delete<void>(`${this.apiCalculAbatementUrl}/monthly/delete/${monthlyId}`);
     }
