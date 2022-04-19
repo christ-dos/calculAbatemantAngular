@@ -54,6 +54,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
         },
         );
       }
+
   public getMonthliesByYearAndChildId(year: String, childId: number): void{
     this.monthlyService.getMonthliesByYearAndChildId(year, childId).subscribe(
       (response: Monthly[]) => {
@@ -64,22 +65,18 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   }
 
   public onAddMonthly(addMonthlyForm: NgForm): void {
-    console.log("childId: " + this.childId);
     document.getElementById('cancel-add-Monthly-form')?.click();
+    console.log("childId: " + this.childId);
     console.log("addMonthlyFormBefore: " + addMonthlyForm.value.childId);
     addMonthlyForm.controls['childId'].setValue(this.childId);
     console.log("addMonthlyFormAfter: " + addMonthlyForm.value.childId);
+    //todo clean les console.log
    this.monthlyService.addMonthly(addMonthlyForm.value).subscribe(
       (response: Monthly) => {
         console.log(response);
         this.getMonthliesByYearAndChildId(addMonthlyForm.value.year, addMonthlyForm.value.childId)
         addMonthlyForm.reset();
       }
-      //,
-      //(error: HttpErrorResponse) => {
-       // alert(error.message);
-
-     // }
     );
   }
 
@@ -96,22 +93,31 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   );
 }
 
-  public onOpenModel(child: any, mode: string): void {
+  public onDeleteMonthly(monthlyId: number): void {
+    this.monthlyService.deleteMonthly(monthlyId).subscribe(
+      (response: void) => {
+        console.log(response);
+        this.getMonthliesByYearAndChildId(this.deleteMonthly.year, this.deleteMonthly.childId);
+      }
+    );
+  }
+
+  public onOpenModel(monthly: any, mode: string): void {
         const container = document.getElementById('main-container');
         const button = document.createElement('button');
         button.type = 'button';
         button.style.display = 'none';
         button.setAttribute('data-toggle', 'modal');
         if (mode === 'editMonthly') {
-          this.editMonthly = child;
-          button.setAttribute('data-target', '#updateChildModal');
+          this.editMonthly = monthly;
+          button.setAttribute('data-target', '#updateMonthlyModal');
         }
         if (mode === 'deleteMonthly') {
-          this.deleteMonthly = child;
-          button.setAttribute('data-target', '#deleteChildModal');
+          this.deleteMonthly = monthly;
+          button.setAttribute('data-target', '#deleteMonthlyModal');
         }
         if (mode === "addMonthly") {
-          this.addMonthlyChild = child;
+          this.addMonthlyChild = monthly;
           button.setAttribute('data-target', '#addMonthlyModal');
         }
         if (mode === "taxableSalarySibling") {

@@ -18,6 +18,10 @@ export class MonthlyService {
         return this.http.post<Monthly>(`${this.apiCalculAbatementUrl}/monthly/add`, monthly);
     }
 
+    public deleteMonthly(monthlyId: number): Observable<void>{
+        return this.http.delete<void>(`${this.apiCalculAbatementUrl}/monthly/delete/${monthlyId}`);
+    }
+
     public getTaxableSalarySibling(netSalary: number, netBrutCoefficient: number, maintenanceCost: number): Observable<number> {
         return this.http.get<number>(`${this.apiCalculAbatementUrl}/monthly/taxablesalarysibling?netSalary=${netSalary}&netBrutCoefficient=${netBrutCoefficient}&maintenanceCost=${maintenanceCost}`);
     }
