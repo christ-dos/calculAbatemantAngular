@@ -7,21 +7,15 @@ export class Child{
        public firstname: string,
        public birthDate: string,
        public beginContract: string,
+       public endContract: string,
        public imageUrl: string,
        public userEmail: string,
        public taxableSalary: number,
        public reportableAmounts: number,
+       public feesLunch: number,
+       public feesTaste: number,
        public monthlies: Monthly
-  ){} //todo clean 
-        // id: number;
-        // lastname: string;
-        // firstname: string;
-        // birthDate: string;
-        // beginContract: string;
-        // imageUrl:string;
-        // userEmail: string;
+  ){} 
 
-
-    
 }
 

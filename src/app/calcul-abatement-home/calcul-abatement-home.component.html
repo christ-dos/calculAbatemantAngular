@@ -5,8 +5,8 @@
     <div class="row">
       <div *ngFor="let child of children" class="col-md-6 col-xl-3">
          <div class="card m-b-30">
-           <div class="col-2">
-              <span (click)="onOpenModel(child,'addMonthly')"  class="material-icons pink-color fs-3 pt-1" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
+           <div class="col-12">
+              <span (click)="onOpenModel(child.id,'addMonthly')"  class="material-icons pink-color fs-3 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
             </div>
             <div class="card-body row">
                <div class="col-6">
@@ -20,13 +20,15 @@
             </div>
             <ul  class="list-group list-group-flush">
               <li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Début du Contrat : {{child?.beginContract}}</li>
+              <li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Fin du Contrat : {{child?.endContract}}</li>
               <li *ngIf="child.taxableSalary" class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable: {{child?.taxableSalary | currency: 'EUR'}}</li>
               <li *ngIf="child.reportableAmounts" class="list-group-item font-italic"><i class="fa fa-money float-right"></i>Somme à déclarer: {{child?.reportableAmounts | currency: 'EUR'}}</li>
            </ul>
             <div class="card-body">
                <div class="float-right btn-group btn-group-sm">
-                 <a (click)="onOpenModel(child,'edit')" class="btn bg-danger tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil text-light"></i></a>
-                 <a (click)="onOpenModel(child,'delete')" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-trash text-light"></i></a>
+                  <a (click)="onOpenModel(child,'fees')" class="btn" data-md-tooltip="Frais Repas" data-placement="top" data-original-title="fees"><span class="material-icons fs-5 pink-color">euro</span></a>
+                  <a (click)="onOpenModel(child,'edit')" class="btn" data-md-tooltip="Editer"  data-placement="top" data-original-title="Edit" ><i class="fa fa-pencil pink-color" ></i></a>
+                  <a (click)="onOpenModel(child,'delete')" class="btn" data-md-tooltip="Supprimer"  data-placement="top" data-original-title="Delete"><i class="fa fa-trash" style="color: rgb(117, 107, 107);"></i></a>
                </div>
             </div>
          </div>
@@ -84,7 +86,7 @@
                 <div class="col-6">
                    <label for="taste">Goûters</label>
                    <input type="number" ngModel name="taste" class="form-control" id="taste" placeholder="20" >
-                   <input type="hidden" ngModel="{{addMonthlyChild?.id}}"  name="childId" class="form-control" id="childId" placeholder="ChildId">
+                   <input type="hidden" ngModel="{{childId}}" name="childId" class="form-control" id="childId" placeholder="ChildId">
                 </div>
              </div>
           <div class="modal-footer">
@@ -135,7 +137,7 @@
     </div>
 </div>
 <!-- Calculate Taxable Salary Sibling Modal -->
- 
+
 <!-- Edit Child Modal -->
 <div class="modal fade" id="updateChildModal" tabindex="-1" role="dialog" aria-labelledby="updateChildModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -161,10 +163,26 @@
                    <label for="birthDate">Date de naissance</label>
                    <input type="text" ngModel="{{editChild?.birthDate}}" name="birthDate" class="form-control" id="birthDate" placeholder="Date de naissance" required>
                 </div>
-                <div class="form-group">
-                   <label for="beginContract">Début du Contrat</label>
-                   <input type="text" ngModel="{{editChild?.beginContract}}" name="beginContract" class="form-control" id="beginContract" placeholder="Début du Contrat" required>
-                </div>
+                <div class="form-group row">
+                  <div class="col-6">
+                     <label for="beginContract">Début du Contrat</label>
+                     <input type="date" ngModel="{{editChild?.beginContract}}"  name="beginContract" class="form-control" id="beginContract" placeholder="01/09/2020" required>
+                  </div>
+                  <div class="col-6">
+                     <label for="endContract">Fin du Contrat</label>
+                     <input type="text" ngModel="{{editChild?.endContract}}"  name="endContract" class="form-control" id="endContract" placeholder="01/09/2020">
+                  </div>
+              </div>
+              <div class="form-group row">
+                 <div class="col-6">
+                     <label for="feesLunch" class="d-inline-block text-truncate">Tarif Repas</label>
+                     <input type="number" ngModel="{{editChild?.feesLunch}}"  name="feesLunch" class="form-control" id="feesLunch" placeholder="2.00€" required>
+                 </div>
+                 <div class="col-6">
+                     <label for="feesTaste" class="d-inline-block text-truncate">Tarif Goûter</label>
+                     <input type="number" ngModel="{{editChild?.feesTaste}}"  name="feesTaste" class="form-control" id="feesTaste" placeholder="0.50€" required>
+                  </div>
+               </div>
                 <div class="form-group">
                    <label for="imageUrl">Image URL</label>
                    <input type="text" ngModel="{{editChild?.imageUrl}}" name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>

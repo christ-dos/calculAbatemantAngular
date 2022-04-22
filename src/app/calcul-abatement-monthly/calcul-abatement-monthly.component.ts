@@ -31,9 +31,12 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   public editMonthly!: Monthly;
   public deleteMonthly!: Monthly;
   public taxableSalarySibling!:number;
+  public months!: String[] ;
+  public monthSelected!: String;
   
   ngOnInit(): void {
   this.getChildren();
+  this.getMonths();
   }
 
   public onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm: NgForm): void{
@@ -64,12 +67,26 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     );
   }
 
+  public getMonths(): void{
+    this.monthlyService.getMonths().subscribe(
+      (response: String[]) => {
+        console.log(response);
+        this.months = response;
+      }
+  );
+}
+
   public onAddMonthly(addMonthlyForm: NgForm): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
     console.log("childId: " + this.childId);
     console.log("addMonthlyFormBefore: " + addMonthlyForm.value.childId);
     addMonthlyForm.controls['childId'].setValue(this.childId);
     console.log("addMonthlyFormAfter: " + addMonthlyForm.value.childId);
+    console.log("month: " +this.monthSelected)
+    console.log("addMonthlyFormMonthbefore : " +addMonthlyForm.value.month)
+    addMonthlyForm.controls['month'].setValue(this.monthSelected);
+    console.log("addMonthlyFormMonthAfter : " +addMonthlyForm.value.month)
+    console.log("addMonthlyFormValues: "  + addMonthlyForm.value);
     //todo clean les console.log
    this.monthlyService.addMonthly(addMonthlyForm.value).subscribe(
       (response: Monthly) => {

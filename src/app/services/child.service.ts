@@ -32,10 +32,8 @@ export class ChildService{
         return this.http.get<number>(`${this.apiCalculAbatementUrl}/child/taxablesalary?childId=${childId}&year=${year}`);
     }
 
-    public getAnnualReportableAmounts(childId: number, year: String, feeLunch: number, feeTaste: number): Observable<number>{
-        return this.http.get<number>(`${this.apiCalculAbatementUrl}/child/reportableamounts?childId=${childId}&year=${year}&feeLunch=${feeLunch}&feeTaste=${feeTaste}`);
+    public getAnnualReportableAmounts(childId: number, year: String): Observable<number>{
+        return this.http.get<number>(`${this.apiCalculAbatementUrl}/child/reportableamounts?childId=${childId}&year=${year}`);
     }
-
-    
 
 }

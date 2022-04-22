@@ -21,9 +21,11 @@ export class CalculAbatementHomeComponent implements OnInit {
     public children!: Child[];
     public editChild!: Child;
     public deleteChild!: Child;
+    public feesChild!: Child;
    
     public taxableSalary!: number;
     public reportableAmounts!: number;
+    public childId!:number;
     public addMonthlyChild!: Child;
     public taxableSalarySibling!: number;
 
@@ -38,9 +40,10 @@ export class CalculAbatementHomeComponent implements OnInit {
         console.log(response);
         this.children = response;
         this.children.forEach((child) => {
-          this.getTaxableSalary(child);
-          this.getAnnualReportableAmounts(child, 1, 0.5); // todo ne plus mettre tarif repas et gouter en dur 
-          //a recuperer de la vue
+          if(child.monthlies != null){
+            this.getTaxableSalary(child);
+            this.getAnnualReportableAmounts(child);
+          }
         });
       }
     )
@@ -56,8 +59,9 @@ export class CalculAbatementHomeComponent implements OnInit {
     )
   }
 
-  public getAnnualReportableAmounts(child: Child, feeLunch: number, feeTaste: number): void {
-    this.childService.getAnnualReportableAmounts(child.id, this.appComponent.currentYear, feeLunch, feeTaste).subscribe(
+
+  public getAnnualReportableAmounts(child: Child): void {
+    this.childService.getAnnualReportableAmounts(child.id, this.appComponent.currentYear).subscribe(
       (response: number) => {
         console.log(response);
         this.reportableAmounts = response;
@@ -78,7 +82,9 @@ export class CalculAbatementHomeComponent implements OnInit {
   }
 
   public onAddMonthly(addMonthlyForm: NgForm): void {
+    console.log("addMonthlyForm: " + addMonthlyForm.value.childId);
     document.getElementById('cancel-add-Monthly-form')?.click();
+    addMonthlyForm.controls['childId'].setValue(this.childId);
     this.monthlyService.addMonthly(addMonthlyForm.value).subscribe(
       (response: Monthly) => {
         console.log(response);
@@ -135,7 +141,7 @@ export class CalculAbatementHomeComponent implements OnInit {
       button.setAttribute('data-target', '#deleteChildModal');
     }
     if (mode === "addMonthly") {
-      this.addMonthlyChild = child;
+      this.childId = child;
       button.setAttribute('data-target', '#addMonthlyModal');
     }
     if (mode === "taxableSalarySibling") {

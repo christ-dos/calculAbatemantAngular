@@ -28,8 +28,8 @@ export class ErrorIntercept implements HttpInterceptor {
                                         Message: ${error.message}`;
                     }
                     console.log(errorMessage);
-                   // return throwError(() => new Error(errorMessage));
-                    return throwError(errorMessage);
+                   return throwError(() => new Error(errorMessage));
+                //return throwError(errorMessage);
                 })
             )
     }

@@ -4,7 +4,7 @@
         <div class="form-group row justify-content-center">
             <div class="col-3 mt-4">
                 <label for="childName" class="d-inline-block text-truncate ml-1">Selectionner un enfant</label>
-                <select  class="form-select form-control text-truncate mb-5" aria-label="Default select example" name="selectChild" id="selectChild" [(ngModel)]="childId">
+                <select  class="form-select form-control text-truncate mb-5" aria-label="Children select" name="selectChild" id="selectChild" [(ngModel)]="childId">
                     <option *ngFor="let child of children"  [value]="child?.id"  name="id" id="id" >{{child.firstname}} {{child.lastname}}</option>
                 </select>
             </div>
@@ -67,8 +67,11 @@
              <form #addMonthlyForm ="ngForm" (ngSubmit)="this.onAddMonthly(addMonthlyForm)">
              <div class="form-group row">
                 <div class="col-6">
-                   <label for="month">Mois</label>
-                   <input type="text" ngModel="{{appComponent.currentMonth | date: 'MMMM' | uppercase}}"  onkeyup="this.value = this.value.toUpperCase()" name="month" class="form-control" id="month" placeholder="JANVIER" required>
+                   <label for="months">Mois</label>
+                   <select class="form-select form-group" aria-label="MonthSelect "  name="months" id="months"  [(ngModel)]="monthSelected">
+                     <option [value]="month"  *ngFor="let month of months" name="monthSelected" id="monthSelected">{{month}}</option>
+                  </select>
+                  <input type="hidden" ngModel="{{monthSelected}}" name="month" class="form-control" id="month" placeholder="JANVIER" >
                 </div>
                 <div class="col-6">
                    <label for="year">Année</label>
@@ -249,8 +252,8 @@
 <div class="container" >
     <div *ngIf="monthlies?.length == 0" class="col-lg-12 col-md-12 col-xl-12 p-0  mt-5">
         <div class="alert alert-info" role="alert">
-           <h4 class="alert-heading">Aucune déclaration mensuelle !</h4>
-           <p>Aucun déclaration mensuelle trouvé.</p>
+           <h4 class="alert-heading">Aucune déclaration mensuelle!</h4>
+           <p>Aucun déclaration mensuelle trouvé pour l'année {{monthliesByYearAndByChildIdForm.value.year}} .</p>
         </div>
     </div>
 </div>
