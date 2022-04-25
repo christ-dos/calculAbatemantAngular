@@ -14,7 +14,7 @@ export class Child{
        public reportableAmounts: number,
        public feesLunch: number,
        public feesTaste: number,
-       public monthlies: Monthly
+       public monthlies: Monthly[]
   ){} 
 
 }

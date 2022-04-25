@@ -40,7 +40,8 @@ export class CalculAbatementHomeComponent implements OnInit {
         console.log(response);
         this.children = response;
         this.children.forEach((child) => {
-          if(child.monthlies != null){
+          if(child.monthlies.length > 0 ){
+            console.log("je suis dans le if" + child.firstname);
             this.getTaxableSalary(child);
             this.getAnnualReportableAmounts(child);
           }
@@ -132,6 +133,9 @@ export class CalculAbatementHomeComponent implements OnInit {
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
+    if (mode === 'add') {
+      button.setAttribute('data-target', '#addChildModal');
+    }
     if (mode === 'edit') {
       this.editChild = child;
       button.setAttribute('data-target', '#updateChildModal');

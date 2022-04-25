@@ -2,7 +2,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!--Main container-->
 <div class="container" id="main-container">
-    <div class="row">
+    <div class="row pt-4">
       <div *ngFor="let child of children" class="col-md-6 col-xl-3">
          <div class="card m-b-30">
            <div class="col-12">
@@ -26,7 +26,7 @@
            </ul>
             <div class="card-body">
                <div class="float-right btn-group btn-group-sm">
-                  <a (click)="onOpenModel(child,'fees')" class="btn" data-md-tooltip="Frais Repas" data-placement="top" data-original-title="fees"><span class="material-icons fs-5 pink-color">euro</span></a>
+                 <!-- <a (click)="onOpenModel(child,'fees')" class="btn" data-md-tooltip="Frais Repas" data-placement="top" data-original-title="fees"><span class="material-icons fs-5 pink-color">euro</span></a>-->
                   <a (click)="onOpenModel(child,'edit')" class="btn" data-md-tooltip="Editer"  data-placement="top" data-original-title="Edit" ><i class="fa fa-pencil pink-color" ></i></a>
                   <a (click)="onOpenModel(child,'delete')" class="btn" data-md-tooltip="Supprimer"  data-placement="top" data-original-title="Delete"><i class="fa fa-trash" style="color: rgb(117, 107, 107);"></i></a>
                </div>
@@ -35,6 +35,66 @@
       </div>
 </div>
 <!-- Main container end -->
+
+<!-- Add Child Modal -->
+<div class="modal fade" id="addChildModal" tabindex="-1" role="dialog" aria-labelledby="addChildModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header bg-danger bg-gradient text-light">
+           <h5 class="modal-title" id="addChildModalLabel">Ajouter un Enfant</h5>
+           <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <form #addForm = "ngForm" (ngSubmit)="onAddChild(addForm)">
+           <div class="form-group">
+              <label for="lastname">Nom</label>
+              <input type="text" ngModel  name="lastname" class="form-control" id="lastname" placeholder="Nom" required>
+           </div>
+           <div class="form-group">
+              <label for="firstname">Prénom</label>
+              <input type="text" ngModel name="firstname" class="form-control" id="firstname" placeholder="Prénom" required>
+           </div>
+           <div class="form-group">
+              <label for="birthDate">Date de naissance</label>
+              <input type="text" ngModel name="birthDate" class="form-control" id="birthDate" placeholder="17/09/2000" required>
+           </div>
+           <div class="form-group row">
+               <div class="col-6">
+                  <label for="beginContract">Début du Contrat</label>
+                  <input type="text" ngModel name="beginContract" class="form-control" id="beginContract" placeholder="01/09/2020" required>
+               </div>
+               <div class="col-6">
+                  <label for="endContract">Fin du Contrat</label>
+                  <input type="text" ngModel name="endContract" class="form-control" id="endContract" placeholder="01/09/2020">
+               </div>
+           </div>
+           <div class="form-group row">
+              <div class="col-6">
+                  <label for="feesLunch" class="d-inline-block text-truncate">Tarif Repas</label>
+                  <input type="number" ngModel name="feesLunch" class="form-control" id="feesLunch" placeholder="2.00€" required>
+              </div>
+              <div class="col-6">
+                  <label for="feesTaste" class="d-inline-block text-truncate">Tarif Goûter</label>
+                  <input type="number" ngModel  name="feesTaste" class="form-control" id="feesTaste" placeholder="0.50€" required>
+               </div>
+            </div>
+           <div class="form-group">
+              <label for="imageUrl">Image URL</label>
+              <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
+           </div>
+           <div class="modal-footer">
+              <button type="button" id="cancel-add-child-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+              <button [disabled]="addForm.invalid"  type="submit" class="btn btn-danger">Enregistrer</button>
+           </div>
+           </form>
+        </div>
+     </div>
+   </div>
+</div>
+<!-- Add Child Modal end -->
+
 
 <!-- Add Monthly Modal -->
 <div class="modal fade" id="addMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="addMonthlyModalLabel" aria-hidden="true">
@@ -211,7 +271,7 @@
           <div class="modal-body">
              <p>Etes-vous vraiment sûr de vouloir supprimer l'enfant {{deleteChild?.lastname}} {{deleteChild?.firstname}}? </p>
              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
                 <button (click)="onDeleteChild(deleteChild.id)" class="btn btn-danger" data-dismiss="modal">Oui</button>
              </div>
           </div>

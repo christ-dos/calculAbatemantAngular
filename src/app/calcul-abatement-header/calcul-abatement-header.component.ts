@@ -25,19 +25,21 @@ export class CalculAbatementHeaderComponent implements OnInit {
      }
 
   public addMonthlyChild!: Child;
+  public children!: Child[];
   ngOnInit(): void {
   }
 
-  public onAddChild(addForm: NgForm): void {
-    document.getElementById('cancel-add-child-form')?.click();
-    this.childService.addChild(addForm.value).subscribe(
-      (response: Child) => {
+ 
+
+  public getChildren(): Child[] {
+    this.childService.getAllChildren().subscribe(
+      (response: Child[]) => {
         console.log(response);
-        this.calculAbatementHomeComponent.getChildren;
-        addForm.reset();
+        this.children = response;
+        },
+        );
+        return this.children;
       }
-    );
-  }
 
   public onOpenModel(mode: string): void {
     const container = document.getElementById('main-container');
@@ -48,7 +50,6 @@ export class CalculAbatementHeaderComponent implements OnInit {
     if (mode === 'add') {
       button.setAttribute('data-target', '#addChildModal');
     }
-    
     container?.appendChild(button);
     button.click();
   }

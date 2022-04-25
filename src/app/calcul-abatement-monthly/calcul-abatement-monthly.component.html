@@ -1,37 +1,37 @@
 
 <div class="container" id="main-container">
     <form #monthliesByYearAndByChildIdForm="ngForm" (ngSubmit)="onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm)">
-        <div class="form-group row justify-content-center">
+      <div class="form-group justify-content-center row">
             <div class="col-3 mt-4">
-                <label for="childName" class="d-inline-block text-truncate ml-1">Selectionner un enfant</label>
-                <select  class="form-select form-control text-truncate mb-5" aria-label="Children select" name="selectChild" id="selectChild" [(ngModel)]="childId">
-                    <option *ngFor="let child of children"  [value]="child?.id"  name="id" id="id" >{{child.firstname}} {{child.lastname}}</option>
-                </select>
+               <label for="childName" class="d-inline-block text-truncate ml-1">Selectionner un enfant</label>
+               <select  class="form-select form-control text-truncate mb-5" aria-label="Children select" name="selectChild" id="selectChild" [(ngModel)]="childId">
+                  <option *ngFor="let child of children"  [value]="child?.id"  name="id" id="id" >{{child.firstname}} {{child.lastname}}</option>
+               </select>
             </div>
             <div class="col-3 mt-4">
                 <label for="year" class="d-inline-block text-truncate ml-1">Année</label>
                 <input type="text"  name="year" class="form-control" ngModel id="year" placeholder="2022" required>
             </div>
-            <div class="col-2 mb-5  d-flex align-items-end ">
-                <button class="btn btn-block bg-danger bg-bs-gradient text-light"  type="submit" >Chercher</button>
+            <div class="col-3 mb-5  d-flex align-items-end">
+                <button class="btn btn-block bg-danger bg-bs-gradient text-light "  type="submit" >Chercher</button>
             </div>
-        </div>
+      </div>
     </form>
     <div class="row">
-        <div class="col-12 p-0">
-            <span *ngIf="childId != undefined" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons pink-color fs-2 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
+       <div class="col-1 p-0">
+            <span *ngIf="childId != undefined" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons pink-color fs-3  gray-color rounded p-1 " data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
         </div>
         <table class="table table-condensed table-striped borderless mb-0">
             <thead class="thead magenta-color text-light">
-            <tr>
-                <th scope="col" class=" pt-4 pb-4 text-center">Mois</th>
-                <th scope="col" class=" pt-4 pb-4 text-center">Salaire Imposable</th>
-                <th scope="col" class=" pt-4 pb-4 text-center">Jours</th>
-                <th scope="col" class=" pt-4 pb-4 text-center">heures</th>
-                <th scope="col" class=" pt-4 pb-4 text-center">Repas</th>
-                <th scope="col" class=" pt-4 pb-4 text-center">Goûters</th>
-                <th scope="col" class=" pt-4 pb-4 text-center">Action</th>
-            </tr>
+               <tr>
+                  <th scope="col" class=" pt-4 pb-4 text-center">Mois</th>
+                  <th scope="col" class=" pt-4 pb-4 text-center">Salaire Imposable</th>
+                  <th scope="col" class=" pt-4 pb-4 text-center">Jours</th>
+                  <th scope="col" class=" pt-4 pb-4 text-center">heures</th>
+                  <th scope="col" class=" pt-4 pb-4 text-center">Repas</th>
+                  <th scope="col" class=" pt-4 pb-4 text-center">Goûters</th>
+                  <th scope="col" class=" pt-4 pb-4 text-center">Action</th>
+               </tr>
             </thead>
             <tbody>
             <tr *ngFor="let monthly of monthlies">
@@ -42,10 +42,8 @@
                 <td class="text-center">{{monthly.lunch}}</td>
                 <td class="text-center">{{monthly.taste}}</td>
                 <td style="width: 15%" class="text-center">
-                    
-                    <a (click)="onOpenModel(monthly,'editMonthly')" class="btn  tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil text-danger "></i></a>
-                    <a (click)="onOpenModel(monthly,'deleteMonthly')" class="btn tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-trash text-secondary"></i></a>
-                  
+                  <a (click)="onOpenModel(monthly,'editMonthly')" class="btn  tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil text-danger "></i></a>
+                  <a (click)="onOpenModel(monthly,'deleteMonthly')" class="btn tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-trash text-secondary"></i></a>
 				</td>
             </tr>
             </tbody>
@@ -58,7 +56,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header bg-danger bg-gradient text-light">
-            <h5 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle: {{addMonthlyChild?.lastname}} {{addMonthlyChild?.firstname}}</h5>
+            <h5 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle</h5>
             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -239,7 +237,7 @@
           <div class="modal-body">
              <p>Etes-vous vraiment sûr de vouloir supprimer la declaration mensuelle de {{deleteMonthly?.month}} {{deleteMonthly?.year}}? </p>
              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
                 <button (click)="onDeleteMonthly(deleteMonthly.monthlyId)" class="btn btn-danger" data-dismiss="modal">Oui</button>
              </div>
           </div>

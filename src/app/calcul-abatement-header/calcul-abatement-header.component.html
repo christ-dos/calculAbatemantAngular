@@ -1,6 +1,6 @@
  <!-- Navbar -->
- <nav class="navbar navbar-expand-lg navbar-dark bg-danger bg-gradient">
-    <a class="navbar-brand fs-3" style="color:white">Gestion Fiscal Assistante Maternelle</a>
+ <nav class="navbar navbar-expand-lg navbar-dark bg-danger bg-gradient p-3">
+    <a class="navbar-brand fs-3" style="color:white">Gestion Fiscale Assistante Maternelle</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
     </button>
@@ -9,82 +9,21 @@
          <li class="nav-item ">
             <a  class="nav-link" routerLink="home" routerLinkActive="active">Home <span class="sr-only">(current)</span></a>
          </li>
-          <li class="nav-item">
-             <a class="nav-link" (click)="onOpenModel('add')">Ajouter Enfant <span class="sr-only">(current)</span></a>
-          </li>
           <li class="nav-item ">
             <a class="nav-link" routerLink="monthly" routerLinkActive="active">Déclaration Mensuelle <span class="sr-only">(current)</span></a>
          </li>
-         <li class="nav-item ">
-            <a class="nav-link" routerLink="monthly" routerLinkActive="active">Rapport Annuel <span class="sr-only">(current)</span></a>
-         </li>
-       </ul>
+      </ul>
        <!-- Form search -->
        <form class="form-inline my-2 my-lg-0">
           <input type="search" 
            name="key" id="searchName" class="form-control mr-sm-2" placeholder="" required>
        </form>
        <!-- Form search end -->
+       <div>
+         <span (click)="this.calculAbatementHomeComponent.onOpenModel(null,'add')" class="material-icons text-light pl-3 fs-3" data-md-tooltip="Ajouter Enfant">person_add</span>
+       </div>
     </div>
   </nav>
   <!-- Navbar end -->
 
-  <!-- Add Child Modal -->
-<div class="modal fade" id="addChildModal" tabindex="-1" role="dialog" aria-labelledby="addChildModalLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-     <div class="modal-content">
-        <div class="modal-header bg-danger bg-gradient text-light">
-           <h5 class="modal-title" id="addChildModalLabel">Ajouter un Enfant</h5>
-           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-           <span aria-hidden="true">&times;</span>
-           </button>
-        </div>
-        <div class="modal-body">
-           <form #addForm = "ngForm" (ngSubmit)="onAddChild(addForm)">
-           <div class="form-group">
-              <label for="lastname">Nom</label>
-              <input type="text" ngModel  name="lastname" class="form-control" id="lastname" placeholder="Nom" required>
-           </div>
-           <div class="form-group">
-              <label for="firstname">Prénom</label>
-              <input type="text" ngModel name="firstname" class="form-control" id="firstname" placeholder="Prénom" required>
-           </div>
-           <div class="form-group">
-              <label for="birthDate">Date de naissance</label>
-              <input type="text" ngModel name="birthDate" class="form-control" id="birthDate" placeholder="17/09/2000" required>
-           </div>
-           <div class="form-group row">
-               <div class="col-6">
-                  <label for="beginContract">Début du Contrat</label>
-                  <input type="text" ngModel name="beginContract" class="form-control" id="beginContract" placeholder="01/09/2020" required>
-               </div>
-               <div class="col-6">
-                  <label for="endContract">Fin du Contrat</label>
-                  <input type="text" ngModel name="endContract" class="form-control" id="endContract" placeholder="01/09/2020">
-               </div>
-           </div>
-           <div class="form-group row">
-              <div class="col-6">
-                  <label for="feesLunch" class="d-inline-block text-truncate">Tarif Repas</label>
-                  <input type="number" ngModel name="feesLunch" class="form-control" id="feesLunch" placeholder="2.00€" required>
-              </div>
-              <div class="col-6">
-                  <label for="feesTaste" class="d-inline-block text-truncate">Tarif Goûter</label>
-                  <input type="number" ngModel  name="feesTaste" class="form-control" id="feesTaste" placeholder="0.50€" required>
-               </div>
-            </div>
-           <div class="form-group">
-              <label for="imageUrl">Image URL</label>
-              <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
-           </div>
-           <div class="modal-footer">
-              <button type="button" id="cancel-add-child-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-              <button [disabled]="addForm.invalid"  type="submit" class="btn btn-danger">Enregistrer</button>
-           </div>
-           </form>
-        </div>
-     </div>
-   </div>
-</div>
-<!-- Add Child Modal end -->
 

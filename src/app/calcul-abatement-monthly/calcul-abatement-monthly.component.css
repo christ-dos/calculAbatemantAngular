@@ -26,6 +26,9 @@
    .magenta-color {
     background-color: rgb(176, 48, 62);
     }
+    .gray-color {
+        background-color: #d2d0d0e6;
+        }
     #taxableSalarySiblingModal{
         margin-top: 12%;
-        }
+    }

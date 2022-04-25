@@ -17,6 +17,7 @@
       font-size: 12px;
       font-family: Roboto,sans-serif;
       font-weight: 400;
+      z-index: 6;
    }
    [data-md-tooltip]:hover:before {
     transform: translateX(-50%) scale(1);

@@ -14,7 +14,7 @@ import { CalculAbatementHomeComponent } from './calcul-abatement-home/calcul-aba
 })
 export class AppComponent implements OnInit {
   
-  constructor() { 
+  constructor(private childService: ChildService) { 
   
   }
   public currentYear!: String;
@@ -27,6 +27,15 @@ export class AppComponent implements OnInit {
     this.currentMonth = new Date();
    
   }
+
+  public getChildren(): void {
+    this.childService.getAllChildren().subscribe(
+      (response: Child[]) => {
+        console.log(response);
+        this.children = response;
+        },
+        );
+      }
 
 
   
