@@ -77,8 +77,8 @@
                   <input type="number" ngModel name="feesLunch" class="form-control" id="feesLunch" placeholder="2.00€" required>
               </div>
               <div class="col-6">
-                  <label for="feesTaste" class="d-inline-block text-truncate">Tarif Goûter</label>
-                  <input type="number" ngModel  name="feesTaste" class="form-control" id="feesTaste" placeholder="0.50€" required>
+                  <label for="feesSnack" class="d-inline-block text-truncate">Tarif Goûter</label>
+                  <input type="number" ngModel  name="feesSnack" class="form-control" id="feesSnack" placeholder="0.50€" required>
                </div>
             </div>
            <div class="form-group">
@@ -145,8 +145,8 @@
                    <input type="number" ngModel name="lunch" class="form-control" id="lunch" placeholder="20" >
                 </div>
                 <div class="col-6">
-                   <label for="taste">Goûters</label>
-                   <input type="number" ngModel name="taste" class="form-control" id="taste" placeholder="20" >
+                   <label for="snack">Goûters</label>
+                   <input type="number" ngModel name="snack" class="form-control" id="snack" placeholder="20" >
                    <input type="hidden" ngModel="{{childId}}" name="childId" class="form-control" id="childId" placeholder="ChildId">
                 </div>
              </div>
@@ -205,7 +205,7 @@
        <div class="modal-content">
           <div class="modal-header bg-danger bg-gradient text-light">
              <h5 class="modal-title" id="updateChildModalLabel">Editer un Enfant {{editChild?.lastname}} {{editChild?.firstname}}</h5>
-             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
              <span aria-hidden="true">&times;</span>
              </button>
           </div>
@@ -240,8 +240,8 @@
                      <input type="number" ngModel="{{editChild?.feesLunch}}"  name="feesLunch" class="form-control" id="feesLunch" placeholder="2.00€" required>
                  </div>
                  <div class="col-6">
-                     <label for="feesTaste" class="d-inline-block text-truncate">Tarif Goûter</label>
-                     <input type="number" ngModel="{{editChild?.feesTaste}}"  name="feesTaste" class="form-control" id="feesTaste" placeholder="0.50€" required>
+                     <label for="feesSnack" class="d-inline-block text-truncate">Tarif Goûter</label>
+                     <input type="number" ngModel="{{editChild?.feesSnack}}"  name="feesSnack" class="form-control" id="feesSnack" placeholder="0.50€" required>
                   </div>
                </div>
                 <div class="form-group">

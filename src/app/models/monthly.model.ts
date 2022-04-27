@@ -5,7 +5,7 @@ export class Monthly{
         public year: string,
         public taxableSalary: number,
         public lunch: number,
-        public taste: number,
+        public snack: number,
         public dayWorked: number,
         public hoursWorked: number,
         public childId: number

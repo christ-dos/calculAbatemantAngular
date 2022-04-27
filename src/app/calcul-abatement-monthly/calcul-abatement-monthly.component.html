@@ -40,7 +40,7 @@
                 <td class="text-center">{{monthly.dayWorked}}</td>
                 <td class="text-center">{{monthly.hoursWorked}}</td>
                 <td class="text-center">{{monthly.lunch}}</td>
-                <td class="text-center">{{monthly.taste}}</td>
+                <td class="text-center">{{monthly.snack}}</td>
                 <td style="width: 15%" class="text-center">
                   <a (click)="onOpenModel(monthly,'editMonthly')" class="btn  tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil text-danger "></i></a>
                   <a (click)="onOpenModel(monthly,'deleteMonthly')" class="btn tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-trash text-secondary"></i></a>
@@ -102,8 +102,8 @@
                    <input type="number" ngModel name="lunch" class="form-control" id="lunch" placeholder="20" >
                 </div>
                 <div class="col-6">
-                   <label for="taste">Goûters</label>
-                   <input type="number" ngModel name="taste" class="form-control" id="taste" placeholder="20" >
+                   <label for="snack">Goûters</label>
+                   <input type="number" ngModel name="snack" class="form-control" id="snack" placeholder="20" >
                    <input type="hidden" ngModel="{{childId}}"  name="childId" class="form-control" id="childId" placeholder="ChildId">
                 </div>
              </div>
@@ -205,8 +205,8 @@
                    <input type="number" ngModel="{{editMonthly?.lunch}}" name="lunch" class="form-control" id="lunch" placeholder="20" >
                 </div>
                 <div class="col-6">
-                   <label for="taste">Goûters</label>
-                   <input type="number" ngModel="{{editMonthly?.taste}}" name="taste" class="form-control" id="taste" placeholder="20" >
+                   <label for="snack">Goûters</label>
+                   <input type="number" ngModel="{{editMonthly?.snack}}" name="snack" class="form-control" id="snack" placeholder="20" >
                    <input type="hidden" ngModel="{{editMonthly?.childId}}" name="childId" class="form-control" id="childId" placeholder="ChildId">
                    <input type="hidden" ngModel="{{editMonthly?.monthlyId}}" name="monthlyId" class="form-control" id="monthlyId" placeholder="MonthlyId">
                
