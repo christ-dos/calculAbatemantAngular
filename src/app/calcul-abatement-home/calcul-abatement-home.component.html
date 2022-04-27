@@ -4,7 +4,7 @@
 <div class="container" id="main-container">
     <div class="row pt-4">
       <div *ngFor="let child of children" class="col-md-6 col-xl-3">
-         <div class="card m-b-30">
+         <div class="card m-b-30 rounded">
            <div class="col-12">
               <span (click)="onOpenModel(child.id,'addMonthly')"  class="material-icons pink-color fs-3 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
             </div>
@@ -22,8 +22,9 @@
               <li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Début du Contrat : {{child?.beginContract}}</li>
               <li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Fin du Contrat : {{child?.endContract}}</li>
               <li *ngIf="child.taxableSalary" class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable: {{child?.taxableSalary | currency: 'EUR'}}</li>
-              <li *ngIf="child.reportableAmounts" class="list-group-item font-italic"><i class="fa fa-money float-right"></i>Somme à déclarer: {{child?.reportableAmounts | currency: 'EUR'}}</li>
-           </ul>
+              <li  class="list-group-item font-italic "><i class="fa fa-money float-right"></i>Abatement Fiscal: {{child?.taxRelief | currency: 'EUR'}}</li>
+              <li *ngIf="child.reportableAmounts" class="list-group-item font-italic magenta-bg text-light rounded"><i class="fa fa-money float-right"></i>Somme à déclarer: {{child?.reportableAmounts | currency: 'EUR'}}</li>
+            </ul>
             <div class="card-body">
                <div class="float-right btn-group btn-group-sm">
                  <!-- <a (click)="onOpenModel(child,'fees')" class="btn" data-md-tooltip="Frais Repas" data-placement="top" data-original-title="fees"><span class="material-icons fs-5 pink-color">euro</span></a>-->

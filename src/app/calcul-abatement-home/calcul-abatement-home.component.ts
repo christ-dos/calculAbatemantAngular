@@ -28,6 +28,7 @@ export class CalculAbatementHomeComponent implements OnInit {
     public childId!:number;
     public addMonthlyChild!: Child;
     public taxableSalarySibling!: number;
+    public taxRelief!: number;
 
 
   ngOnInit(): void {
@@ -44,6 +45,7 @@ export class CalculAbatementHomeComponent implements OnInit {
             console.log("je suis dans le if" + child.firstname);
             this.getTaxableSalary(child);
             this.getAnnualReportableAmounts(child);
+            this.getTaxRelief(child)
           }
         });
       }
@@ -70,6 +72,17 @@ export class CalculAbatementHomeComponent implements OnInit {
       }
     )
   }
+
+  public getTaxRelief(child: Child): void {
+    this.childService.getTaxRelief(child.id, this.appComponent.currentYear).subscribe(
+      (response: number) => {
+        console.log(response);
+        this.taxRelief = response;
+        child.taxRelief = this.taxRelief;
+      }
+    )
+  }
+
 
   public onAddChild(addForm: NgForm): void {
     document.getElementById('cancel-add-child-form')?.click();
@@ -119,9 +132,11 @@ export class CalculAbatementHomeComponent implements OnInit {
   }
 
   public onDeleteChild(childId: number): void {
+    console.log("childId: " + childId);
     this.childService.deleteChild(childId).subscribe(
       (response: void) => {
-        console.log(response);
+        console.log("message de suppresion: " + response);
+        
         this.getChildren();
       }
     );

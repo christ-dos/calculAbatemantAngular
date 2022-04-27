@@ -12,6 +12,7 @@ export class Child{
        public userEmail: string,
        public taxableSalary: number,
        public reportableAmounts: number,
+       public taxRelief: number,
        public feesLunch: number,
        public feesTaste: number,
        public monthlies: Monthly[]

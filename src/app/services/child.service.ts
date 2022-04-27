@@ -36,4 +36,8 @@ export class ChildService{
         return this.http.get<number>(`${this.apiCalculAbatementUrl}/child/reportableamounts?childId=${childId}&year=${year}`);
     }
 
+    public getTaxRelief(childId: number, year: String): Observable<number>{
+        return this.http.get<number>(`${this.apiCalculAbatementUrl}/child/taxrelief?childId=${childId}&year=${year}`);
+    }
+
 }
