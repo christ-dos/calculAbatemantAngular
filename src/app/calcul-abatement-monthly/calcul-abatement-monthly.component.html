@@ -19,10 +19,10 @@
     </form>
     <div class="row">
        <div class="col-1 p-0">
-            <span *ngIf="childId != undefined" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons pink-color fs-3  gray-color rounded p-1 " data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
+            <span *ngIf="childId != undefined" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons color-pink fs-3  bg-gray rounded p-1 " data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
         </div>
         <table class="table table-condensed table-striped borderless mb-0">
-            <thead class="thead magenta-color text-light">
+            <thead class="thead bg-magenta text-light">
                <tr>
                   <th scope="col" class=" pt-4 pb-4 text-center">Mois</th>
                   <th scope="col" class=" pt-4 pb-4 text-center">Salaire Imposable</th>
@@ -35,7 +35,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let monthly of monthlies">
-                <td class="text-center magenta-color text-light" >{{monthly.month}}</td>
+                <td class="text-center bg-magenta text-light" >{{monthly.month}}</td>
                 <td class="text-center">{{monthly.taxableSalary}} </td>
                 <td class="text-center">{{monthly.dayWorked}}</td>
                 <td class="text-center">{{monthly.hoursWorked}}</td>
@@ -44,7 +44,11 @@
                 <td style="width: 15%" class="text-center">
                   <a (click)="onOpenModel(monthly,'editMonthly')" class="btn  tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil text-danger "></i></a>
                   <a (click)="onOpenModel(monthly,'deleteMonthly')" class="btn tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-trash text-secondary"></i></a>
-				</td>
+				    </td>
+            </tr>
+            <tr>
+               <td class="text-center"> Total</td>
+               <td class="text-center">{{calculAbatementHomeComponent.sumTaxableSalary}}</td>
             </tr>
             </tbody>
         </table>

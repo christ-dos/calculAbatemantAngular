@@ -1,29 +1,45 @@
- <!-- Navbar -->
- <nav class="navbar navbar-expand-lg navbar-dark bg-danger bg-gradient p-3">
-    <a class="navbar-brand fs-3" style="color:white">Gestion Fiscale Assistante Maternelle</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarColor02">
-       <ul class="navbar-nav mr-auto">
-         <li class="nav-item ">
-            <a  class="nav-link" routerLink="home" routerLinkActive="active">Home <span class="sr-only">(current)</span></a>
-         </li>
-          <li class="nav-item ">
-            <a class="nav-link" routerLink="monthly" routerLinkActive="active">Déclaration Mensuelle <span class="sr-only">(current)</span></a>
-         </li>
-      </ul>
-       <!-- Form search -->
-       <form class="form-inline my-2 my-lg-0">
-          <input type="search" 
-           name="key" id="searchName" class="form-control mr-sm-2" placeholder="" required>
-       </form>
-       <!-- Form search end -->
-       <div>
-         <span (click)="this.calculAbatementHomeComponent.onOpenModel(null,'add')" class="material-icons text-light pl-3 fs-3" data-md-tooltip="Ajouter Enfant">person_add</span>
-       </div>
-    </div>
-  </nav>
-  <!-- Navbar end -->
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-danger bg-gradient">
+    <div class="container-fluid d-flex align-items-end pb-0">
+      <div class="col-1 d-flex flex-row  rounded-circle bg-light-pink bg-gradient" >
+         <a class="navbar-brand" style="color:white"><img src="./assets/logoAppAssMatV10.png" class="img-fluid m-2"/></a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+      </div>
+  
+      <div class="collapse navbar-collapse" id="navbarColor02">
+         <div class="col-6 d-flex justify-content-start ">
+            <ul class="navbar-nav mr-auto my-lg-0 fs-5">
+               <li class="nav-item ">
+                  <a  class="nav-link" routerLink="home" routerLinkActive="active">Home <span class="sr-only">(current)</span></a>
+               </li>
+                  <li class="nav-item ">
+                  <a class="nav-link" routerLink="monthly" routerLinkActive="active">Déclaration Mensuelle <span class="sr-only">(current)</span></a>
+               </li>
+            </ul>
+          </div><!--colonne-->
+         <!-- Form search -->
+         <div class="col-6 d-flex justify-content-end">
+            <form class="form-inline my-2 my-lg-0">
+               <input type="search" 
+                name="key" id="searchName" class="form-control mr-sm-2" placeholder="" required>
+            </form>
+            <!-- Form search end -->
+            <div class=" d-flex align-items-end px-2 color-light-pink">
+              <span (click)="this.calculAbatementHomeComponent.onOpenModel(null,'add')" class="material-icons  fs-3" data-md-tooltip="Ajouter Enfant">person_add</span>
+            </div>
+         </div>
+      </div>
+   </div><!--conatiner--->
+</nav>
+<!-- Navbar end -->
+ 
+ 
+ 
+ 
+ 
+ 
+
 
 

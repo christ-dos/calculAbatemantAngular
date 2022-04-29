@@ -1,38 +1,15 @@
-
-[data-md-tooltip] {
-    position: relative;
-   }
-   [data-md-tooltip]:before {
-      content: attr(data-md-tooltip);
-      position: absolute;
-      bottom: 25px;
-      left: 50%;
-      padding: 8px;
-      transform: translateX(-50%) scale(0);
-      transition: transform 0.3s ease-in-out;
-      transform-origin: top;
-      background: #b8b7b7e6;
-      color: white;
-      border-radius: 2px;
-      font-size: 12px;
-      font-family: Roboto,sans-serif;
-      font-weight: 400;
-      z-index: 6;
-   }
-   [data-md-tooltip]:hover:before {
-    transform: translateX(-50%) scale(1);
-   }
    #AddMonthly:hover{ 
        color:rgb(150, 27, 88);
    }
    #taxableSalarySiblingModal{
     margin-top: 12%;
     }
-    .pink-bg {
-        background-color:rgb(187, 56, 121);
+    .bg-gray {
+        background-color: #c0c0c0e6;
     }
-    .magenta-bg {
-        background-color: rgba(176, 48, 62, 0.8);
-    }
+    .bg-light-pink{
+        background-color: #FFD8D8;
+     }
+    
 
 

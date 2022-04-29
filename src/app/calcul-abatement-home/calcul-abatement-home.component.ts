@@ -24,11 +24,15 @@ export class CalculAbatementHomeComponent implements OnInit {
     public feesChild!: Child;
    
     public taxableSalary!: number;
+    public taxableSalarySibling!: number;
     public reportableAmounts!: number;
+    public taxRelief!: number;
     public childId!:number;
     public addMonthlyChild!: Child;
-    public taxableSalarySibling!: number;
-    public taxRelief!: number;
+    public sumTaxRelief!: number;
+    public sumReportableAmount!: number;
+    public sumTaxableSalary!:number;
+    public summaryYear!: String;
 
 
   ngOnInit(): void {
@@ -45,7 +49,7 @@ export class CalculAbatementHomeComponent implements OnInit {
             console.log("je suis dans le if" + child.firstname);
             this.getTaxableSalary(child);
             this.getAnnualReportableAmounts(child);
-            this.getTaxRelief(child)
+            this.getTaxRelief(child);
           }
         });
       }
@@ -81,6 +85,36 @@ export class CalculAbatementHomeComponent implements OnInit {
         child.taxRelief = this.taxRelief;
       }
     )
+  }
+
+  public onSummaryModal(year: String): void{
+    this.children.forEach((child) => {
+      if(child.monthlies.length > 0 ){
+        this.sumTaxRelief = this.children.reduce((accumulator, child) => {
+          return accumulator + child.taxRelief;
+        }, 0);
+        this.sumReportableAmount = this.children.reduce((accumulator, child) => {
+          return accumulator + child.reportableAmounts;
+        }, 0);
+        this.sumTaxableSalary = this.children.reduce((accumulator, child) => {
+          return accumulator + child.taxableSalary;
+        }, 0);
+
+        
+        
+        //this.sumTaxRelief += child.taxRelief;
+       
+        //this.getTaxableSalary(child);
+       // this.getAnnualReportableAmounts(child);
+       // this.getTaxRelief(child)
+      }
+    });
+   // summaryByYearForm.reset();
+    this.summaryYear = year;
+    console.log("year: " + this.summaryYear);
+    console.log("sumTaxRelief: " +  this.sumTaxRelief);
+    console.log("sumReportableAmount: " + this.sumReportableAmount);
+    console.log("sumTaxableSalary: " + this.sumTaxableSalary);
   }
 
 

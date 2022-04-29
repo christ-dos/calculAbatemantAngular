@@ -23,10 +23,10 @@
    #AddMonthly:hover{ 
        color:rgb(150, 27, 88);
    }
-   .magenta-color {
-    background-color: rgb(176, 48, 62);
+   .bg-magenta { 
+        background-color: rgb(176, 48, 62);
     }
-    .gray-color {
+    .bg-gray {
         background-color: #d2d0d0e6;
     }
     #taxableSalarySiblingModal{
