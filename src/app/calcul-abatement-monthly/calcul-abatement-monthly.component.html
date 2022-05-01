@@ -2,41 +2,41 @@
 <div class="container" id="main-container">
     <form #monthliesByYearAndByChildIdForm="ngForm" (ngSubmit)="onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm)">
       <div class="form-group justify-content-center row">
-            <div class="col-3 mt-4">
+            <div class="col-3 mt-4 ">
                <label for="childName" class="d-inline-block text-truncate ml-1">Selectionner un enfant</label>
-               <select  class="form-select form-control text-truncate mb-5" aria-label="Children select" name="selectChild" id="selectChild" [(ngModel)]="childId">
+               <select  class="form-select form-control text-truncate mb-5 shadow-sm" aria-label="Children select" name="selectChild" id="selectChild" [(ngModel)]="childId">
                   <option *ngFor="let child of children"  [value]="child?.id"  name="id" id="id" >{{child.firstname}} {{child.lastname}}</option>
                </select>
             </div>
             <div class="col-3 mt-4">
                 <label for="year" class="d-inline-block text-truncate ml-1">Année</label>
-                <input type="text"  name="year" class="form-control" ngModel id="year" placeholder="2022" required>
+                <input type="text"  name="year" class="form-control shadow-sm" ngModel id="year" placeholder="2022" required>
             </div>
             <div class="col-3 mb-5  d-flex align-items-end">
-                <button class="btn btn-block bg-danger bg-bs-gradient text-light "  type="submit" >Chercher</button>
+                <button class="btn btn-block bg-danger bg-bs-gradient text-light shadow-sm"  type="submit" id="search-monthlies">Chercher</button>
             </div>
       </div>
     </form>
     <div class="row">
        <div class="col-1 p-0">
-            <span *ngIf="childId != undefined" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons color-pink fs-3  bg-gray rounded p-1 " data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
+            <span *ngIf="childId != undefined" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons color-pink p-2 mb-2 fs-2 shadow rounded p-2 " data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
         </div>
-        <table class="table table-condensed table-striped borderless mb-0">
+        <table class="table table-condensed table-striped borderless shadow mb-0">
             <thead class="thead bg-magenta text-light">
                <tr>
-                  <th scope="col" class=" pt-4 pb-4 text-center">Mois</th>
-                  <th scope="col" class=" pt-4 pb-4 text-center">Salaire Imposable</th>
-                  <th scope="col" class=" pt-4 pb-4 text-center">Jours</th>
-                  <th scope="col" class=" pt-4 pb-4 text-center">heures</th>
-                  <th scope="col" class=" pt-4 pb-4 text-center">Repas</th>
-                  <th scope="col" class=" pt-4 pb-4 text-center">Goûters</th>
-                  <th scope="col" class=" pt-4 pb-4 text-center">Action</th>
+                  <th scope="col" class="py-4 text-center">Mois</th>
+                  <th scope="col" class="py-4 text-center">Salaire Imposable</th>
+                  <th scope="col" class="py-4 text-center">Jours</th>
+                  <th scope="col" class="py-4 text-center">Heures</th>
+                  <th scope="col" class="py-4 text-center">Repas</th>
+                  <th scope="col" class="py-4 text-center">Goûters</th>
+                  <th scope="col" class="py-4 text-center">Action</th>
                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let monthly of monthlies">
+            <tr  *ngFor="let monthly of monthlies">
                 <td class="text-center bg-magenta text-light" >{{monthly.month}}</td>
-                <td class="text-center">{{monthly.taxableSalary}} </td>
+                <td class="text-center">{{monthly.taxableSalary  |  currency: 'EUR'}} </td>
                 <td class="text-center">{{monthly.dayWorked}}</td>
                 <td class="text-center">{{monthly.hoursWorked}}</td>
                 <td class="text-center">{{monthly.lunch}}</td>
@@ -46,11 +46,18 @@
                   <a (click)="onOpenModel(monthly,'deleteMonthly')" class="btn tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-trash text-secondary"></i></a>
 				    </td>
             </tr>
-            <tr>
-               <td class="text-center"> Total</td>
-               <td class="text-center">{{calculAbatementHomeComponent.sumTaxableSalary}}</td>
-            </tr>
             </tbody>
+            <tfoot>
+               <tr>
+                  <td class="text-center bg-magenta text-light font-weight-bold">Total Annuel</td>
+                  <td class="text-center font-weight-bold bg-light-magenta">{{sumTaxableSalary  |  currency: 'EUR'}}</td>
+                  <td class="text-center font-weight-bold bg-light-magenta">{{sumDaysWorked}}</td>
+                  <td class="text-center font-weight-bold bg-light-magenta">{{sumHoursWorked}}</td>
+                  <td class="text-center font-weight-bold bg-light-magenta">{{sumLunches}}</td>
+                  <td class="text-center font-weight-bold bg-light-magenta">{{sumSnacks}}</td>
+                  <td class="text-center font-weight-bold bg-light-magenta"></td>
+               </tr>
+            </tfoot>
         </table>
     </div>
 </div>

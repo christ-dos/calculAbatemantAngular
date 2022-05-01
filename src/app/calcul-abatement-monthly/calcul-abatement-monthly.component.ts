@@ -33,6 +33,11 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   public taxableSalarySibling!:number;
   public months!: String[] ;
   public monthSelected!: String;
+  public sumTaxableSalary!: number;
+  public sumDaysWorked!: number;
+  public sumHoursWorked!: number;
+  public sumLunches!: number;
+  public sumSnacks!: number;
   
   ngOnInit(): void {
   this.getChildren();
@@ -43,8 +48,32 @@ export class CalculAbatementMonthlyComponent implements OnInit {
    this.monthlyService.getMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm.value.year, this.childId).subscribe(
      (response: Monthly[]) => {
       this.monthlies = response;
-       console.log(response);
-       this.getChildren()
+      console.log(response);
+
+      this.sumTaxableSalary = this.monthlies.reduce((accumulator, monthly) => {
+        return accumulator + monthly.taxableSalary;
+        
+      }, 0);
+
+      this.sumDaysWorked = this.monthlies.reduce((accumulator, monthly) => {
+        return accumulator + monthly.dayWorked;
+      }, 0);
+
+      this.sumHoursWorked = this.monthlies.reduce((accumulator, monthly) => {
+        return accumulator + monthly.hoursWorked;
+      }, 0);
+
+      this.sumLunches = this.monthlies.reduce((accumulator, monthly) => {
+        return accumulator + monthly.lunch;
+      }, 0);
+
+      this.sumSnacks = this.monthlies.reduce((accumulator, monthly) => {
+        return accumulator + monthly.snack;
+      }, 0);
+     
+      console.log("sumTaxableSalary: " + this.sumTaxableSalary); // clean code
+      
+      this.getChildren();
       }
     )
   }
@@ -93,6 +122,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
         console.log(response);
         this.getMonthliesByYearAndChildId(addMonthlyForm.value.year, addMonthlyForm.value.childId)
         addMonthlyForm.reset();
+        document.getElementById('search-monthlies')?.click();
       }
     );
   }
@@ -115,8 +145,10 @@ export class CalculAbatementMonthlyComponent implements OnInit {
       (response: Monthly) => {
         console.log(response);
         this.getMonthliesByYearAndChildId(monthly.year,monthly.childId);
+        document.getElementById('search-monthlies')?.click();
       }
     );
+   
   }
 
   public onDeleteMonthly(monthlyId: number): void {
@@ -124,6 +156,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
       (response: void) => {
         console.log(response);
         this.getMonthliesByYearAndChildId(this.deleteMonthly.year, this.deleteMonthly.childId);
+        document.getElementById('search-monthlies')?.click();
       }
     );
   }

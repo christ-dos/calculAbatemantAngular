@@ -4,12 +4,12 @@
 <div class="container" id="main-container">
     <div class="row pt-2">
        <div>
-         <button type="button" class="btn bg-gray mb-2" data-bs-toggle="modal" data-bs-target="#summaryModal">
-            <span class="material-icons color-light-pink fs-2" data-md-tooltip="Rapport Annuel">summarize</span>
+         <button type="button" class="btn  my-2 pl-1" data-bs-toggle="modal" data-bs-target="#summaryModal">
+            <span class="material-icons color-pink fs-2 p-2 shadow rounded" data-md-tooltip="Rapport Annuel">summarize</span>
          </button>
       </div>
       <div *ngFor="let child of children" class="col-md-6 col-xl-3">
-         <div class="card m-b-30 rounded">
+         <div class="card m-b-30 shadow rounded">
            <div class="col-12">
               <span (click)="onOpenModel(child.id,'addMonthly')"  class="material-icons color-pink fs-3 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
             </div>
@@ -29,7 +29,7 @@
               <li class="list-group-item font-italic"><strong>Calcul {{appComponent.currentYear}}: </strong></li>
               <li *ngIf="child.taxableSalary" class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable: {{child?.taxableSalary | currency: 'EUR'}}</li>
               <li  class="list-group-item font-italic "><i class="fa fa-money float-right"></i>Abatement Fiscal: {{child?.taxRelief | currency: 'EUR'}}</li>
-              <li *ngIf="child.reportableAmounts" class="list-group-item font-italic bg-light-pink rounded"><i class="fa fa-money float-right"></i>Somme à déclarer: {{child?.reportableAmounts | currency: 'EUR'}}</li>
+              <li *ngIf="child.reportableAmounts" class="list-group-item font-italic bg-light-pink rounded"><i class="fa fa-money float-right"></i>Somme à déclarer:  {{child?.reportableAmounts | currency: 'EUR'}}</li>
             </ul>
             <div class="card-body">
                <div class="float-right btn-group btn-group-sm">
@@ -50,7 +50,7 @@
         <div class="modal-header bg-danger bg-gradient text-light">
            <h5 class="modal-title" id="addChildModalLabel">Ajouter un Enfant</h5>
            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-           <span aria-hidden="true">&times;</span>
+               <span aria-hidden="true">&times;</span>
            </button>
         </div>
         <div class="modal-body">
@@ -110,7 +110,7 @@
          <div class="modal-header bg-danger bg-gradient text-light">
             <h5 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle: {{addMonthlyChild?.lastname}} {{addMonthlyChild?.firstname}}</h5>
             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+               <span aria-hidden="true">&times;</span>
             </button>
          </div>
          <div class="modal-body">
@@ -174,7 +174,7 @@
          <div class="modal-header bg-gradient text-light" style="background-color: rgba(206, 50, 50, 0.856);">
             <h5 class="modal-title" id="taxableSalarySiblingModalLabel">Calculer Salaire Imposable net (cas fraterie)</h5>
             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close" style="background-color: rgba(206, 50, 50, 0.856);">
-            <span aria-hidden="true">&times;</span>
+               <span aria-hidden="true">&times;</span>
             </button>
          </div>
          <div class="modal-body">
@@ -212,7 +212,7 @@
           <div class="modal-header bg-danger bg-gradient text-light">
              <h5 class="modal-title" id="updateChildModalLabel">Editer un Enfant {{editChild?.lastname}} {{editChild?.firstname}}</h5>
              <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-             <span aria-hidden="true">&times;</span>
+               <span aria-hidden="true">&times;</span>
              </button>
           </div>
           <div class="modal-body">
@@ -292,39 +292,37 @@
    <div class="modal-dialog"  role="document">
      <div class="modal-content">
        <div class="modal-header bg-danger text-light bg-gradient">
-         <h5 class="modal-title">Rapport Annuel pour l'année {{summaryYear}}</h5>
-         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+         <h5 class="modal-title" id="summaryModalLabel">Rapport Annuel pour l'année {{summaryYear}}</h5>
+         <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
          </button>
-      </div>
+       </div>
        <div class="modal-body">
          <form #summaryByYearForm="ngForm">
             <div class="mb-3 row pr-2">
                <label class="col-sm-5 col-form-label" for="summaryYear">Année</label>
                <div class="col-sm-4 pl-0">
-                  <input type="text" ngModel name="summaryYear" class="form-control pl-2" id="summaryYear" placeholder="2022" required>
+                  <input type="text" ngModel="{{yearPrecedingCurrentYear}}" name="summaryYear" class="form-control pl-2" id="summaryYear" placeholder="2022" required>
                </div>
-               <button  type="button" class="col-sm-3 btn btn-danger">Chercher</button>
+            </div> 
+            <div class="mb-3 row">
+               <label for="sumTaxableSalary" class="col-sm-5 col-form-label">Salaire Imposable Total: </label>
+               <div class="col-sm-4 pl-0">
+                  <input type="text" readonly class="form-control-plaintext" id="sumTaxableSalary" value="{{sumTaxableSalary |  currency: 'EUR'}}">
+               </div>
             </div>
-          
-         <div class="mb-3 row">
-            <label for="sumTaxableSalary" class="col-sm-5 col-form-label">Salaire Imposable Total: </label>
-            <div class="col-sm-4 pl-0">
-              <input type="text" readonly class="form-control-plaintext" id="sumTaxableSalary" value="{{sumTaxableSalary |  currency: 'EUR'}}">
+            <div class="mb-3 row">
+               <label for="sumTaxRelief" class="col-sm-5 col-form-label">Abatement Fiscal Total: </label>
+               <div class="col-sm-4 pl-0">
+                  <input type="text" readonly class="form-control-plaintext" name="sumTaxRelief" id="sumTaxRelief"  value="{{sumTaxRelief |  currency: 'EUR'}}" >
+               </div>
             </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="sumTaxRelief" class="col-sm-5 col-form-label">Abatement Fiscal Total: </label>
-            <div class="col-sm-4 pl-0">
-              <input type="text" readonly class="form-control-plaintext" name="sumTaxRelief" id="sumTaxRelief"  value="{{sumTaxRelief |  currency: 'EUR'}}" >
+            <div class="mb-3 row bg-light-pink font-weight-bold">
+             <label for="sumReportableAmounts" class="col-sm-5 col-form-label">Total à déclarer: </label>
+               <div class="col-sm-4 pl-0">
+                  <input type="text" readonly class="form-control-plaintext font-weight-bold" name="sumReportableAmounts" id="sumReportableAmounts" value="{{sumReportableAmount |  currency: 'EUR'}}">
+               </div>
             </div>
-          </div>
-          <div class="mb-3 row bg-light-pink font-weight-bold">
-            <label for="sumReportableAmounts" class="col-sm-5 col-form-label">Total à déclarer: </label>
-            <div class="col-sm-4 pl-0">
-              <input type="text" readonly class="form-control-plaintext font-weight-bold" name="sumReportableAmounts" id="sumReportableAmounts" value="{{sumReportableAmount |  currency: 'EUR'}}">
-            </div>
-          </div>
       
          <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -332,7 +330,6 @@
          </div>
          </form>
       </div>
-     
      </div>
    </div>
  </div>

@@ -33,6 +33,7 @@ export class CalculAbatementHomeComponent implements OnInit {
     public sumReportableAmount!: number;
     public sumTaxableSalary!:number;
     public summaryYear!: String;
+    public yearPrecedingCurrentYear: String = new String(new Date().getFullYear() -1);
 
 
   ngOnInit(): void {
@@ -47,17 +48,17 @@ export class CalculAbatementHomeComponent implements OnInit {
         this.children.forEach((child) => {
           if(child.monthlies.length > 0 ){
             console.log("je suis dans le if" + child.firstname);
-            this.getTaxableSalary(child);
-            this.getAnnualReportableAmounts(child);
-            this.getTaxRelief(child);
+            this.getTaxableSalary(child, this.appComponent.currentYear);
+            this.getAnnualReportableAmounts(child,this.appComponent.currentYear);
+            this.getTaxRelief(child,this.appComponent.currentYear);
           }
         });
       }
     )
   }
 
-  public getTaxableSalary(child: Child): void {
-    this.childService.getTaxableSalary(child.id, this.appComponent.currentYear).subscribe(
+  public getTaxableSalary(child: Child, year: String): void {
+    this.childService.getTaxableSalary(child.id, year).subscribe(
       (response: number) => {
         console.log(response);
         this.taxableSalary = response;
@@ -67,8 +68,8 @@ export class CalculAbatementHomeComponent implements OnInit {
   }
 
 
-  public getAnnualReportableAmounts(child: Child): void {
-    this.childService.getAnnualReportableAmounts(child.id, this.appComponent.currentYear).subscribe(
+  public getAnnualReportableAmounts(child: Child,  year: String): void {
+    this.childService.getAnnualReportableAmounts(child.id, year).subscribe(
       (response: number) => {
         console.log(response);
         this.reportableAmounts = response;
@@ -77,8 +78,8 @@ export class CalculAbatementHomeComponent implements OnInit {
     )
   }
 
-  public getTaxRelief(child: Child): void {
-    this.childService.getTaxRelief(child.id, this.appComponent.currentYear).subscribe(
+  public getTaxRelief(child: Child,  year: String): void {
+    this.childService.getTaxRelief(child.id, year).subscribe(
       (response: number) => {
         console.log(response);
         this.taxRelief = response;
@@ -90,28 +91,32 @@ export class CalculAbatementHomeComponent implements OnInit {
   public onSummaryModal(year: String): void{
     this.children.forEach((child) => {
       if(child.monthlies.length > 0 ){
-        this.sumTaxRelief = this.children.reduce((accumulator, child) => {
-          return accumulator + child.taxRelief;
-        }, 0);
-        this.sumReportableAmount = this.children.reduce((accumulator, child) => {
-          return accumulator + child.reportableAmounts;
-        }, 0);
-        this.sumTaxableSalary = this.children.reduce((accumulator, child) => {
-          return accumulator + child.taxableSalary;
-        }, 0);
+        child.monthlies.forEach((monthly)=>{
+          if(monthly.year === year){
+            this.sumTaxRelief = this.children.reduce((accumulator, child) => {
+              return accumulator + child.taxRelief;
+            }, 0);
 
-        
-        
-        //this.sumTaxRelief += child.taxRelief;
-       
-        //this.getTaxableSalary(child);
-       // this.getAnnualReportableAmounts(child);
-       // this.getTaxRelief(child)
+            this.sumReportableAmount = this.children.reduce((accumulator, child) => {
+              return accumulator + child.reportableAmounts;
+            }, 0);
+
+            this.sumTaxableSalary = this.children.reduce((accumulator, child) => {
+              return accumulator + child.taxableSalary;
+            }, 0);
+
+          }else{
+            this.sumTaxRelief = 0;
+            this.sumReportableAmount= 0;
+            this.sumTaxableSalary = 0;
+          }
+        })
       }
     });
-   // summaryByYearForm.reset();
     this.summaryYear = year;
+   
     console.log("year: " + this.summaryYear);
+    console.log("yearPrecedingCurrentYear: " + this.yearPrecedingCurrentYear);
     console.log("sumTaxRelief: " +  this.sumTaxRelief);
     console.log("sumReportableAmount: " + this.sumReportableAmount);
     console.log("sumTaxableSalary: " + this.sumTaxableSalary);

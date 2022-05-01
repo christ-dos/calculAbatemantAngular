@@ -26,9 +26,15 @@
    .bg-magenta { 
         background-color: rgb(176, 48, 62);
     }
+    .bg-light-magenta { 
+        background-color: rgba(176, 48, 62, 0.4);
+    }
     .bg-gray {
         background-color: #d2d0d0e6;
     }
+    .bg-light-pink{
+        background-color: #FFD8D8;
+     }
     #taxableSalarySiblingModal{
         margin-top: 12%;
     }
