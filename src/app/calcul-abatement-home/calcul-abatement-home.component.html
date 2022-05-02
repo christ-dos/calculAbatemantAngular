@@ -26,8 +26,8 @@
             <ul  class="list-group list-group-flush">
               <li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Début du Contrat : {{child?.beginContract}}</li>
               <li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Fin du Contrat : {{child?.endContract}}</li>
-              <li class="list-group-item font-italic"><strong>Calcul {{appComponent.currentYear}}: </strong></li>
-              <li *ngIf="child.taxableSalary" class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable: {{child?.taxableSalary | currency: 'EUR'}}</li>
+             <!-- <li class="list-group-item font-italic"><strong>Calcul {{appComponent.currentYear}}: </strong></li>-->
+              <li  class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable: {{child?.taxableSalary | currency: 'EUR'}}</li>
               <li  class="list-group-item font-italic "><i class="fa fa-money float-right"></i>Abatement Fiscal: {{child?.taxRelief | currency: 'EUR'}}</li>
               <li *ngIf="child.reportableAmounts" class="list-group-item font-italic bg-light-pink rounded"><i class="fa fa-money float-right"></i>Somme à déclarer:  {{child?.reportableAmounts | currency: 'EUR'}}</li>
             </ul>
@@ -326,7 +326,7 @@
       
          <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-            <button (click)="onSummaryModal(summaryByYearForm.value.summaryYear)" [disabled]="summaryByYearForm.invalid"  type="button" class="btn btn-danger">Calculer</button>
+            <button (click)="onSummaryModal(summaryByYearForm.value.summaryYear)" [disabled]="summaryByYearForm.invalid" id="calculate-summary-by-year-btn" type="button" class="btn btn-danger">Calculer</button>
          </div>
          </form>
       </div>

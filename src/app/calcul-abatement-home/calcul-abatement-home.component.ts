@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, SelectMultipleControlValueAccessor } from '@angular/forms';
 import { AppComponent } from '../app.component';
 import { Child } from '../models/child.model';
 import { Monthly } from '../models/monthly.model';
@@ -38,6 +38,7 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getChildren();
+  
   }
 
   public getChildren(): void {
@@ -47,7 +48,7 @@ export class CalculAbatementHomeComponent implements OnInit {
         this.children = response;
         this.children.forEach((child) => {
           if(child.monthlies.length > 0 ){
-            console.log("je suis dans le if" + child.firstname);
+            console.log("je suis dans le if" + child.firstname); //todo clean code
             this.getTaxableSalary(child, this.appComponent.currentYear);
             this.getAnnualReportableAmounts(child,this.appComponent.currentYear);
             this.getTaxRelief(child,this.appComponent.currentYear);
@@ -66,7 +67,6 @@ export class CalculAbatementHomeComponent implements OnInit {
       }
     )
   }
-
 
   public getAnnualReportableAmounts(child: Child,  year: String): void {
     this.childService.getAnnualReportableAmounts(child.id, year).subscribe(
@@ -88,38 +88,31 @@ export class CalculAbatementHomeComponent implements OnInit {
     )
   }
 
-  public onSummaryModal(year: String): void{
+  public onSummaryModal(year:String): void{
     this.children.forEach((child) => {
       if(child.monthlies.length > 0 ){
-        child.monthlies.forEach((monthly)=>{
-          if(monthly.year === year){
-            this.sumTaxRelief = this.children.reduce((accumulator, child) => {
-              return accumulator + child.taxRelief;
-            }, 0);
-
-            this.sumReportableAmount = this.children.reduce((accumulator, child) => {
-              return accumulator + child.reportableAmounts;
-            }, 0);
-
-            this.sumTaxableSalary = this.children.reduce((accumulator, child) => {
-              return accumulator + child.taxableSalary;
-            }, 0);
-
-          }else{
-            this.sumTaxRelief = 0;
-            this.sumReportableAmount= 0;
-            this.sumTaxableSalary = 0;
-          }
-        })
+        this.getTaxableSalary(child, year);
+        this.getTaxRelief(child,year);
+        this.getAnnualReportableAmounts(child, year);
       }
     });
-    this.summaryYear = year;
-   
-    console.log("year: " + this.summaryYear);
-    console.log("yearPrecedingCurrentYear: " + this.yearPrecedingCurrentYear);
-    console.log("sumTaxRelief: " +  this.sumTaxRelief);
-    console.log("sumReportableAmount: " + this.sumReportableAmount);
-    console.log("sumTaxableSalary: " + this.sumTaxableSalary);
+    setTimeout(() => {
+      this.sumTaxableSalary = this.children.reduce((accumulator, child) => {
+        return accumulator + child.taxableSalary;
+    }, 0); 
+  }, 500);
+
+    setTimeout(() => {
+      this.sumTaxRelief = this.children.reduce((accumulator, child) => {
+        return accumulator + child.taxRelief;
+    }, 0);
+    }, 500);
+
+    setTimeout(() => {
+      this.sumReportableAmount = this.children.reduce((accumulator, child) => {
+        return accumulator + child.reportableAmounts;
+    }, 0);
+  }, 500);
   }
 
 
@@ -151,7 +144,9 @@ export class CalculAbatementHomeComponent implements OnInit {
   public onCalculateTaxableSalarySibling(taxableSalarySiblingForm: NgForm){
     document.getElementById('cancel-taxable-salary-sibling-form')?.click();
     this.monthlyService.getTaxableSalarySibling(
-      taxableSalarySiblingForm.value.netSalary,taxableSalarySiblingForm.value.netBrutCoefficient,taxableSalarySiblingForm.value.maintenanceCost)
+      taxableSalarySiblingForm.value.netSalary,
+      taxableSalarySiblingForm.value.netBrutCoefficient,
+      taxableSalarySiblingForm.value.maintenanceCost)
     .subscribe(
       (response: number) => {
         this.taxableSalarySibling = response

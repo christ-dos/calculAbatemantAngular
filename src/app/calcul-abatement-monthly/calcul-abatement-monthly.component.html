@@ -22,6 +22,7 @@
             <span *ngIf="childId != undefined" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons color-pink p-2 mb-2 fs-2 shadow rounded p-2 " data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
         </div>
         <table class="table table-condensed table-striped borderless shadow mb-0">
+          
             <thead class="thead bg-magenta text-light">
                <tr>
                   <th scope="col" class="py-4 text-center">Mois</th>
@@ -259,7 +260,7 @@
 
 <!-- Notification for no Monthly -->
 <div class="container" >
-    <div *ngIf="monthlies?.length == 0" class="col-lg-12 col-md-12 col-xl-12 p-0  mt-5">
+    <div *ngIf="monthlies?.length === 0" class="col-lg-12 col-md-12 col-xl-12 p-0  mt-5">
         <div class="alert alert-info" role="alert">
            <h4 class="alert-heading">Aucune déclaration mensuelle!</h4>
            <p>Aucun déclaration mensuelle trouvé pour l'année {{monthliesByYearAndByChildIdForm.value.year}} .</p>
