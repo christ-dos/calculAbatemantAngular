@@ -145,7 +145,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
       (response: Monthly) => {
         console.log(response);
         this.getMonthliesByYearAndChildId(monthly.year,monthly.childId);
-        document.getElementById('search-monthlies')?.click();
+       // document.getElementById('search-monthlies')?.click();
       }
     );
    

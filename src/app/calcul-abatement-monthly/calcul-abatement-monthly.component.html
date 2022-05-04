@@ -8,13 +8,16 @@
                   <option *ngFor="let child of children"  [value]="child?.id"  name="id" id="id" >{{child.firstname}} {{child.lastname}}</option>
                </select>
             </div>
-            <div class="col-3 mt-4">
+            <div class="col-2 mt-4">
                 <label for="year" class="d-inline-block text-truncate ml-1">Année</label>
                 <input type="text"  name="year" class="form-control shadow-sm" ngModel id="year" placeholder="2022" required>
             </div>
-            <div class="col-3 mb-5  d-flex align-items-end">
-                <button class="btn btn-block bg-danger bg-bs-gradient text-light shadow-sm"  type="submit" id="search-monthlies">Chercher</button>
-            </div>
+            <div class="col-1 d-flex align-items-center">
+               <a class="btn" type="submit" data-md-tooltip="Chercher" data-placement="top" data-original-title="chercher" id="search-monthlies">
+                  <mat-icon class="fs-2 text-secondary" >search</mat-icon>
+               </a>
+               <!-- <button class="btn btn-block bg-danger bg-bs-gradient text-light shadow-sm"  type="submit" id="search-monthlies">Chercher</button>
+            --></div>
       </div>
     </form>
     <div class="row">

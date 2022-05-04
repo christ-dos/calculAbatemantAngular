@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { NgForm, SelectMultipleControlValueAccessor } from '@angular/forms';
 import { AppComponent } from '../app.component';
@@ -34,6 +35,7 @@ export class CalculAbatementHomeComponent implements OnInit {
     public sumTaxableSalary!:number;
     public summaryYear!: String;
     public yearPrecedingCurrentYear: String = new String(new Date().getFullYear() -1);
+    public erroMessage!: String;
 
 
   ngOnInit(): void {
@@ -59,21 +61,32 @@ export class CalculAbatementHomeComponent implements OnInit {
   }
 
   public getTaxableSalary(child: Child, year: String): void {
-    this.childService.getTaxableSalary(child.id, year).subscribe(
-      (response: number) => {
-        console.log(response);
-        this.taxableSalary = response;
+    this.childService.getTaxableSalary(child.id, year).subscribe({
+      next: taxableSalary =>{
+        this.taxableSalary = taxableSalary;
         child.taxableSalary = this.taxableSalary;
+      },
+      error: err => {
+        this.erroMessage = err;
+        console.log("mon erreur: " + this.erroMessage);
       }
-    )
+      
+    }
+    );
+      //(response: number) => {
+       // console.log(response);
+       // this.taxableSalary = response;
+       // child.taxableSalary = this.taxableSalary;
+     // }
+    //)
   }
 
   public getAnnualReportableAmounts(child: Child,  year: String): void {
     this.childService.getAnnualReportableAmounts(child.id, year).subscribe(
-      (response: number) => {
-        console.log(response);
-        this.reportableAmounts = response;
-        child.reportableAmounts = this.reportableAmounts;
+    (response: number) => {
+       console.log(response);
+       this.reportableAmounts = response;
+       child.reportableAmounts = this.reportableAmounts;
       }
     )
   }
@@ -100,19 +113,19 @@ export class CalculAbatementHomeComponent implements OnInit {
       this.sumTaxableSalary = this.children.reduce((accumulator, child) => {
         return accumulator + child.taxableSalary;
     }, 0); 
-  }, 500);
+  }, 400);
 
     setTimeout(() => {
       this.sumTaxRelief = this.children.reduce((accumulator, child) => {
         return accumulator + child.taxRelief;
     }, 0);
-    }, 500);
+    }, 400);
 
     setTimeout(() => {
       this.sumReportableAmount = this.children.reduce((accumulator, child) => {
         return accumulator + child.reportableAmounts;
     }, 0);
-  }, 500);
+  }, 400);
   }
 
 
@@ -205,3 +218,7 @@ export class CalculAbatementHomeComponent implements OnInit {
   }
 
 }
+function next(next: any) {
+  throw new Error('Function not implemented.');
+}
+

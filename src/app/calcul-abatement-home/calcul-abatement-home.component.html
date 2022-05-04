@@ -33,7 +33,11 @@
             </ul>
             <div class="card-body">
                <div class="float-right btn-group btn-group-sm">
-                 <!-- <a (click)="onOpenModel(child,'fees')" class="btn" data-md-tooltip="Frais Repas" data-placement="top" data-original-title="fees"><span class="material-icons fs-5 pink-color">euro</span></a>-->
+                  
+                  <a class="btn" data-md-tooltip="Details" data-placement="top" data-original-title="details">
+                     <mat-icon class="material-icons fs-5 text-info" [routerLink]="['/child/details/', child.id]" >info</mat-icon>
+                 </a>
+                  
                   <a (click)="onOpenModel(child,'edit')" class="btn" data-md-tooltip="Editer"  data-placement="top" data-original-title="Edit" ><i class="fa fa-pencil color-pink" ></i></a>
                   <a (click)="onOpenModel(child,'delete')" class="btn" data-md-tooltip="Supprimer"  data-placement="top" data-original-title="Delete"><i class="fa fa-trash" style="color: rgb(117, 107, 107);"></i></a>
                </div>

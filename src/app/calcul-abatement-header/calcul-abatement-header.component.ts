@@ -29,8 +29,6 @@ export class CalculAbatementHeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
- 
-
   public getChildren(): Child[] {
     this.childService.getAllChildren().subscribe(
       (response: Child[]) => {
