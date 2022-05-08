@@ -4,7 +4,7 @@ import { Observable, throwError } from "rxjs";
 import { Child } from "../models/child.model";
 import { environment } from "src/environments/environment";
 import { catchError, tap } from "rxjs/operators";
-import { ErrorMessage } from "../models/errorMessage.model";
+
 
 @Injectable({
     providedIn:'root'
@@ -18,7 +18,7 @@ export class ChildService{
         return this.http.get<Child[]>(`${this.apiCalculAbatementUrl}/child/all`)
     }
 
-    public getChildById(id:number): Observable<Child>{
+    public getChildById(id: number): Observable<Child>{
         return this.http.get<Child>(`${this.apiCalculAbatementUrl}/child/find/${id}`)
         .pipe(
            tap(child => console.log('child: ' + child)),
@@ -61,7 +61,7 @@ export class ChildService{
           // The backend returned an unsuccessful response code.
           // The response body may contain clues as to what went wrong.
           console.error(
-            `Backend returned code erreur: ${error.status}, body was: `, error);
+            `Backend returned code erreur: ${error.status}, body was: `, error.error);
         }
         // Return an observable with a user-facing error message.
         return throwError(() => new Error('Enfant non trouvé!'));

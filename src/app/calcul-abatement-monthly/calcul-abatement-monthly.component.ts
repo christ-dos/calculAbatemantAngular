@@ -14,14 +14,15 @@ import { MonthlyService } from '../services/monthly.service';
   styleUrls: ['./calcul-abatement-monthly.component.css']
 })
 export class CalculAbatementMonthlyComponent implements OnInit {
-  public calculAbatementHomeComponent!: CalculAbatementHomeComponent;
+  //public calculAbatementHomeComponent!: CalculAbatementHomeComponent;
   
 
-  constructor(private monthlyService: MonthlyService, 
+  constructor(
+    private monthlyService: MonthlyService, 
     public appComponent: AppComponent,
     private childService: ChildService,
     ) { 
-      this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService, monthlyService, appComponent);
+      //this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService, monthlyService, appComponent);
     }
 
   public monthlies!: Monthly[];
@@ -145,7 +146,6 @@ export class CalculAbatementMonthlyComponent implements OnInit {
       (response: Monthly) => {
         console.log(response);
         this.getMonthliesByYearAndChildId(monthly.year,monthly.childId);
-       // document.getElementById('search-monthlies')?.click();
       }
     );
    

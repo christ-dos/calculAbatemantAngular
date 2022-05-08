@@ -29,6 +29,9 @@
     .bg-light-magenta { 
         background-color: rgba(176, 48, 62, 0.4);
     }
+    .bg-middle-magenta { 
+        background-color: rgba(176, 48, 62, 0.7);
+    }
     .bg-gray {
         background-color: #d2d0d0e6;
     }

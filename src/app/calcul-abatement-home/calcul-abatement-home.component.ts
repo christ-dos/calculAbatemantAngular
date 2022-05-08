@@ -17,7 +17,8 @@ export class CalculAbatementHomeComponent implements OnInit {
   constructor(
     private childService: ChildService,
     private monthlyService: MonthlyService, 
-    public appComponent: AppComponent) {}
+    public appComponent: AppComponent
+    ) {}
 
     public children!: Child[];
     public editChild!: Child;

@@ -3,29 +3,27 @@
     <form #monthliesByYearAndByChildIdForm="ngForm" (ngSubmit)="onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm)">
       <div class="form-group justify-content-center row">
             <div class="col-3 mt-4 ">
-               <label for="childName" class="d-inline-block text-truncate ml-1">Selectionner un enfant</label>
-               <select  class="form-select form-control text-truncate mb-5 shadow-sm" aria-label="Children select" name="selectChild" id="selectChild" [(ngModel)]="childId">
+               <label for="childName" class="d-inline-block text-truncate ml-2">Selectionner un enfant</label>
+               <select  class="form-select form-control text-truncate mb-5 shadow-sm" aria-label="Children select" name="selectChild" id="selectChild" [(ngModel)]="childId" required>
                   <option *ngFor="let child of children"  [value]="child?.id"  name="id" id="id" >{{child.firstname}} {{child.lastname}}</option>
                </select>
             </div>
-            <div class="col-2 mt-4">
-                <label for="year" class="d-inline-block text-truncate ml-1">Année</label>
+            <div class="col-3 col-lg-2 mt-4">
+                <label for="year" class="d-inline-block text-truncate ml-2">Année</label>
                 <input type="text"  name="year" class="form-control shadow-sm" ngModel id="year" placeholder="2022" required>
             </div>
-            <div class="col-1 d-flex align-items-center">
-               <a class="btn" type="submit" data-md-tooltip="Chercher" data-placement="top" data-original-title="chercher" id="search-monthlies">
-                  <mat-icon class="fs-2 text-secondary" >search</mat-icon>
-               </a>
-               <!-- <button class="btn btn-block bg-danger bg-bs-gradient text-light shadow-sm"  type="submit" id="search-monthlies">Chercher</button>
-            --></div>
+            <div class="col-2 col-lg-1 mb-5 d-flex align-items-end " data-md-tooltip="Chercher">
+               <button [disabled]="monthliesByYearAndByChildIdForm.invalid" class="btn border border-secondary rounded-pill d-flex  justify-content-center shadow-lg"  type="submit" id="search-monthlies" >
+                  <mat-icon class="fs-4 text-danger" name= "icon-search " id="icon-search">search</mat-icon>
+                </button>
+            </div>
       </div>
     </form>
     <div class="row">
        <div class="col-1 p-0">
-            <span *ngIf="childId != undefined" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons color-pink p-2 mb-2 fs-2 shadow rounded p-2 " data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
+            <span *ngIf="childId" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons color-pink p-2 mb-2 fs-2 shadow rounded p-2 " data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
         </div>
         <table class="table table-condensed table-striped borderless shadow mb-0">
-          
             <thead class="thead bg-magenta text-light">
                <tr>
                   <th scope="col" class="py-4 text-center">Mois</th>
@@ -53,12 +51,12 @@
             </tbody>
             <tfoot>
                <tr>
-                  <td class="text-center bg-magenta text-light font-weight-bold">Total Annuel</td>
-                  <td class="text-center font-weight-bold bg-light-magenta">{{sumTaxableSalary  |  currency: 'EUR'}}</td>
-                  <td class="text-center font-weight-bold bg-light-magenta">{{sumDaysWorked}}</td>
-                  <td class="text-center font-weight-bold bg-light-magenta">{{sumHoursWorked}}</td>
-                  <td class="text-center font-weight-bold bg-light-magenta">{{sumLunches}}</td>
-                  <td class="text-center font-weight-bold bg-light-magenta">{{sumSnacks}}</td>
+                  <td class="text-center bg-middle-magenta text-secondary font-weight-bold">Total Annuel</td>
+                  <td class="text-center font-weight-bold bg-light-magenta text-secondary">{{sumTaxableSalary  |  currency: 'EUR'}}</td>
+                  <td class="text-center font-weight-bold bg-light-magenta text-secondary">{{sumDaysWorked}}</td>
+                  <td class="text-center font-weight-bold bg-light-magenta text-secondary">{{sumHoursWorked}}</td>
+                  <td class="text-center font-weight-bold bg-light-magenta text-secondary">{{sumLunches}}</td>
+                  <td class="text-center font-weight-bold bg-light-magenta text-secondary">{{sumSnacks}}</td>
                   <td class="text-center font-weight-bold bg-light-magenta"></td>
                </tr>
             </tfoot>

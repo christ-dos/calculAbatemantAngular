@@ -1,1 +1,206 @@
-<p>mon message d'erreur: {{errorMsg}}</p>
+<div class="container px-4 px-sm-0 px-md-0" id="main-container">
+    <div class="text-secondary row ">
+        <div class="col-1 pt-2 px-2 ">
+            <mat-icon class=" fs-1 text-secondary" routerLink="home">arrow_circle_left</mat-icon>
+        </div>
+        <div class=" col-11 pt-2 d-flex justify-content-end" >
+           <h2 class="font-italic shadow rounded-pill px-3">Détails de l'enfant</h2>
+        </div>
+    </div>
+    <div class="row border border-info shadowpb-2 mb-2 pr-4">
+        <div class="row align-items-end pb-0">
+            <label for="firstname" class="col-2 col-sm-1 col-md-2 col-lg-2 mr-sm-0 col-form-label" >Prénom: </label>
+            <div class="col-10 col-sm-4 col-md-4 col-lg-4">
+                <input type="text" readonly class="form-control-plaintext text-info fs-6 pl-5 pl-sm-5 pl-md-0 font-weight-bold" id="firstname" value="{{childDetails.firstname}}">
+            </div>
+            <label for="lastname" class="col-2 col-sm-1 col-md-2 col-lg-2 py-0 col-form-label pb-1">Nom:</label>
+            <div class="col-10 col-sm-4 col-md-4 col-lg-4 pl-md-0 pt-0">
+                <input type="text" readonly class="form-control-plaintext text-info fs-6 pb-1 pl-5 pl-sm-5 pl-md-0 pb-0 font-weight-bold" id="lastname" value="{{childDetails.lastname}}">
+            </div>
+        </div>
+        <div class="row align-items-end pb-1">
+            <label for="birthDate" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0">Date de Naissance:</label>
+            <div class="col-4 col-sm-3 col-md-9 col-lg-4 pl-md-0">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1 pl-md-3" id="birthDate" value="{{childDetails.birthDate}}">
+            </div>
+        </div>
+        <hr class="my-1">
+        <div class="row align-items-end pb-1 ">
+            <label for="beginContract" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0 ">Début Contrat: </label>
+            <div class="col-4 col-sm-3 col-md-4 col-lg-4 pl-md-0 ">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1 pl-md-3" id="beginContract" value="{{childDetails.beginContract}}">
+            </div>
+            <label for="endContract" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0">Fin Contrat: </label>
+            <div class="col-4 col-sm-3 col-md-4 col-lg-4 p-0 ">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-0 pl-md-0" id="endContract" value="{{childDetails.endContract}}">
+            </div>
+        </div>
+        <div class="row align-items-end pb-md-1">
+            <label for="feesLunch" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0">Frais Repas: </label>
+            <div class="col-4 col-sm-3 col-md-4 col-lg-4">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1" id="feesLunch" value="{{childDetails.feesLunch | currency: 'EUR' }}">
+            </div>
+            <label for="feesSnacks" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0">Frais Goûter: </label>
+            <div class="col-4 col-sm-3 col-md-4 col-lg-4 pl-0 pl-lg-0">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0" id="feesSnacks" value="{{childDetails.feesSnack | currency: 'EUR'}}">
+            </div>
+        </div>
+        <div class="row align-items-end pb-1">
+            <label for="taxableSalary" class="col-2 col-sm-2 col-md-2 col-lg-2 mr-sm-0 col-form-label pb-0">Salaire Imposable: </label>
+            <div class="col-4 col-sm-3 col-md-4 col-lg-4 pl-4 pl-lg-3">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0" id="taxableSalary" value="{{childDetails.taxableSalary | currency: 'EUR'}}">
+            </div>
+            <label for="taxRelief" class="col-2 col-sm-2  col-md-2 col-lg-2 col-form-label pb-0">Abatement Fiscal:</label>
+            <div class="col-4 col-sm-3 col-md-4 col-lg-4 pl-0">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0" id="taxRelief" value="{{childDetails.taxRelief | currency: 'EUR'}}">
+            </div>
+        </div>
+        <div class="row align-items-end pb-1">
+            <label for="reportableAmounts" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0 ">Somme à déclarer:</label>
+            <div class="col-4 col-sm-4 col-md-4 col-lg-2 pl-0">
+                <input type="text" readonly class="form-control-plaintext text-info bg-light-magenta rounded-pill pb-0 font-weight-bold pl-4 pl-lg-3 py-1" id="reportableAmounts" value="{{childDetails.reportableAmounts| currency: 'EUR'}}">
+            </div>
+        </div>
+    </div>
+    <form #filterMonthliesForm = "ngForm" (ngSubmit)="this.onGetMonthliesByYearAndChildId(filterMonthliesForm)">
+        <div class="row pb-2">
+            <div class="col-2 col-lg-1 border border-secondary shadow-sm rounded-pill justify-content-center d-flex">
+                    <span (click)="calculAbatementMonthlyComponent.onOpenModel(childDetails,'addMonthly')"
+                    class="material-icons color-pink fs-2 py-1" 
+                    data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add
+                    </span>
+                </div>
+                <div class="col-10 col-lg-11 pr-0  d-flex justify-content-end">
+                    <input type="text"  name="year" class="form-control-plaintext col-2 col-lg-1 border border-secondary rounded-pill mr-1  px-auto shadow-sm" ngModel id="year" placeholder="Année" required>
+                        <button class=" col-2 col-lg-1 btn border border-secondary rounded-pill d-flex  justify-content-center shadow-lg"  type="submit" id="filter-monthlies">
+                        <mat-icon class="fs-4 text-secondary px-auto" data-md-tooltip="Filtrer" name="filterIcon" id="filterIcon">filter_alt</mat-icon>
+                        </button>
+                </div> 
+            </div>
+    </form>
+       
+    <div class="row">  
+        <table class="table table-condensed table-striped borderless shadow mb-0">
+            <thead class="thead bg-magenta text-light">
+                <tr>
+                    <th scope="col" class="py-4 text-center">Mois</th>
+                    <th scope="col" class="py-4 text-center">Year</th>
+                    <th scope="col" class="py-4 text-center">Salaire Imposable</th>
+                    <th scope="col" class="py-4 text-center">Jours</th>
+                    <th scope="col" class="py-4 text-center">Heures</th>
+                    <th scope="col" class="py-4 text-center">Repas</th>
+                    <th scope="col" class="py-4 text-center">Goûters</th>
+                    <th scope="col" class="py-4 text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr  *ngFor="let monthly of childDetails.monthlies">
+                <td class="text-center bg-magenta text-light" >{{monthly.month}}</td>
+                <td class="text-center  bg-light-magenta" >{{monthly.year}}</td>
+                <td class="text-center">{{monthly.taxableSalary  |  currency: 'EUR'}} </td>
+                <td class="text-center">{{monthly.dayWorked}}</td>
+                <td class="text-center">{{monthly.hoursWorked}}</td>
+                <td class="text-center">{{monthly.lunch}}</td>
+                <td class="text-center">{{monthly.snack}}</td>
+                <td style="width: 15%" class="text-center">
+                    <a (click)="calculAbatementMonthlyComponent.onOpenModel(monthly,'editMonthly')" class="btn tooltips" data-placement="top" data-original-title="Edit">
+                        <i class="fa fa-pencil text-danger "></i>
+                    </a>
+                    <a (click)="calculAbatementMonthlyComponent.onOpenModel(monthly,'deleteMonthly')" class="btn tooltips" data-placement="top" data-original-title="Delete">
+                        <i class="fa fa-trash text-secondary"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot *ngIf="sumTaxableSalary">
+                <tr>
+                    <td class="text-center bg-middle-magenta text-secondary font-weight-bold">Total Annuel</td>
+                    <td class="text-center font-weight-bold bg-light-magenta"></td>
+                    <td class="text-center font-weight-bold bg-light-magenta">{{sumTaxableSalary  |  currency: 'EUR'}}</td>
+                    <td class="text-center font-weight-bold bg-light-magenta">{{sumDaysWorked}}</td>
+                    <td class="text-center font-weight-bold bg-light-magenta">{{sumHoursWorked}}</td>
+                    <td class="text-center font-weight-bold bg-light-magenta">{{sumLunches}}</td>
+                    <td class="text-center font-weight-bold bg-light-magenta">{{sumSnacks}}</td>
+                    <td class="text-center font-weight-bold bg-light-magenta"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+<!-- Add Monthly Modal -->
+<div class="modal fade" id="addMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="addMonthlyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header bg-danger bg-gradient text-light">
+            <h5 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle</h5>
+            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+             <form #addMonthlyInChildDetailsForm ="ngForm" (ngSubmit)="this.onAddMonthly(addMonthlyInChildDetailsForm)">
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="months">Mois</label>
+                   <select class="form-select form-group" aria-label="MonthSelect "  name="months" id="months"  [(ngModel)]="monthSelected">
+                     <option [value]="month"  *ngFor="let month of calculAbatementMonthlyComponent.months" name="monthSelected" id="monthSelected">{{month}}</option>
+                  </select>
+                  <input type="hidden" ngModel="{{monthSelected}}" name="month" class="form-control" id="month" placeholder="JANVIER" >
+                </div>
+                <div class="col-6">
+                   <label for="year">Année</label>
+                   <input type="text" ngModel="{{appComponent.currentYear}}" name="year" class="form-control" id="year" placeholder="2022" required>
+                </div>
+             </div>
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="taxableSalary">Salaire Imposable</label>
+                   <input type="number" ngModel="{{taxableSalarySibling}}" name="taxableSalary" class="form-control" id="taxableSalary" placeholder="650.20 €" required>
+                </div>  
+                <div class="col-6">
+                   <label for="calcul-taxable-salary-sibling-form" class="d-inline-block text-truncate">Salaire Imposable Fraterie</label>
+                   <button (click)="calculAbatementMonthlyComponent.onOpenModel(null,'taxableSalarySibling')" type="button" id="calcul-taxable-salary-sibling-form" class="btn btn-danger d-inline-block text-truncate m-0" data-toggle="modal" >Calculer</button> 
+                </div>
+             </div>
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="dayWorked">Jours (plus de 8h par jour)</label>
+                   <input type="number" ngModel name="dayWorked" class="form-control" id="dayWorked" placeholder="20" required>
+                </div>
+                <div class="col-6">
+                   <label for="hoursWorked">Heures (moins de 8h par jour)</label>
+                   <input type="number" ngModel name="hoursWorked" class="form-control" id="hoursWorked" placeholder="8.00">
+                </div>
+             </div>
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="lunch">Repas</label>
+                   <input type="number" ngModel name="lunch" class="form-control" id="lunch" placeholder="20" >
+                </div>
+                <div class="col-6">
+                   <label for="snack">Goûters</label>
+                   <input type="number" ngModel name="snack" class="form-control" id="snack" placeholder="20" >
+                   <input type="hidden" ngModel="{{childDetails.id}}"  name="childId" class="form-control" id="childId" placeholder="ChildId">
+                </div>
+             </div>
+          <div class="modal-footer">
+             <button type="button" id="cancel-add-Monthly-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+             <button [disabled]="addMonthlyInChildDetailsForm.invalid"  type="submit" class="btn bg-danger text-light">Enregistrer</button>
+          </div>
+          </form>
+          </div>
+      </div>
+    </div>
+</div>
+<!-- Add Monthly Modal end -->
+
+<!-- Notification for no Child -->
+<div *ngIf="errorMsg" class="col-lg-12 col-md-12 col-xl-12">
+    <div class="alert alert-info justify-content-center "  role="alert">
+       <h4 class="alert-heading">Aucun Enfant !</h4>
+       <p>{{errorMsg}}</p>
+    </div>
+</div>
+<!-- Notification for no Child end -->   
