@@ -10,6 +10,18 @@
     .bg-light-pink{
         background-color: #FFD8D8;
      }
+     .avatar-pic {
+        width: 150px;
+    }
+    #content{
+       width: auto;
+        height: auto;
+    
+    }
+    img{
+        height: 120px;
+    }
+
     
 
 

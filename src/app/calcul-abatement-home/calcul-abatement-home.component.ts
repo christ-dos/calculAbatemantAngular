@@ -1,7 +1,10 @@
 
-import { Component, OnInit } from '@angular/core';
-import { NgForm, SelectMultipleControlValueAccessor } from '@angular/forms';
+
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { NgForm} from '@angular/forms';
+import {jsPDF } from 'jspdf';
 import { AppComponent } from '../app.component';
+import { CalculAbatementMonthlyComponent } from '../calcul-abatement-monthly/calcul-abatement-monthly.component';
 import { Child } from '../models/child.model';
 import { Monthly } from '../models/monthly.model';
 import { ChildService } from '../services/child.service';
@@ -13,12 +16,17 @@ import { MonthlyService } from '../services/monthly.service';
   styleUrls: ['./calcul-abatement-home.component.css']
 })
 export class CalculAbatementHomeComponent implements OnInit {
+  public calculAbatementMonthlyComponent!: CalculAbatementMonthlyComponent;
+  
 
   constructor(
     private childService: ChildService,
     private monthlyService: MonthlyService, 
     public appComponent: AppComponent
-    ) {}
+    ) {
+      this.calculAbatementMonthlyComponent = new CalculAbatementMonthlyComponent(
+        monthlyService,appComponent,childService);    
+    }
 
     public children!: Child[];
     public editChild!: Child;
@@ -29,19 +37,30 @@ export class CalculAbatementHomeComponent implements OnInit {
     public taxableSalarySibling!: number;
     public reportableAmounts!: number;
     public taxRelief!: number;
+
     public childId!:number;
     public addMonthlyChild!: Child;
+    public monthSelected!: String;
+
     public sumTaxRelief!: number;
     public sumReportableAmount!: number;
     public sumTaxableSalary!:number;
     public summaryYear!: String;
+
     public yearPrecedingCurrentYear: String = new String(new Date().getFullYear() -1);
     public erroMessage!: String;
+    public currentYear: String = this.appComponent.currentYear;
+
+    public selectedFile!: File;
+    public urlLink!: string;
+    
+    @ViewChild('content', {static: false}) 
+    public el!: ElementRef;
+
 
 
   ngOnInit(): void {
-    this.getChildren();
-  
+   this.getChildren();
   }
 
   public getChildren(): void {
@@ -49,6 +68,7 @@ export class CalculAbatementHomeComponent implements OnInit {
       (response: Child[]) => {
         console.log(response);
         this.children = response;
+        this.calculAbatementMonthlyComponent.getMonths();
         this.children.forEach((child) => {
           if(child.monthlies.length > 0 ){
             console.log("je suis dans le if" + child.firstname); //todo clean code
@@ -71,15 +91,8 @@ export class CalculAbatementHomeComponent implements OnInit {
         this.erroMessage = err;
         console.log("mon erreur: " + this.erroMessage);
       }
-      
     }
     );
-      //(response: number) => {
-       // console.log(response);
-       // this.taxableSalary = response;
-       // child.taxableSalary = this.taxableSalary;
-     // }
-    //)
   }
 
   public getAnnualReportableAmounts(child: Child,  year: String): void {
@@ -104,12 +117,12 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   public onSummaryModal(year:String): void{
     this.children.forEach((child) => {
-      if(child.monthlies.length > 0 ){
-        this.getTaxableSalary(child, year);
-        this.getTaxRelief(child,year);
-        this.getAnnualReportableAmounts(child, year);
-      }
+    this.currentYear = year;
+      this.getTaxableSalary(child, year);
+      this.getTaxRelief(child,year);
+      this.getAnnualReportableAmounts(child, year);
     });
+
     setTimeout(() => {
       this.sumTaxableSalary = this.children.reduce((accumulator, child) => {
         return accumulator + child.taxableSalary;
@@ -129,6 +142,23 @@ export class CalculAbatementHomeComponent implements OnInit {
   }, 400);
   }
 
+  public onSelectImage(event: any):void{
+  
+    this.selectedFile = <File> event.target.files[0];
+  
+   // if(event.target.files){
+    //  var reader = new FileReader();
+     // reader.readAsDataURL(event.target.files[0]);
+     // reader.onload = (event: any) => {
+       // this.urlLink = event.target.result ;
+       // let imageUrl = document.getElementById('imageUrl')?.setAttribute("src", this.urlLink);
+       // imageUrl = event.target.result ;
+        console.log(this.selectedFile.name);
+
+       
+      //}
+   // }
+  }
 
   public onAddChild(addForm: NgForm): void {
     document.getElementById('cancel-add-child-form')?.click();
@@ -170,6 +200,15 @@ export class CalculAbatementHomeComponent implements OnInit {
   );
 }
 
+  public onMakePdf(): void{
+    let pdf = new jsPDF('p','pt','a4'); 
+    pdf.html(this.el.nativeElement, {
+      callback: (pdf) => {
+        pdf.save('child.pdf');
+      }
+    });
+  }
+
   public onUpdateChild(child: Child): void {
     this.childService.updateChild(child).subscribe(
       (response: Child) => {
@@ -184,7 +223,6 @@ export class CalculAbatementHomeComponent implements OnInit {
     this.childService.deleteChild(childId).subscribe(
       (response: void) => {
         console.log("message de suppresion: " + response);
-        
         this.getChildren();
       }
     );
@@ -217,9 +255,6 @@ export class CalculAbatementHomeComponent implements OnInit {
     container?.appendChild(button);
     button.click();
   }
+}
 
-}
-function next(next: any) {
-  throw new Error('Function not implemented.');
-}
 

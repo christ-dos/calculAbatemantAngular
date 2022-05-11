@@ -48,7 +48,6 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id: number = +this.route.snapshot.paramMap.get('childId')!;
     this.getChildDetails(id);
-    console.log('id: ' + id);
   }
 
   public getChildDetails(id: number): void{
@@ -92,6 +91,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
 
        this.childDetails.monthlies = response;
        console.log(response);
+
        if(this.childDetails.monthlies.length > 0){
           this.getTaxRelief(this.childDetails,monthliesByYearAndByChildIdForm.value.year); 
           this.getAnnualReportableAmounts(this.childDetails,monthliesByYearAndByChildIdForm.value.year);
@@ -100,10 +100,9 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
           this.childDetails.reportableAmounts = 0;
         }
       
-this.childDetails
        this.sumTaxableSalary = this.childDetails.monthlies .reduce((accumulator, monthly) => {
          return accumulator + monthly.taxableSalary;
-      }, 0);
+        }, 0);
        this.childDetails.taxableSalary = this.sumTaxableSalary;
  
        this.sumDaysWorked = this.childDetails.monthlies .reduce((accumulator, monthly) => {

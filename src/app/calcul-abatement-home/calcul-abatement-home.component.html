@@ -5,45 +5,76 @@
     <div class="row pt-2">
        <div>
          <button type="button" class="btn  my-2 pl-1" data-bs-toggle="modal" data-bs-target="#summaryModal">
-            <span class="material-icons color-pink fs-2 p-2 shadow rounded" data-md-tooltip="Rapport Annuel">summarize</span>
+            <span *ngIf="children" class="material-icons color-pink fs-2 p-2 shadow rounded" data-md-tooltip="Rapport Annuel">summarize</span >
+         </button>
+         <button type="button" class="btn float-right text-secondary my-2">
+            <span (click)="onMakePdf()" class="material-icons fs-2 p-2  pr-1 shadow rounded">picture_as_pdf</span>
          </button>
       </div>
-      <div *ngFor="let child of children" class="col-md-6 col-xl-3">
-         <div class="card m-b-30 shadow rounded">
+      <div *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4" >
+         <div class="card m-b-30 shadow rounded " id="content" #content>
            <div class="col-12">
-              <span (click)="onOpenModel(child.id,'addMonthly')"  class="material-icons color-pink fs-3 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
+              <span (click)="onOpenModel(child.id,'addMonthly')"
+               class="material-icons color-pink fs-3 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
             </div>
             <div class="card-body row">
-               <div class="col-6">
-                  <a href="/monthly"><img src={{child?.imageUrl}} alt="image de profil" class="img-fluid rounded-circle w-100"></a>
+               <div class="col-6 ">
+            <a href="/monthly"><img src={{child?.imageUrl}} alt="image de profil" id="imageCard" class="img-fluid rounded-circle w-100 " #cardImage></a>
+
+
+                 <!--<a href="/monthly"><img src={{urlLink}} alt="image de profil" class="img-fluid rounded-circle"></a>
+                 -->
+                 <form class="md-form">
+                  <div class="file-field">
+                    
+                     <!--<img src = {{urlLink}} class=" img-fluid rounded-circle" alt="example placeholder avatar">--> 
+                    
+                  
+                  <!-- <div class="d-flex justify-content-center">
+                      <div class="btn btn-mdb-color btn-rounded float-left form-group">
+                        <input type="file" class="bg-info ">
+                        <mat-icon class="btn">add_a_photo</mat-icon>
+                      </div>
+                  
+                    </div>--> 
+                  </div>
+                </form>
                </div>
-               <div class="col-6 card-title align-self-center mb-0">
-                  <h4 class="text-truncate">{{child?.lastname | titlecase}} </h4>
-                  <h6 class="text-truncate">{{child?.firstname  | titlecase }}</h6>
+               <div class="col-6 card-title align-self-center mb-0 ">
+                  <h2 class="text-truncate">{{child?.lastname | titlecase}} </h2>
+                  <h4 class="text-truncate">{{child?.firstname  | titlecase }}</h4>
                   <p class="m-0 fs-6"><i class="fa fa-birthday-cake float-right ml-2"></i>{{child?.birthDate}}</p>
                </div>
             </div>
             <ul  class="list-group list-group-flush">
-              <li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Début du Contrat : {{child?.beginContract}}</li>
-              <li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Fin du Contrat : {{child?.endContract}}</li>
-             <!-- <li class="list-group-item font-italic"><strong>Calcul {{appComponent.currentYear}}: </strong></li>-->
+              <!--<li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Début du Contrat : {{child?.beginContract}}</li>
+              <li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Fin du Contrat : {{child?.endContract}}</li>-->
+              <li class="list-group-item font-italic" id="year-home-card"><strong>Année {{currentYear}}: </strong></li>
               <li  class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable: {{child?.taxableSalary | currency: 'EUR'}}</li>
               <li  class="list-group-item font-italic "><i class="fa fa-money float-right"></i>Abatement Fiscal: {{child?.taxRelief | currency: 'EUR'}}</li>
-              <li *ngIf="child.reportableAmounts" class="list-group-item font-italic bg-light-pink rounded"><i class="fa fa-money float-right"></i>Somme à déclarer:  {{child?.reportableAmounts | currency: 'EUR'}}</li>
+              <li  class="list-group-item font-italic bg-light-pink rounded"><i class="fa fa-money float-right"></i>Somme à déclarer:  {{child?.reportableAmounts | currency: 'EUR'}}</li>
             </ul>
             <div class="card-body">
-               <div class="float-right btn-group btn-group-sm">
-                  
-                  <a class="btn" data-md-tooltip="Details" data-placement="top" data-original-title="details">
-                     <mat-icon class="material-icons fs-5 text-info" [routerLink]="['/child/details/', child.id]" >info</mat-icon>
-                 </a>
-                  
-                  <a (click)="onOpenModel(child,'edit')" class="btn" data-md-tooltip="Editer"  data-placement="top" data-original-title="Edit" ><i class="fa fa-pencil color-pink" ></i></a>
-                  <a (click)="onOpenModel(child,'delete')" class="btn" data-md-tooltip="Supprimer"  data-placement="top" data-original-title="Delete"><i class="fa fa-trash" style="color: rgb(117, 107, 107);"></i></a>
-               </div>
+              <!-- <div class="btn-group btn-group-sm">-->
+                  <div class="float-left">
+                     <a class="btn" data-md-tooltip="Details" data-placement="top" data-original-title="details">
+                        <mat-icon class="material-icons fs-5 color-pink" [routerLink]="['/child/details/', child.id]" >info</mat-icon>
+                     </a>
+                  </div>
+                 <div class="float-right">
+                  <a (click)="onOpenModel(child,'edit')" class="btn" data-md-tooltip="Editer"  data-placement="top" data-original-title="Edit" >
+                     <i class="fa fa-pencil color-pink" ></i>
+                  </a>
+                  <a (click)="onOpenModel(child,'delete')" class="btn" data-md-tooltip="Supprimer"  data-placement="top" data-original-title="Delete">
+                     <i class="fa fa-trash" style="color: rgb(117, 107, 107);"></i>
+                  </a>
+                 </div>
+                 
+               <!--</div>-->
             </div>
          </div>
       </div>
+      
 </div>
 <!-- Main container end -->
 
@@ -52,7 +83,7 @@
    <div class="modal-dialog" role="document">
      <div class="modal-content">
         <div class="modal-header bg-danger bg-gradient text-light">
-           <h5 class="modal-title" id="addChildModalLabel">Ajouter un Enfant</h5>
+           <h2 class="modal-title" id="addChildModalLabel">Ajouter un Enfant</h2>
            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                <span aria-hidden="true">&times;</span>
            </button>
@@ -93,7 +124,9 @@
             </div>
            <div class="form-group">
               <label for="imageUrl">Image URL</label>
-              <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
+               <input type="text" ngModel  name="imageUrl" class="form-control mb-3" id="imageUrl" placeholder="Image URL" required>
+               <input class="btn btn-sm btn-danger" id="formFileSm" type="file" ngModel name="imageUrl" id="imageUrl" (change)="onSelectImage($event)">
+              
            </div>
            <div class="modal-footer">
               <button type="button" id="cancel-add-child-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
@@ -112,7 +145,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header bg-danger bg-gradient text-light">
-            <h5 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle: {{addMonthlyChild?.lastname}} {{addMonthlyChild?.firstname}}</h5>
+            <h2 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle: {{addMonthlyChild?.lastname}} {{addMonthlyChild?.firstname}}</h2>
             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                <span aria-hidden="true">&times;</span>
             </button>
@@ -121,9 +154,12 @@
              <form #addMonthlyForm ="ngForm" (ngSubmit)="onAddMonthly(addMonthlyForm)">
              <div class="form-group row">
                 <div class="col-6">
-                   <label for="month">Mois</label>
-                   <input type="text" ngModel="{{appComponent.currentMonth | date: 'MMMM' | uppercase}}"  onkeyup="this.value = this.value.toUpperCase()" name="month" class="form-control" id="month" placeholder="JANVIER" required>
-                </div>
+                   <label for="months">Mois</label>
+                   <select class="form-select form-group" aria-label="MonthSelect "  name="months" id="months"  [(ngModel)]="monthSelected">
+                     <option [value]="month"  *ngFor="let month of calculAbatementMonthlyComponent.months" name="monthSelected" id="monthSelected">{{month}}</option>
+                  </select>
+                  <input type="hidden" ngModel="{{monthSelected}}" name="month" class="form-control" id="month" placeholder="JANVIER">
+               </div>
                 <div class="col-6">
                    <label for="year">Année</label>
                    <input type="text" ngModel="{{appComponent.currentYear}}" name="year" class="form-control" id="year" placeholder="2022" required>
@@ -131,7 +167,7 @@
              </div>
              <div class="form-group row">
                 <div class="col-6">
-                   <label for="taxableSalary">Salaire Imposable</label>
+                   <label for="taxableSalary">Salaire Imposable(frais entretiens inclus)</label>
                    <input type="number" ngModel="{{taxableSalarySibling}}" name="taxableSalary" class="form-control" id="taxableSalary" placeholder="650.20 €" required>
                 </div>  
                 <div class="col-6">
@@ -176,7 +212,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header bg-gradient text-light" style="background-color: rgba(206, 50, 50, 0.856);">
-            <h5 class="modal-title" id="taxableSalarySiblingModalLabel">Calculer Salaire Imposable net (cas fraterie)</h5>
+            <h2 class="modal-title" id="taxableSalarySiblingModalLabel">Calculer Salaire Imposable net (cas fraterie)</h2>
             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close" style="background-color: rgba(206, 50, 50, 0.856);">
                <span aria-hidden="true">&times;</span>
             </button>
@@ -214,7 +250,7 @@
     <div class="modal-dialog" role="document">
        <div class="modal-content">
           <div class="modal-header bg-danger bg-gradient text-light">
-             <h5 class="modal-title" id="updateChildModalLabel">Editer un Enfant {{editChild?.lastname}} {{editChild?.firstname}}</h5>
+             <h2 class="modal-title" id="updateChildModalLabel">Editer un Enfant {{editChild?.lastname}} {{editChild?.firstname}}</h2>
              <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                <span aria-hidden="true">&times;</span>
              </button>
@@ -237,7 +273,7 @@
                 <div class="form-group row">
                   <div class="col-6">
                      <label for="beginContract">Début du Contrat</label>
-                     <input type="date" ngModel="{{editChild?.beginContract}}"  name="beginContract" class="form-control" id="beginContract" placeholder="01/09/2020" required>
+                     <input type="text" ngModel="{{editChild?.beginContract}}"  name="beginContract" class="form-control" id="beginContract" placeholder="01/09/2020" required>
                   </div>
                   <div class="col-6">
                      <label for="endContract">Fin du Contrat</label>
@@ -274,7 +310,7 @@
     <div class="modal-dialog" role="document">
        <div class="modal-content">
           <div class="modal-header bg-danger bg-gradient text-light">
-             <h5 class="modal-title" id="deleteChildModalLabel">Supprimer un Enfant</h5>
+             <h2 class="modal-title" id="deleteChildModalLabel">Supprimer un Enfant</h2>
              <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                <span aria-hidden="true">&times;</span>
             </button>
@@ -296,12 +332,12 @@
    <div class="modal-dialog"  role="document">
      <div class="modal-content">
        <div class="modal-header bg-danger text-light bg-gradient">
-         <h5 class="modal-title" id="summaryModalLabel">Rapport Annuel pour l'année {{summaryYear}}</h5>
+         <h2 class="modal-title" id="summaryModalLabel">Rapport Annuel pour l'année {{summaryYear}}</h2>
          <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
          </button>
        </div>
-       <div class="modal-body">
+       <div class="modal-body " >
          <form #summaryByYearForm="ngForm">
             <div class="mb-3 row pr-2">
                <label class="col-sm-5 col-form-label" for="summaryYear">Année</label>
@@ -340,7 +376,7 @@
  <!-- Modal to display annual summary end -->
  
 <!-- Notification for no Child -->
-<div *ngIf="children?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+<div *ngIf="children?.length === 0" class="col-lg-12 col-md-12 col-xl-12">
     <div class="alert alert-info" role="alert">
        <h4 class="alert-heading">Aucun Enfant !</h4>
        <p>Aucun enfant trouvé.</p>

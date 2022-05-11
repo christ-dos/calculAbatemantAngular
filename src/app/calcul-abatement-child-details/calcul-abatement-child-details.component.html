@@ -38,7 +38,7 @@
         <div class="row align-items-end pb-md-1">
             <label for="feesLunch" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0">Frais Repas: </label>
             <div class="col-4 col-sm-3 col-md-4 col-lg-4">
-                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1" id="feesLunch" value="{{childDetails.feesLunch | currency: 'EUR' }}">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1 pl-0" id="feesLunch" value="{{childDetails.feesLunch | currency: 'EUR' }}">
             </div>
             <label for="feesSnacks" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0">Frais Goûter: </label>
             <div class="col-4 col-sm-3 col-md-4 col-lg-4 pl-0 pl-lg-0">
@@ -66,8 +66,8 @@
         <div class="row pb-2">
             <div class="col-2 col-lg-1 border border-secondary shadow-sm rounded-pill justify-content-center d-flex">
                     <span (click)="calculAbatementMonthlyComponent.onOpenModel(childDetails,'addMonthly')"
-                    class="material-icons color-pink fs-2 py-1" 
-                    data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add
+                        class="material-icons color-pink fs-2 py-1" 
+                        data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add
                     </span>
                 </div>
                 <div class="col-10 col-lg-11 pr-0  d-flex justify-content-end">
@@ -145,7 +145,7 @@
                 <div class="col-6">
                    <label for="months">Mois</label>
                    <select class="form-select form-group" aria-label="MonthSelect "  name="months" id="months"  [(ngModel)]="monthSelected">
-                     <option [value]="month"  *ngFor="let month of calculAbatementMonthlyComponent.months" name="monthSelected" id="monthSelected">{{month}}</option>
+                     <option [value]="month"  *ngFor="let month of this.calculAbatementMonthlyComponent.months" name="monthSelected" id="monthSelected">{{month}}</option>
                   </select>
                   <input type="hidden" ngModel="{{monthSelected}}" name="month" class="form-control" id="month" placeholder="JANVIER" >
                 </div>
