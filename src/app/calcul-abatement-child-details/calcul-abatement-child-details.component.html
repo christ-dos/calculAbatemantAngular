@@ -3,8 +3,15 @@
         <div class="col-1 pt-2 px-2 ">
             <mat-icon class=" fs-1 text-secondary" routerLink="home">arrow_circle_left</mat-icon>
         </div>
-        <div class=" col-11 pt-2 d-flex justify-content-end" >
+        <div class=" col-10 pt-2 d-flex justify-content-end" >
            <h2 class="font-italic shadow rounded-pill px-3">Détails de l'enfant</h2>
+        </div>
+        <div class="col-1 pt-2 d-flex">
+            <button class="btn btn-secondary" 
+            printTitle="Recapitulatif annuel"
+            [useExistingCss]="true"
+            printSectionId="main-container" 
+            ngxPrint id="btnPrint">print</button> 
         </div>
     </div>
     <div class="row border border-info shadowpb-2 mb-2 pr-4">
@@ -73,7 +80,7 @@
                 <div class="col-10 col-lg-11 pr-0  d-flex justify-content-end">
                     <input type="text"  name="year" class="form-control-plaintext col-2 col-lg-1 border border-secondary rounded-pill mr-1  px-auto shadow-sm" ngModel id="year" placeholder="Année" required>
                         <button class=" col-2 col-lg-1 btn border border-secondary rounded-pill d-flex  justify-content-center shadow-lg"  type="submit" id="filter-monthlies">
-                        <mat-icon class="fs-4 text-secondary px-auto" data-md-tooltip="Filtrer" name="filterIcon" id="filterIcon">filter_alt</mat-icon>
+                            <mat-icon class="fs-4 text-secondary px-auto" data-md-tooltip="Filtrer" name="filterIcon" id="filterIcon">filter_alt</mat-icon>
                         </button>
                 </div> 
             </div>
@@ -94,23 +101,23 @@
                 </tr>
             </thead>
             <tbody>
-            <tr  *ngFor="let monthly of childDetails.monthlies">
-                <td class="text-center bg-magenta text-light" >{{monthly.month}}</td>
-                <td class="text-center  bg-light-magenta" >{{monthly.year}}</td>
-                <td class="text-center">{{monthly.taxableSalary  |  currency: 'EUR'}} </td>
-                <td class="text-center">{{monthly.dayWorked}}</td>
-                <td class="text-center">{{monthly.hoursWorked}}</td>
-                <td class="text-center">{{monthly.lunch}}</td>
-                <td class="text-center">{{monthly.snack}}</td>
-                <td style="width: 15%" class="text-center">
-                    <a (click)="calculAbatementMonthlyComponent.onOpenModel(monthly,'editMonthly')" class="btn tooltips" data-placement="top" data-original-title="Edit">
-                        <i class="fa fa-pencil text-danger "></i>
-                    </a>
-                    <a (click)="calculAbatementMonthlyComponent.onOpenModel(monthly,'deleteMonthly')" class="btn tooltips" data-placement="top" data-original-title="Delete">
-                        <i class="fa fa-trash text-secondary"></i>
-                    </a>
-                </td>
-            </tr>
+                <tr  *ngFor="let monthly of childDetails.monthlies | paginate: { itemsPerPage: 12, currentPage: page }">
+                    <td class="text-center bg-magenta text-light" >{{monthly.month}}</td>
+                    <td class="text-center  bg-light-magenta" >{{monthly.year}}</td>
+                    <td class="text-center">{{monthly.taxableSalary  |  currency: 'EUR'}} </td>
+                    <td class="text-center">{{monthly.dayWorked}}</td>
+                    <td class="text-center">{{monthly.hoursWorked}}</td>
+                    <td class="text-center">{{monthly.lunch}}</td>
+                    <td class="text-center">{{monthly.snack}}</td>
+                    <td style="width: 15%" class="text-center">
+                        <a (click)="calculAbatementMonthlyComponent.onOpenModel(monthly,'editMonthly')" class="btn tooltips" data-placement="top" data-original-title="Edit">
+                            <i class="fa fa-pencil text-danger "></i>
+                        </a>
+                        <a (click)="calculAbatementMonthlyComponent.onOpenModel(monthly,'deleteMonthly')" class="btn tooltips" data-placement="top" data-original-title="Delete">
+                            <i class="fa fa-trash text-secondary"></i>
+                        </a>
+                    </td>
+                </tr>
             </tbody>
             <tfoot *ngIf="sumTaxableSalary">
                 <tr>
@@ -125,6 +132,12 @@
                 </tr>
             </tfoot>
         </table>
+        <pagination-controls (pageChange)="page = $event"
+                            previousLabel="Précedent"
+                            nextLabel="Suivant"
+                            [autoHide]="true"
+                            [responsive]="true"
+        ></pagination-controls>
     </div>
 </div>
 

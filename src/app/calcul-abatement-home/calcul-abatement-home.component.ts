@@ -70,7 +70,7 @@ export class CalculAbatementHomeComponent implements OnInit {
         this.children = response;
         this.calculAbatementMonthlyComponent.getMonths();
         this.children.forEach((child) => {
-          if(child.monthlies.length > 0 ){
+          if(child.monthlies.length > 0 || child.endContract == null){
             console.log("je suis dans le if" + child.firstname); //todo clean code
             this.getTaxableSalary(child, this.appComponent.currentYear);
             this.getAnnualReportableAmounts(child,this.appComponent.currentYear);
@@ -116,30 +116,30 @@ export class CalculAbatementHomeComponent implements OnInit {
   }
 
   public onSummaryModal(year:String): void{
-    this.children.forEach((child) => {
     this.currentYear = year;
-      this.getTaxableSalary(child, year);
-      this.getTaxRelief(child,year);
-      this.getAnnualReportableAmounts(child, year);
+
+    this.children.forEach((child) => {
+    this.getTaxableSalary(child, year);
+    this.getTaxRelief(child,year);
+    this.getAnnualReportableAmounts(child, year);
     });
 
     setTimeout(() => {
       this.sumTaxableSalary = this.children.reduce((accumulator, child) => {
         return accumulator + child.taxableSalary;
-    }, 0); 
-  }, 400);
+      }, 0); 
+      }, 100);
 
     setTimeout(() => {
       this.sumTaxRelief = this.children.reduce((accumulator, child) => {
         return accumulator + child.taxRelief;
-    }, 0);
+      }, 0);
     }, 400);
-
     setTimeout(() => {
       this.sumReportableAmount = this.children.reduce((accumulator, child) => {
         return accumulator + child.reportableAmounts;
-    }, 0);
-  }, 400);
+      }, 0);
+    }, 600);
   }
 
   public onSelectImage(event: any):void{

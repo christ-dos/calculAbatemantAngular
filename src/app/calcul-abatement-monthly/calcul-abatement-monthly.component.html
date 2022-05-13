@@ -3,8 +3,9 @@
     <form #monthliesByYearAndByChildIdForm="ngForm" (ngSubmit)="onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm)">
       <div class="form-group justify-content-center row">
             <div class="col-3 mt-4 ">
-               <label for="childName" class="d-inline-block text-truncate ml-2">Selectionner un enfant</label>
+               <label for="childName" class="d-inline-block text-truncate ml-2">Enfant</label>
                <select  class="form-select form-control text-truncate mb-5 shadow-sm" aria-label="Children select" name="selectChild" id="selectChild" [(ngModel)]="childId" required>
+                  <option value=""> Sectionner un enfant</option>
                   <option *ngFor="let child of children"  [value]="child?.id"  name="id" id="id" >{{child.firstname}} {{child.lastname}}</option>
                </select>
             </div>
@@ -20,9 +21,12 @@
       </div>
     </form>
     <div class="row">
-       <div class="col-1 p-0">
-            <span *ngIf="childId" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons color-pink p-2 mb-2 fs-2 shadow rounded p-2 " data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
-        </div>
+         <div class="col-12 p-0 d-flex ">
+            <span *ngIf="childId" (click)="onOpenModel(childId,'addMonthly')"  class="material-icons color-pink p-2 mb-2 fs-2 shadow rounded p-2" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
+            <div class="align-self-end ml-3 mb-2 pb-0" *ngFor="let child of children" >
+               <span *ngIf="child.id == childId" class="fs-3 text-info text-truncate"> {{child.firstname}} {{child.lastname}}</span>
+            </div>
+         </div>
         <table class="table table-condensed table-striped borderless shadow mb-0">
             <thead class="thead bg-magenta text-light">
                <tr>
@@ -61,7 +65,7 @@
                </tr>
             </tfoot>
         </table>
-    </div>
+      </div>
 </div>
 
 <!-- Add Monthly Modal -->

@@ -14,6 +14,8 @@ import { ErrorIntercept } from './error.interceptor';
 import { AngularMaterialModule } from './angular-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalculAbatementChildDetailsComponent } from './calcul-abatement-child-details/calcul-abatement-child-details.component';
+import { NgxPrintModule } from 'ngx-print';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { CalculAbatementChildDetailsComponent } from './calcul-abatement-child-d
     AppRoutingModule, 
     BrowserAnimationsModule,
     AngularMaterialModule,
+    NgxPrintModule,
+    NgxPaginationModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr-FR'},

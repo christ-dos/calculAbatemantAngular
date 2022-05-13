@@ -14,20 +14,20 @@ import { MonthlyService } from '../services/monthly.service';
   styleUrls: ['./calcul-abatement-monthly.component.css']
 })
 export class CalculAbatementMonthlyComponent implements OnInit {
-  //public calculAbatementHomeComponent!: CalculAbatementHomeComponent;
-  
+
 
   constructor(
     private monthlyService: MonthlyService, 
     public appComponent: AppComponent,
     private childService: ChildService,
     ) { 
-      //this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService, monthlyService, appComponent);
+      
     }
 
   public monthlies!: Monthly[];
   public children!: Child[];
   public childId!: number;
+  public childSelected!: Child;
   public addMonthlyChild!: Child;
   public editMonthly!: Monthly;
   public deleteMonthly!: Monthly;
@@ -46,6 +46,8 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   }
 
   public onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm: NgForm): void{
+    console.log("childSelected" + this.childSelected)
+  
    this.monthlyService.getMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm.value.year, this.childId).subscribe(
      (response: Monthly[]) => {
       this.monthlies = response;

@@ -32,6 +32,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     
   }
 
+  public page: number = 1;
   public childDetails!: Child;
   public childId!: string;
   public errorMsg!: String;
@@ -93,8 +94,8 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
        console.log(response);
 
        if(this.childDetails.monthlies.length > 0){
-          this.getTaxRelief(this.childDetails,monthliesByYearAndByChildIdForm.value.year); 
-          this.getAnnualReportableAmounts(this.childDetails,monthliesByYearAndByChildIdForm.value.year);
+          this.getTaxRelief(this.childDetails, monthliesByYearAndByChildIdForm.value.year); 
+          this.getAnnualReportableAmounts(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
         }else{
           this.childDetails.taxRelief = 0;
           this.childDetails.reportableAmounts = 0;
