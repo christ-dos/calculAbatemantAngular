@@ -34,6 +34,10 @@ export class MonthlyService {
         return this.http.get<Monthly[]>(`${this.apiCalculAbatementUrl}/monthly/all/year/childid?year=${year}&childId=${childId}`);
     }
 
+    public getMonthliesByChildIdOrderByYearDescAndMonthDesc(childId: number): Observable<Monthly[]> {
+        return this.http.get<Monthly[]>(`${this.apiCalculAbatementUrl}/monthly/all/childid?childId=${childId}`);
+    }
+
     public getMonths(): Observable<String[]> {
         return this.http.get<String[]>(`${this.apiCalculAbatementUrl}/monthly/months`);
     }

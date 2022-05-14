@@ -35,10 +35,14 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   public page: number = 1;
   public childDetails!: Child;
   public childId!: string;
+
   public errorMsg!: String;
+  public taxableSalarySibling!:number;
+
   public monthSelected!: String;
   public monthliesFiltered!: Monthly[];
-  public taxableSalarySibling!:number;
+  public monthliesByChildIdOrderedByYearDescAndMonthDesc!: Monthly[];
+  
   public sumTaxableSalary!: number;
   public sumDaysWorked!: number;
   public sumHoursWorked!: number;
@@ -54,12 +58,23 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   public getChildDetails(id: number): void{
     this.childService.getChildById(id).subscribe({
       next: child =>{
+       // const yearPrecedingCurrentYear = new String(new Date().getFullYear() -1);
         this.childDetails = child;
-        this.calculAbatementHomeComponent.getTaxableSalary(child, this.appComponent.currentYear);
-        this.calculAbatementHomeComponent.getTaxRelief(child, this.appComponent.currentYear);
-        this.calculAbatementHomeComponent.getAnnualReportableAmounts(child, this.appComponent.currentYear);
-        this.calculAbatementMonthlyComponent.getMonths();
-        console.log("childDetails: " + child);
+        this.getMonthliesByChildIdOrderByYearDescAndMonthDesc(id)
+
+        const result = this.childDetails.monthlies.some(monthly => monthly.year === this.appComponent.currentYear);
+        if(result){
+          this.calculAbatementHomeComponent.getTaxableSalary(child, this.appComponent.currentYear);
+          this.calculAbatementHomeComponent.getTaxRelief(child, this.appComponent.currentYear);
+          this.calculAbatementHomeComponent.getAnnualReportableAmounts(child, this.appComponent.currentYear);
+          this.calculAbatementMonthlyComponent.getMonths();
+          console.log("childDetails: " + child);
+        }else{
+          this.childDetails.taxableSalary = 0;
+          this.childDetails.taxRelief = 0;
+          this.childDetails.reportableAmounts= 0;
+        }
+      
       },
       error: err => {
         this.errorMsg = err.message;
@@ -86,14 +101,23 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     );
   }
 
+  public getMonthliesByChildIdOrderByYearDescAndMonthDesc(childDetailId: number): void{
+    this.monthlyService.getMonthliesByChildIdOrderByYearDescAndMonthDesc(childDetailId).subscribe(
+      (response: Monthly[]) => {
+         console.log(response);
+         this.childDetails.monthlies = response;
+        }
+      )
+    }
+
   public onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm: NgForm): void{
     this.monthlyService.getMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm.value.year, this.childDetails.id).subscribe(
       (response: Monthly[]) => {
-
        this.childDetails.monthlies = response;
        console.log(response);
 
-       if(this.childDetails.monthlies.length > 0){
+       if(this.childDetails.monthlies.some(monthly => monthly.year === monthliesByYearAndByChildIdForm.value.year)
+       ){
           this.getTaxRelief(this.childDetails, monthliesByYearAndByChildIdForm.value.year); 
           this.getAnnualReportableAmounts(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
         }else{
@@ -101,24 +125,25 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
           this.childDetails.reportableAmounts = 0;
         }
       
-       this.sumTaxableSalary = this.childDetails.monthlies .reduce((accumulator, monthly) => {
+       this.sumTaxableSalary = this.childDetails.monthlies.reduce((accumulator, monthly) => {
          return accumulator + monthly.taxableSalary;
         }, 0);
+
        this.childDetails.taxableSalary = this.sumTaxableSalary;
  
-       this.sumDaysWorked = this.childDetails.monthlies .reduce((accumulator, monthly) => {
+       this.sumDaysWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
          return accumulator + monthly.dayWorked;
        }, 0);
  
-       this.sumHoursWorked = this.childDetails.monthlies .reduce((accumulator, monthly) => {
+       this.sumHoursWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
          return accumulator + monthly.hoursWorked;
        }, 0);
  
-       this.sumLunches = this.childDetails.monthlies .reduce((accumulator, monthly) => {
+       this.sumLunches = this.childDetails.monthlies.reduce((accumulator, monthly) => {
          return accumulator + monthly.lunch;
        }, 0);
  
-       this.sumSnacks = this.childDetails.monthlies .reduce((accumulator, monthly) => {
+       this.sumSnacks = this.childDetails.monthlies.reduce((accumulator, monthly) => {
          return accumulator + monthly.snack;
        }, 0);
 
