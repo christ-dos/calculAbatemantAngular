@@ -62,8 +62,8 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
         this.childDetails = child;
         this.getMonthliesByChildIdOrderByYearDescAndMonthDesc(id)
 
-        const result = this.childDetails.monthlies.some(monthly => monthly.year === this.appComponent.currentYear);
-        if(result){
+        
+        if(this.childDetails.monthlies.some(monthly => monthly.year === this.appComponent.currentYear)){
           this.calculAbatementHomeComponent.getTaxableSalary(child, this.appComponent.currentYear);
           this.calculAbatementHomeComponent.getTaxRelief(child, this.appComponent.currentYear);
           this.calculAbatementHomeComponent.getAnnualReportableAmounts(child, this.appComponent.currentYear);

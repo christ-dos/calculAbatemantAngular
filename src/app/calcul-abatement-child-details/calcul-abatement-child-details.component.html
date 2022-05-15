@@ -1,20 +1,27 @@
-<div class="container px-4 px-sm-0 px-md-0" id="main-container">
-    <div class="text-secondary row ">
-        <div class="col-1 pt-2 px-2 ">
-            <mat-icon class=" fs-1 text-secondary" routerLink="home">arrow_circle_left</mat-icon>
+<div class="container" id="main-container">
+    <div class="col-xl-1 col-lg-1 col-md-2 col-sm-3 col-4 rounded-circle bg-light-pink bg-gradient shadow d-none d-print-block" id="logo">
+        <a class="navbar-brand" href="#">
+           <img src="./assets/logoAppAssMat.png" class="img-fluid ml-2"/>
+        </a>
+     </div>
+    <div class="text-secondary row justify-content-center">
+        <div class="col-1 pt-2 px-2 d-print-none">
+            <mat-icon class="fs-1 text-secondary" routerLink="home">arrow_circle_left</mat-icon>
         </div>
-        <div class=" col-10 pt-2 d-flex justify-content-end" >
-           <h2 class="font-italic shadow rounded-pill px-3">Détails de l'enfant</h2>
+        <div class="col-10 pt-2 mb-2 d-flex justify-content-center" id="child-details-title">
+           <h2 class="font-italic shadow rounded-pill px-3 d-print-block">Détails de l'enfant</h2>
         </div>
-        <div class="col-1 pt-2 d-flex">
-            <button class="btn btn-secondary" 
+        <div class="col-1  d-flex justify-content-end pr-1 d-print-none">
+            <button class="btn pr-0" 
             printTitle="Recapitulatif annuel"
             [useExistingCss]="true"
             printSectionId="main-container" 
-            ngxPrint id="btnPrint">print</button> 
+            ngxPrint>
+            <span class="material-icons fs-2 p-2 shadow rounded text-secondary" >print</span>
+        </button> 
         </div>
     </div>
-    <div class="row border border-info shadowpb-2 mb-2 pr-4">
+    <div class="row border border-info shadow pb-2 mb-2">
         <div class="row align-items-end pb-0">
             <label for="firstname" class="col-2 col-sm-1 col-md-2 col-lg-2 mr-sm-0 col-form-label" >Prénom: </label>
             <div class="col-10 col-sm-4 col-md-4 col-lg-4">
@@ -31,7 +38,7 @@
                 <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1 pl-md-3" id="birthDate" value="{{childDetails.birthDate}}">
             </div>
         </div>
-        <hr class="my-1">
+        <hr class="my-1 px-1">
         <div class="row align-items-end pb-1 ">
             <label for="beginContract" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0 ">Début Contrat: </label>
             <div class="col-4 col-sm-3 col-md-4 col-lg-4 pl-md-0 ">
@@ -70,7 +77,7 @@
         </div>
     </div>
     <form #filterMonthliesForm = "ngForm" (ngSubmit)="this.onGetMonthliesByYearAndChildId(filterMonthliesForm)">
-        <div class="row pb-2">
+        <div class="row pb-1 d-print-none" >
             <div class="col-2 col-lg-1 border border-secondary shadow-sm rounded-pill justify-content-center d-flex">
                     <span (click)="calculAbatementMonthlyComponent.onOpenModel(childDetails,'addMonthly')"
                         class="material-icons color-pink fs-2 py-1" 
@@ -86,7 +93,7 @@
             </div>
     </form>
        
-    <div class="row">  
+    <div class="row" id="rowTable">  
         <table class="table table-condensed table-striped borderless shadow mb-0">
             <thead class="thead bg-magenta text-light">
                 <tr>
@@ -97,19 +104,19 @@
                     <th scope="col" class="py-4 text-center">Heures</th>
                     <th scope="col" class="py-4 text-center">Repas</th>
                     <th scope="col" class="py-4 text-center">Goûters</th>
-                    <th scope="col" class="py-4 text-center">Action</th>
+                    <th scope="col" class="py-4 text-center d-print-none" >Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr  *ngFor="let monthly of childDetails.monthlies | paginate: { itemsPerPage: 12, currentPage: page }">
-                    <td class="text-center bg-magenta text-light" >{{monthly.month}}</td>
-                    <td class="text-center  bg-light-magenta" >{{monthly.year}}</td>
+                    <td class="text-center bg-magenta color-light-gray" id="table-td-month">{{monthly.month}}</td>
+                    <td class="text-center  bg-light-magenta color-gray" >{{monthly.year}}</td>
                     <td class="text-center">{{monthly.taxableSalary  |  currency: 'EUR'}} </td>
                     <td class="text-center">{{monthly.dayWorked}}</td>
                     <td class="text-center">{{monthly.hoursWorked}}</td>
                     <td class="text-center">{{monthly.lunch}}</td>
                     <td class="text-center">{{monthly.snack}}</td>
-                    <td style="width: 15%" class="text-center">
+                    <td style="width: 15%" class="text-center d-print-none">
                         <a (click)="calculAbatementMonthlyComponent.onOpenModel(monthly,'editMonthly')" class="btn tooltips" data-placement="top" data-original-title="Edit">
                             <i class="fa fa-pencil text-danger "></i>
                         </a>
@@ -121,23 +128,23 @@
             </tbody>
             <tfoot *ngIf="sumTaxableSalary">
                 <tr>
-                    <td class="text-center bg-middle-magenta text-secondary font-weight-bold">Total Annuel</td>
+                    <td class="text-center bg-middle-magenta text-secondary font-weight-bold" id="table-label-total-annuel">Total Annuel</td>
                     <td class="text-center font-weight-bold bg-light-magenta"></td>
                     <td class="text-center font-weight-bold bg-light-magenta">{{sumTaxableSalary  |  currency: 'EUR'}}</td>
                     <td class="text-center font-weight-bold bg-light-magenta">{{sumDaysWorked}}</td>
                     <td class="text-center font-weight-bold bg-light-magenta">{{sumHoursWorked}}</td>
                     <td class="text-center font-weight-bold bg-light-magenta">{{sumLunches}}</td>
                     <td class="text-center font-weight-bold bg-light-magenta">{{sumSnacks}}</td>
-                    <td class="text-center font-weight-bold bg-light-magenta"></td>
+                    <td class="text-center font-weight-bold bg-light-magenta d-print-none"></td>
                 </tr>
             </tfoot>
         </table>
-        <pagination-controls (pageChange)="page = $event"
+        <pagination-controls class="justify-content-center" (pageChange)="page = $event"
                             previousLabel="Précedent"
                             nextLabel="Suivant"
                             [autoHide]="true"
-                            [responsive]="true"
-        ></pagination-controls>
+                            [responsive]="true">
+        </pagination-controls>
     </div>
 </div>
 

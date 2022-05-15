@@ -2,24 +2,37 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!--Main container-->
 <div class="container" id="main-container">
+    <div class="col-xl-1 col-lg-1 col-md-2 col-sm-3 col-4 rounded-circle bg-light-pink bg-gradient shadow d-none d-print-block" id="logo">
+      <a class="navbar-brand" href="#">
+         <img src="./assets/logoAppAssMat.png" class="img-fluid ml-2"/>
+      </a>
+    </div>
+   <div class="row justify-content-center mb-3" id="list-children-title">
+      <h2 class="col-6 shadow d-none d-print-block font-italic rounded-pill text-center">Liste des Enfants Accueillis</h2>
+   </div>
+   
     <div class="row pt-2">
-       <div>
+       <div class="d-print-none">
          <button type="button" class="btn  my-2 pl-1" data-bs-toggle="modal" data-bs-target="#summaryModal">
             <span *ngIf="children" class="material-icons color-pink fs-2 p-2 shadow rounded" data-md-tooltip="Rapport Annuel">summarize</span >
          </button>
-         <button type="button" class="btn float-right text-secondary my-2">
-            <span (click)="onMakePdf()" class="material-icons fs-2 p-2  pr-1 shadow rounded">picture_as_pdf</span>
-         </button>
+         <button class="btn float-right text-secondary my-2" 
+            printTitle="Listes Enfants"
+            [useExistingCss]="true"
+            printSectionId="main-container" 
+            ngxPrint>
+            <span class="material-icons fs-2 p-2 shadow rounded text-secondary" >print</span>
+        </button> 
       </div>
       <div *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4" >
          <div class="card m-b-30 shadow rounded " id="content" #content>
-           <div class="col-12">
+           <div class="col-12 d-print-none">
               <span (click)="onOpenModel(child.id,'addMonthly')"
                class="material-icons color-pink fs-3 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
             </div>
             <div class="card-body row">
                <div class="col-6 ">
-            <a href="/monthly"><img src={{child?.imageUrl}} alt="image de profil" id="imageCard" class="img-fluid rounded-circle w-100 " #cardImage></a>
+                  <a href="/monthly"><img src={{child?.imageUrl}} alt="image de profil" id="imageCard" class="img-fluid rounded-circle w-100 " #cardImage></a>
 
 
                  <!--<a href="/monthly"><img src={{urlLink}} alt="image de profil" class="img-fluid rounded-circle"></a>
@@ -47,8 +60,6 @@
                </div>
             </div>
             <ul  class="list-group list-group-flush">
-              <!--<li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Début du Contrat : {{child?.beginContract}}</li>
-              <li class="list-group-item font-italic"><i class="fa  fa-pencil-square-o float-right"></i>Fin du Contrat : {{child?.endContract}}</li>-->
               <li class="list-group-item font-italic" id="year-home-card"><strong>Année {{currentYear}}: </strong></li>
               <li  class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable: {{child?.taxableSalary | currency: 'EUR'}}</li>
               <li  class="list-group-item font-italic "><i class="fa fa-money float-right"></i>Abatement Fiscal: {{child?.taxRelief | currency: 'EUR'}}</li>
@@ -56,12 +67,12 @@
             </ul>
             <div class="card-body">
               <!-- <div class="btn-group btn-group-sm">-->
-                  <div class="float-left">
+                  <div class="float-left d-print-none">
                      <a class="btn" data-md-tooltip="Details" data-placement="top" data-original-title="details">
                         <mat-icon class="material-icons fs-5 color-pink" [routerLink]="['/child/details/', child.id]" >info</mat-icon>
                      </a>
                   </div>
-                 <div class="float-right">
+                 <div class="float-right d-print-none">
                   <a (click)="onOpenModel(child,'edit')" class="btn" data-md-tooltip="Editer"  data-placement="top" data-original-title="Edit" >
                      <i class="fa fa-pencil color-pink" ></i>
                   </a>
@@ -332,12 +343,20 @@
    <div class="modal-dialog"  role="document">
      <div class="modal-content">
        <div class="modal-header bg-danger text-light bg-gradient">
-         <h2 class="modal-title" id="summaryModalLabel">Rapport Annuel pour l'année {{summaryYear}}</h2>
+         <h2 class="modal-title" id="summaryModalLabel">Rapport Annuel Total</h2>
          <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
          </button>
        </div>
-       <div class="modal-body " >
+       <div class="modal-body " id="print-modal-body">
+         <div class="col-xl-1 col-lg-1 col-md-2 col-sm-3 col-4 rounded-circle bg-light-pink bg-gradient shadow d-none d-print-block" id="logo">
+            <a class="navbar-brand" href="#">
+               <img src="./assets/logoAppAssMat.png" class="img-fluid ml-2"/>
+            </a>
+          </div>
+         <div class="row justify-content-center mb-3" id="list-children-title">
+            <h2 class="col-6 shadow d-none d-print-block font-italic rounded-pill text-center">Déclaration Annuelle Total</h2>
+         </div>
          <form #summaryByYearForm="ngForm">
             <div class="mb-3 row pr-2">
                <label class="col-sm-5 col-form-label" for="summaryYear">Année</label>
@@ -364,9 +383,20 @@
                </div>
             </div>
       
-         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-            <button (click)="onSummaryModal(summaryByYearForm.value.summaryYear)" [disabled]="summaryByYearForm.invalid" id="calculate-summary-by-year-btn" type="button" class="btn btn-danger">Calculer</button>
+         <div class="row modal-footer d-print-none justify-content-between pl-0 align-items-end">
+            <div class="col-5">
+               <button class="btn text-secondary pb-0" 
+               printTitle="Rapport Annuel"
+               [useExistingCss]="true"
+               printSectionId="print-modal-body" 
+               ngxPrint>
+                  <span class="material-icons fs-2 p-2 shadow rounded text-secondary" >print</span>
+            </button> 
+            </div>
+            <div class="col-5 d-flex justify-content-end">
+               <button type="button" class="btn btn-secondary mr-2" data-bs-dismiss="modal">Fermer</button>
+               <button (click)="onSummaryModal(summaryByYearForm.value.summaryYear)" [disabled]="summaryByYearForm.invalid" id="calculate-summary-by-year-btn" type="button" class="btn btn-danger">Calculer</button>
+            </div>
          </div>
          </form>
       </div>

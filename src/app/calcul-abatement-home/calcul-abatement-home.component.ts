@@ -213,15 +213,6 @@ export class CalculAbatementHomeComponent implements OnInit {
       );
   }
 
-  public onMakePdf(): void {
-    let pdf = new jsPDF('p', 'pt', 'a4');
-    pdf.html(this.el.nativeElement, {
-      callback: (pdf) => {
-        pdf.save('child.pdf');
-      }
-    });
-  }
-
   public onUpdateChild(child: Child): void {
     this.childService.updateChild(child).subscribe(
       (response: Child) => {
