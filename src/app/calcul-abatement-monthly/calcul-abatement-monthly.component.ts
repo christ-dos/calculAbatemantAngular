@@ -28,12 +28,15 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   public children!: Child[];
   public childId!: number;
   public childSelected!: Child;
+
   public addMonthlyChild!: Child;
   public editMonthly!: Monthly;
   public deleteMonthly!: Monthly;
   public taxableSalarySibling!:number;
+
   public months!: String[] ;
   public monthSelected!: String;
+
   public sumTaxableSalary!: number;
   public sumDaysWorked!: number;
   public sumHoursWorked!: number;
@@ -148,6 +151,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
       (response: Monthly) => {
         console.log(response);
         this.getMonthliesByYearAndChildId(monthly.year,monthly.childId);
+        this.getChildren();
       }
     );
    

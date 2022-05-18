@@ -147,7 +147,7 @@ export class CalculAbatementHomeComponent implements OnInit {
         return accumulator + child.taxRelief;
       }, 0);
     }, 800);
-    
+
     setTimeout(() => {
       this.sumReportableAmount = this.children.reduce((accumulator, child) => {
         return accumulator + child.reportableAmounts;
@@ -232,7 +232,7 @@ export class CalculAbatementHomeComponent implements OnInit {
     );
   }
 
-  public onOpenModel(child: any, mode: string): void {
+  public onOpenModel(monthly: any, mode: string): void {
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
     button.type = 'button';
@@ -242,15 +242,15 @@ export class CalculAbatementHomeComponent implements OnInit {
       button.setAttribute('data-target', '#addChildModal');
     }
     if (mode === 'edit') {
-      this.editChild = child;
+      this.editChild = monthly;
       button.setAttribute('data-target', '#updateChildModal');
     }
     if (mode === 'delete') {
-      this.deleteChild = child;
+      this.deleteChild = monthly;
       button.setAttribute('data-target', '#deleteChildModal');
     }
     if (mode === "addMonthly") {
-      this.childId = child;
+      this.childId = monthly;
       button.setAttribute('data-target', '#addMonthlyModal');
     }
     if (mode === "taxableSalarySibling") {

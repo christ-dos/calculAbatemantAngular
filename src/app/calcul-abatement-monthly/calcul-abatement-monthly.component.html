@@ -184,7 +184,7 @@
             </button>
          </div>
          <div class="modal-body">
-             <form #editMonthlyForm ="ngForm" (ngSubmit)="this.onAddMonthly(editMonthlyForm)">
+             <form #editMonthlyForm ="ngForm" (ngSubmit)="this.onUpdateMonthly(editMonthlyForm.value)">
              <div class="form-group row">
                 <div class="col-6">
                    <label for="month">Mois</label>
@@ -239,7 +239,6 @@
     </div>
 </div>
 <!-- Edit Monthly Modal end -->
-
 
 <!-- Delete Monthly Modal -->
 <div class="modal fade" id="deleteMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="deleteMonthlyModalLabel" aria-hidden="true">

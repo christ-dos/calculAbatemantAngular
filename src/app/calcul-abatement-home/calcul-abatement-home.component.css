@@ -1,27 +1,29 @@
-   #AddMonthly:hover{ 
-       color:rgb(150, 27, 88);
+   #AddMonthly:hover {
+       color: rgb(150, 27, 88);
    }
-   #taxableSalarySiblingModal{
-    margin-top: 12%;
-    }
-    .bg-gray {
-        background-color: #c0c0c0e6;
-    }
-    .bg-light-pink{
-        background-color: #FFD8D8;
-     }
-     .avatar-pic {
-        width: 150px;
-    }
-    #content{
+
+   #taxableSalarySiblingModal {
+       margin-top: 12%;
+   }
+
+   .bg-gray {
+       background-color: #c0c0c0e6;
+   }
+
+   .bg-light-pink {
+       background-color: #FFD8D8;
+   }
+
+   .avatar-pic {
+       width: 150px;
+   }
+
+   #content {
        width: auto;
-        height: auto;
-    
-    }
-    img{
-        height: 120px;
-    }
+       height: auto;
 
-    
+   }
 
-
+   img {
+       height: 120px;
+   }

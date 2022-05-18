@@ -117,10 +117,10 @@
                     <td class="text-center">{{monthly.lunch}}</td>
                     <td class="text-center">{{monthly.snack}}</td>
                     <td style="width: 15%" class="text-center d-print-none">
-                        <a (click)="calculAbatementMonthlyComponent.onOpenModel(monthly,'editMonthly')" class="btn tooltips" data-placement="top" data-original-title="Edit">
+                        <a (click)="this.onOpenModel(monthly,'editMonthly')" class="btn tooltips" data-placement="top" data-original-title="Edit">
                             <i class="fa fa-pencil text-danger "></i>
                         </a>
-                        <a (click)="calculAbatementMonthlyComponent.onOpenModel(monthly,'deleteMonthly')" class="btn tooltips" data-placement="top" data-original-title="Delete">
+                        <a (click)="this.onOpenModel(monthly,'deleteMonthly')" class="btn tooltips" data-placement="top" data-original-title="Delete">
                             <i class="fa fa-trash text-secondary"></i>
                         </a>
                     </td>
@@ -139,28 +139,32 @@
                 </tr>
             </tfoot>
         </table>
-        <pagination-controls class="justify-content-center" (pageChange)="page = $event"
+        <div class="row mx-1 pl-3 pt-2">
+            <pagination-controls (pageChange)="page = $event"
                             previousLabel="Précedent"
                             nextLabel="Suivant"
                             [autoHide]="true"
-                            [responsive]="true">
-        </pagination-controls>
+                            [responsive]="true"
+                            class="fs-6 text-center text-info my-pagination"
+                            >
+            </pagination-controls>
+        </div>
+        
     </div>
 </div>
-
 
 <!-- Add Monthly Modal -->
 <div class="modal fade" id="addMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="addMonthlyModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header bg-danger bg-gradient text-light">
-            <h5 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle</h5>
+            <h2 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle</h2>
             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
          <div class="modal-body">
-             <form #addMonthlyInChildDetailsForm ="ngForm" (ngSubmit)="this.onAddMonthly(addMonthlyInChildDetailsForm)">
+             <form #addMonthlyInChildDetailsForm ="ngForm" (ngSubmit)="onAddMonthly(addMonthlyInChildDetailsForm)">
              <div class="form-group row">
                 <div class="col-6">
                    <label for="months">Mois</label>
@@ -215,6 +219,92 @@
     </div>
 </div>
 <!-- Add Monthly Modal end -->
+
+<!-- Edit Monthly Modal -->
+<div class="modal fade" id="updateMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="updateMonthlyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header bg-danger bg-gradient text-light">
+            <h2 class="modal-title" id="updateMonthlyModalLabel">Editer Déclaration Mensuelle de:  {{editMonthly?.month}} {{editMonthly?.year}}</h2>
+            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+             <form #editMonthlyForm ="ngForm" (ngSubmit)="this.onUpdateMonthly(editMonthlyForm.value)">
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="month">Mois</label>
+                   <input type="text" ngModel="{{editMonthly?.month | uppercase}}"  onkeyup="this.value = this.value.toUpperCase()" name="month" class="form-control" id="month" placeholder="JANVIER" required>
+                </div>
+                <div class="col-6">
+                   <label for="year">Année</label>
+                   <input type="text" ngModel="{{editMonthly?.year}}" name="year" class="form-control" id="year" placeholder="2022" required>
+                </div>
+             </div>
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="taxableSalary">Salaire Imposable</label>
+                   <input type="number" ngModel="{{editMonthly?.taxableSalary}}" name="taxableSalary" class="form-control" id="taxableSalary" placeholder="650.20 €" required>
+                </div>  
+             </div>
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="dayWorked">Jours (plus de 8h par jour)</label>
+                   <input type="number" ngModel="{{editMonthly?.dayWorked}}" name="dayWorked" class="form-control" id="dayWorked" placeholder="20" required>
+                </div>
+                <div class="col-6">
+                   <label for="hoursWorked">Heures (moins de 8h par jour)</label>
+                   <input type="number" ngModel="{{editMonthly?.hoursWorked}}" name="hoursWorked" class="form-control" id="hoursWorked" placeholder="8.00">
+                </div>
+             </div>
+             <div class="form-group row">
+                <div class="col-6">
+                   <label for="lunch">Repas</label>
+                   <input type="number" ngModel="{{editMonthly?.lunch}}" name="lunch" class="form-control" id="lunch" placeholder="20" >
+                </div>
+                <div class="col-6">
+                   <label for="snack">Goûters</label>
+                   <input type="number" ngModel="{{editMonthly?.snack}}" name="snack" class="form-control" id="snack" placeholder="20" >
+                   <input type="hidden" ngModel="{{editMonthly?.childId}}" name="childId" class="form-control" id="childId" placeholder="ChildId">
+                   <input type="hidden" ngModel="{{editMonthly?.monthlyId}}" name="monthlyId" class="form-control" id="monthlyId" placeholder="MonthlyId">
+               
+                </div>
+             </div>
+          <div class="modal-footer">
+             <button type="button" id="cancel-edit-Monthly-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+             <button data-dismiss="modal"  class="btn bg-danger text-light"  (click)="onUpdateMonthly(editMonthlyForm.value)">Enregistrer</button>
+          </div>
+          </form>
+          </div>
+      </div>
+    </div>
+</div>
+<!-- Edit Monthly Modal end -->
+
+<!-- Delete Monthly Modal -->
+<div class="modal fade" id="deleteMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="deleteMonthlyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header bg-danger bg-gradient text-light">
+             <h2 class="modal-title" id="deleteMonthlyModalLabel">Supprimer une déclaration Mensuelle</h2>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true" class="text-light">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <p>Etes-vous vraiment sûr de vouloir supprimer la declaration mensuelle de {{deleteMonthly?.month}} {{deleteMonthly?.year}}? </p>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                <button (click)="onDeleteMonthly(deleteMonthly.monthlyId)" class="btn btn-danger" data-dismiss="modal">Oui</button>
+             </div>
+          </div>
+       </div>
+    </div>
+</div>
+<!-- Delete Monthly Modal end -->
+
+
 
 <!-- Notification for no Child -->
 <div *ngIf="errorMsg" class="col-lg-12 col-md-12 col-xl-12">

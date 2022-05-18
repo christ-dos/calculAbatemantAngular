@@ -25,7 +25,8 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private childService: ChildService,
     public appComponent: AppComponent,
-  ) { 
+  ) 
+  { 
     this.calculAbatementMonthlyComponent = new CalculAbatementMonthlyComponent(
       monthlyService,appComponent,childService);
     this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService,monthlyService,appComponent);
@@ -35,6 +36,9 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   public page: number = 1;
   public childDetails!: Child;
   public childId!: string;
+  public editMonthly!:Monthly;
+  public deleteMonthly!:Monthly;
+  public addMonthlyChild!: Monthly;
 
   public errorMsg!: String;
   public taxableSalarySibling!:number;
@@ -53,6 +57,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id: number = +this.route.snapshot.paramMap.get('childId')!;
     this.getChildDetails(id);
+    this.calculAbatementMonthlyComponent.getMonths();
   }
 
   public getChildDetails(id: number): void{
@@ -60,10 +65,11 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       next: child =>{
        // const yearPrecedingCurrentYear = new String(new Date().getFullYear() -1);
         this.childDetails = child;
+        console.log("mon child details:" + child);
         this.getMonthliesByChildIdOrderByYearDescAndMonthDesc(id)
 
         
-        if(this.childDetails.monthlies.some(monthly => monthly.year === this.appComponent.currentYear)){
+        if (this.childDetails.monthlies.some(monthly => monthly.year === this.appComponent.currentYear)){
           this.calculAbatementHomeComponent.getTaxableSalary(child, this.appComponent.currentYear);
           this.calculAbatementHomeComponent.getTaxRelief(child, this.appComponent.currentYear);
           this.calculAbatementHomeComponent.getAnnualReportableAmounts(child, this.appComponent.currentYear);
@@ -97,6 +103,26 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
         this.getChildDetails(addMonthlyForm.value.childId);
         addMonthlyForm.reset();
     
+      }
+    );
+  }
+
+  public onUpdateMonthly(monthly: Monthly): void {
+    this.monthlyService.updateMonthly(monthly).subscribe(
+      (response: Monthly) => {
+        console.log(response);
+       this.getChildDetails(monthly.childId);
+      }
+    );
+  }
+
+  public onDeleteMonthly(monthlyId: number): void {
+    this.monthlyService.deleteMonthly(monthlyId).subscribe(
+      (response: void) => {
+        console.log(response);
+        document.getElementById('search-monthlies')?.click();
+        this.getChildDetails(this.deleteMonthly.childId);
+        
       }
     );
   }
@@ -172,6 +198,32 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       }
     )
   }
+
+  public onOpenModel(monthly: any, mode: string): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    if (mode === 'editMonthly') {
+      this.editMonthly = monthly;
+      button.setAttribute('data-target', '#updateMonthlyModal');
+    }
+    if (mode === 'deleteMonthly') {
+      this.deleteMonthly = monthly;
+      button.setAttribute('data-target', '#deleteMonthlyModal');
+    }
+    if (mode === "addMonthly") {
+      this.addMonthlyChild = monthly;
+      button.setAttribute('data-target', '#addMonthlyModal');
+    }
+    if (mode === "taxableSalarySibling") {
+      button.setAttribute('data-target', '#taxableSalarySiblingModal');
+    }
+    container?.appendChild(button);
+    button.click();
+  }
+
  
 
 
