@@ -1,417 +1,497 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+   integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <!--Main container-->
 <div class="container" id="main-container">
-    <div class="col-xl-1 col-lg-1 col-md-2 col-sm-3 col-4 rounded-circle bg-light-pink bg-gradient shadow d-none d-print-block" id="logo">
+   <div
+      class="col-xl-1 col-lg-1 col-md-2 col-sm-3 col-4 rounded-circle bg-light-pink bg-gradient shadow d-none d-print-block"
+      id="logo">
       <a class="navbar-brand" href="#">
-         <img src="./assets/logoAppAssMat.png" class="img-fluid ml-2"/>
+         <img src="./assets/logoAppAssMat.png" class="img-fluid ml-2" />
       </a>
-    </div>
-   <div class="row justify-content-center mb-3" id="list-children-title">
-      <h2 class="col-6 shadow d-none d-print-block font-italic rounded-pill text-center">Liste des Enfants Accueillis</h2>
    </div>
-   
-    <div class="row pt-2 px-5">
-       <div class="d-print-none">
-         <button type="button" class="btn  my-2 pl-1" data-bs-toggle="modal" data-bs-target="#summaryModal">
-            <span *ngIf="children" class="material-icons color-pink fs-2 p-2 shadow rounded" data-md-tooltip="Rapport Annuel">summarize</span >
+   <div class="row justify-content-center mb-3" id="list-children-title">
+      <h2 class="col-6 shadow d-none d-print-block font-italic rounded-pill text-center">Liste des Enfants Accueillis
+      </h2>
+   </div>
+
+   <div class="row px-5">
+      <div class="row d-print-none d-flex pr-0 pb-4 justify-content-md-center">
+           <!-- Form search -->
+           <div class="col-8 col-md-6 col-lg-4 d-flex align-items-center justify-content-end justify-content-lg-end justify-content-md-end">
+            <form class="form-inline">
+               <input type="search" (ngModelChange)="this.searchChild(key.value)" #key="ngModel" ngModel name="key"
+                  id="searchName" class="form-control bg-white-smoke shadow "  style="font-family:Arial, FontAwesome" placeholder="&#xF002;  Rechercher un Enfant  " required>
+            </form>
+         </div>
+         <!-- Form search end -->
+         <button type="button" class="btn col-2 col-md-1 col-lg-1 pl-3 pl-md-0 d-flex justify-content-lg-end pr-lg-1" data-bs-toggle="modal" data-bs-target="#summaryModal">
+            <span *ngIf="children" class="material-icons color-pink fs-2 p-2 shadow rounded bg-white-smoke" 
+               data-md-tooltip="Rapport Annuel">summarize</span>
          </button>
-         <button class="btn float-right text-secondary my-2" 
-            printTitle="Listes Enfants"
+         <button class="btn col-2 col-md-1 col-lg-1 justify-content-end pl-0 pr-md-0 text-secondary d-flex justify-content-lg-start" 
+            printTitle="Listes Enfants" 
             [useExistingCss]="true"
             printSectionId="main-container" 
             ngxPrint>
-            <span class="material-icons fs-2 p-2 shadow rounded text-secondary" >print</span>
-        </button> 
+            <span class="material-icons fs-2 p-2 shadow rounded text-secondary bg-white-smoke" data-md-tooltip="Imprimer">print</span>
+         </button>
+         
       </div>
-      <div *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4" >
-         <div class="card m-b-30 shadow rounded " id="content" >
-           <div class="col-12 d-print-none">
-              <span (click)="onOpenModel(child.id,'addMonthly')"
-               class="material-icons color-pink fs-3 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly" name="AddMonthly">post_add</span>
+      <div *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4">
+         <div class="card m-b-30 shadow rounded " id="content">
+            <div class="col-12 d-print-none">
+               <span (click)="onOpenModel(child.id,'addMonthly')"
+                  class="material-icons color-pink fs-3 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle"
+                  id="AddMonthly" name="AddMonthly">post_add</span>
             </div>
             <div class="card-body row " id="card-body">
                <div class="col-6 ">
-                  <a href="/monthly"><img src={{child?.imageUrl}} alt="image de profil" id="imageCard" class="img-thumbnail rounded-circle " max-width="100"cardImage></a>
+                  <a href="/monthly"><img src={{child?.imageUrl}} alt="image de profil" id="imageCard"
+                        class="img-thumbnail rounded-circle " max-width="100" cardImage></a>
 
 
-                 <!--<a href="/monthly"><img src={{urlLink}} alt="image de profil" class="img-fluid rounded-circle"></a>
+                  <!--<a href="/monthly"><img src={{urlLink}} alt="image de profil" class="img-fluid rounded-circle"></a>
                  -->
-                 <form class="md-form">
-                  <div class="file-field">
-                    
-                     <!--<img src = {{urlLink}} class=" img-fluid rounded-circle" alt="example placeholder avatar">--> 
-                    
-                  
-                  <!-- <div class="d-flex justify-content-center">
+                  <form class="md-form">
+                     <div class="file-field">
+
+                        <!--<img src = {{urlLink}} class=" img-fluid rounded-circle" alt="example placeholder avatar">-->
+
+
+                        <!-- <div class="d-flex justify-content-center">
                       <div class="btn btn-mdb-color btn-rounded float-left form-group">
                         <input type="file" class="bg-info ">
                         <mat-icon class="btn">add_a_photo</mat-icon>
                       </div>
                   
-                    </div>--> 
-                  </div>
-                </form>
+                    </div>-->
+                     </div>
+                  </form>
                </div>
                <div class="col-6 card-title align-self-center mb-0 ">
                   <h2 class="text-truncate">{{child?.lastname | titlecase}} </h2>
-                  <h4 class="text-truncate">{{child?.firstname  | titlecase }}</h4>
+                  <h4 class="text-truncate">{{child?.firstname | titlecase }}</h4>
                   <p class="m-0 fs-6"><i class="fa fa-birthday-cake float-right ml-2"></i>{{child?.birthDate}}</p>
                </div>
             </div>
-            <ul  class="list-group list-group-flush">
-              <li class="list-group-item font-italic" id="year-home-card"><strong>Année {{currentYear}}: </strong></li>
-              <li  class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable: {{child?.taxableSalary | currency: 'EUR'}}</li>
-              <li  class="list-group-item font-italic "><i class="fa fa-money float-right"></i>Abatement Fiscal: {{child?.taxRelief | currency: 'EUR'}}</li>
-              <li  class="list-group-item font-italic bg-light-pink rounded"><i class="fa fa-money float-right"></i>Somme à déclarer:  {{child?.reportableAmounts | currency: 'EUR'}}</li>
+            <ul class="list-group list-group-flush">
+               <li class="list-group-item font-italic" id="year-home-card"><strong>Année {{currentYear}}: </strong></li>
+               <li class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable:
+                  {{child?.taxableSalary | currency: 'EUR'}}</li>
+               <li class="list-group-item font-italic "><i class="fa fa-money float-right"></i>Abatement Fiscal:
+                  {{child?.taxRelief | currency: 'EUR'}}</li>
+               <li class="list-group-item font-italic bg-light-pink rounded"><i
+                     class="fa fa-money float-right"></i>Somme à déclarer: {{child?.reportableAmounts | currency:
+                  'EUR'}}</li>
             </ul>
             <div class="card-body">
-              <!-- <div class="btn-group btn-group-sm">-->
-                  <div class="float-left d-print-none">
-                     <a class="btn" data-md-tooltip="Details" data-placement="top" data-original-title="details">
-                        <mat-icon class="material-icons fs-5 color-pink" [routerLink]="['/child/details/', child.id]" >info</mat-icon>
-                     </a>
-                  </div>
-                 <div class="float-right d-print-none">
-                  <a (click)="onOpenModel(child,'edit')" class="btn" data-md-tooltip="Editer"  data-placement="top" data-original-title="Edit" >
-                     <i class="fa fa-pencil color-pink" ></i>
+               <!-- <div class="btn-group btn-group-sm">-->
+               <div class="float-left d-print-none">
+                  <a class="btn" data-md-tooltip="Details" data-placement="top" data-original-title="details">
+                     <mat-icon class="material-icons fs-5 color-pink" [routerLink]="['/child/details/', child.id]">info
+                     </mat-icon>
                   </a>
-                  <a (click)="onOpenModel(child,'delete')" class="btn" data-md-tooltip="Supprimer"  data-placement="top" data-original-title="Delete">
+               </div>
+               <div class="float-right d-print-none">
+                  <a (click)="onOpenModel(child,'edit')" class="btn" data-md-tooltip="Editer" data-placement="top"
+                     data-original-title="Edit">
+                     <i class="fa fa-pencil color-pink"></i>
+                  </a>
+                  <a (click)="onOpenModel(child,'delete')" class="btn" data-md-tooltip="Supprimer" data-placement="top"
+                     data-original-title="Delete">
                      <i class="fa fa-trash" style="color: rgb(117, 107, 107);"></i>
                   </a>
-                 </div>
-                 
+               </div>
+
                <!--</div>-->
             </div>
          </div>
       </div>
-      
-</div>
-<!-- Main container end -->
 
-<!-- Add Child Modal -->
-<div class="modal fade" id="addChildModal" tabindex="-1" role="dialog" aria-labelledby="addChildModalLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-     <div class="modal-content">
-        <div class="modal-header bg-danger bg-gradient text-light">
-           <h2 class="modal-title" id="addChildModalLabel">Ajouter un Enfant</h2>
-           <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-           </button>
-        </div>
-        <div class="modal-body">
-           <form #addForm = "ngForm" (ngSubmit)="onAddChild(addForm)">
-           <div class="form-group">
-              <label for="lastname">Nom</label>
-              <input type="text" ngModel  name="lastname" class="form-control" id="lastname" placeholder="Nom" required>
-           </div>
-           <div class="form-group">
-              <label for="firstname">Prénom</label>
-              <input type="text" ngModel name="firstname" class="form-control" id="firstname" placeholder="Prénom" required>
-           </div>
-           <div class="form-group">
-              <label for="birthDate">Date de naissance</label>
-              <input type="text" ngModel name="birthDate" class="form-control" id="birthDate" placeholder="17/09/2000" required>
-           </div>
-           <div class="form-group row">
-               <div class="col-6">
-                  <label for="beginContract">Début du Contrat</label>
-                  <input type="text" ngModel name="beginContract" class="form-control" id="beginContract" placeholder="01/09/2020" required>
-               </div>
-               <div class="col-6">
-                  <label for="endContract">Fin du Contrat</label>
-                  <input type="text" ngModel name="endContract" class="form-control" id="endContract" placeholder="01/09/2020">
-               </div>
-           </div>
-           <div class="form-group row">
-              <div class="col-6">
-                  <label for="feesLunch" class="d-inline-block text-truncate">Tarif Repas</label>
-                  <input type="number" ngModel name="feesLunch" class="form-control" id="feesLunch" placeholder="2.00€" required>
-              </div>
-              <div class="col-6">
-                  <label for="feesSnack" class="d-inline-block text-truncate">Tarif Goûter</label>
-                  <input type="number" ngModel  name="feesSnack" class="form-control" id="feesSnack" placeholder="0.50€" required>
-               </div>
-            </div>
-           <div class="form-group">
-              <label for="imageUrl">Image URL</label>
-               <input type="text" ngModel  name="imageUrl" class="form-control mb-3" id="imageUrl" placeholder="Image URL" required>
-               <input class="btn btn-sm btn-danger" id="formFileSm" type="file" ngModel name="imageUrl" id="imageUrl" (change)="onSelectImage($event)">
-              
-           </div>
-           <div class="modal-footer">
-              <button type="button" id="cancel-add-child-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-              <button [disabled]="addForm.invalid"  type="submit" class="btn btn-danger">Enregistrer</button>
-           </div>
-           </form>
-        </div>
-     </div>
    </div>
-</div>
-<!-- Add Child Modal end -->
+   <!-- Main container end -->
 
+   <!-- Add Child Modal -->
+   <div class="modal fade" id="addChildModal" tabindex="-1" role="dialog" aria-labelledby="addChildModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header bg-danger bg-gradient text-light">
+               <h2 class="modal-title" id="addChildModalLabel">Ajouter un Enfant</h2>
+               <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form #addForm="ngForm" (ngSubmit)="onAddChild(addForm)">
+                  <div class="form-group">
+                     <label for="lastname">Nom</label>
+                     <input type="text" ngModel name="lastname" class="form-control" id="lastname" placeholder="Nom"
+                        required>
+                  </div>
+                  <div class="form-group">
+                     <label for="firstname">Prénom</label>
+                     <input type="text" ngModel name="firstname" class="form-control" id="firstname"
+                        placeholder="Prénom" required>
+                  </div>
+                  <div class="form-group">
+                     <label for="birthDate">Date de naissance</label>
+                     <input type="text" ngModel name="birthDate" class="form-control" id="birthDate"
+                        placeholder="17/09/2000" required>
+                  </div>
+                  <div class="form-group row">
+                     <div class="col-6">
+                        <label for="beginContract">Début du Contrat</label>
+                        <input type="text" ngModel name="beginContract" class="form-control" id="beginContract"
+                           placeholder="01/09/2020" required>
+                     </div>
+                     <div class="col-6">
+                        <label for="endContract">Fin du Contrat</label>
+                        <input type="text" ngModel name="endContract" class="form-control" id="endContract"
+                           placeholder="01/09/2020">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <div class="col-6">
+                        <label for="feesLunch" class="d-inline-block text-truncate">Tarif Repas</label>
+                        <input type="number" ngModel name="feesLunch" class="form-control" id="feesLunch"
+                           placeholder="2.00€" required>
+                     </div>
+                     <div class="col-6">
+                        <label for="feesSnack" class="d-inline-block text-truncate">Tarif Goûter</label>
+                        <input type="number" ngModel name="feesSnack" class="form-control" id="feesSnack"
+                           placeholder="0.50€" required>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="imageUrl">Image URL</label>
+                     <input type="text" ngModel name="imageUrl" class="form-control mb-3" id="imageUrl"
+                        placeholder="Image URL" required>
+                     <input class="btn btn-sm btn-danger" id="formFileSm" type="file" ngModel name="imageUrl"
+                        id="imageUrl" (change)="onSelectImage($event)">
 
-<!-- Add Monthly Modal -->
-<div class="modal fade" id="addMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="addMonthlyModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-         <div class="modal-header bg-danger bg-gradient text-light">
-            <h2 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle: {{addMonthlyChild?.lastname}} {{addMonthlyChild?.firstname}}</h2>
-            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <div class="modal-body">
-             <form #addMonthlyForm ="ngForm" (ngSubmit)="onAddMonthly(addMonthlyForm)">
-             <div class="form-group row">
-                <div class="col-6">
-                   <label for="months">Mois</label>
-                   <select class="form-select form-group" aria-label="MonthSelect "  name="months" id="months"  [(ngModel)]="monthSelected">
-                     <option [value]="month"  *ngFor="let month of calculAbatementMonthlyComponent.months" name="monthSelected" id="monthSelected">{{month}}</option>
-                  </select>
-                  <input type="hidden" ngModel="{{monthSelected}}" name="month" class="form-control" id="month" placeholder="JANVIER">
-               </div>
-                <div class="col-6">
-                   <label for="year">Année</label>
-                   <input type="text" ngModel="{{appComponent.currentYear}}" name="year" class="form-control" id="year" placeholder="2022" required>
-                </div>
-             </div>
-             <div class="form-group row">
-                <div class="col-6">
-                   <label for="taxableSalary">Salaire Imposable(frais entretiens inclus)</label>
-                   <input type="number" ngModel="{{taxableSalarySibling}}" name="taxableSalary" class="form-control" id="taxableSalary" placeholder="650.20 €" required>
-                </div>  
-                <div class="col-6">
-                   <label for="calcul-taxable-salary-sibling-form" class="d-inline-block text-truncate">Salaire Imposable Fraterie</label>
-                   <button (click)="onOpenModel(null,'taxableSalarySibling')" type="button" id="calcul-taxable-salary-sibling-form" class="btn btn-danger d-inline-block text-truncate m-0" data-toggle="modal" >Calculer</button> 
-                </div>
-             </div>
-             <div class="form-group row">
-                <div class="col-6">
-                   <label for="dayWorked">Jours (plus de 8h par jour)</label>
-                   <input type="number" ngModel name="dayWorked" class="form-control" id="dayWorked" placeholder="20" required>
-                </div>
-                <div class="col-6">
-                   <label for="hoursWorked">Heures (moins de 8h par jour)</label>
-                   <input type="number" ngModel name="hoursWorked" class="form-control" id="hoursWorked" placeholder="8.00">
-                </div>
-             </div>
-             <div class="form-group row">
-                <div class="col-6">
-                   <label for="lunch">Repas</label>
-                   <input type="number" ngModel name="lunch" class="form-control" id="lunch" placeholder="20" >
-                </div>
-                <div class="col-6">
-                   <label for="snack">Goûters</label>
-                   <input type="number" ngModel name="snack" class="form-control" id="snack" placeholder="20" >
-                   <input type="hidden" ngModel="{{childId}}" name="childId" class="form-control" id="childId" placeholder="ChildId">
-                </div>
-             </div>
-          <div class="modal-footer">
-             <button type="button" id="cancel-add-Monthly-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-             <button [disabled]="addMonthlyForm.invalid"  type="submit" class="btn bg-danger text-light">Enregistrer</button>
-          </div>
-          </form>
-          </div>
-      </div>
-    </div>
-</div>
-<!-- Add Monthly Modal end -->
- 
-<!-- Calculate Taxable Salary Sibling Modal -->
-<div class="modal fade" id="taxableSalarySiblingModal" tabindex="-1" role="dialog" aria-labelledby="taxableSalarySiblingModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-         <div class="modal-header bg-gradient text-light" style="background-color: rgba(206, 50, 50, 0.856);">
-            <h2 class="modal-title" id="taxableSalarySiblingModalLabel">Calculer Salaire Imposable net (cas fraterie)</h2>
-            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close" style="background-color: rgba(206, 50, 50, 0.856);">
-               <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <div class="modal-body">
-            <form #taxableSalarySiblingForm ="ngForm" (ngSubmit)="onCalculateTaxableSalarySibling(taxableSalarySiblingForm)">
-            <div class="form-group row">
-             <div class="col-4">
-                <label for="netSalary" class="d-inline-block text-truncate">Salaire net</label>
-                <input type="number" ngModel  name="netSalary" class="form-control" id="netSalary" placeholder="600.20€" required>
-             </div>
-             <div class="col-4">
-               <label for="maintenanceCost" class="d-inline-block text-truncate">Frais Entretiens</label>
-               <input type="number" ngModel name="maintenanceCost" class="form-control" id="maintenanceCost" placeholder="30.50€" required>
-             </div>
-             <div class="col-4">
-               <label for="netBrutCoefficient" class="d-inline-block text-truncate">Coeff. net/brut</label>
-               <input type="number" ngModel name="netBrutCoefficient" class="form-control" id="netBrutCoefficient" placeholder="0.7001" required>
-             </div>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" id="cancel-add-child-form" class="btn btn-secondary"
+                        data-dismiss="modal">Annuler</button>
+                     <button [disabled]="addForm.invalid" type="submit" class="btn btn-danger">Enregistrer</button>
+                  </div>
+               </form>
             </div>
-            
-          <div class="modal-footer">
-               <button type="button" id="cancel-taxable-salary-sibling-form" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-               <button [disabled]="taxableSalarySiblingForm.invalid"  type="submit" class="btn btn-danger">Enregistrer</button>
-            </div>
-            </form>
          </div>
       </div>
-    </div>
-</div>
-<!-- Calculate Taxable Salary Sibling Modal -->
-
-<!-- Edit Child Modal -->
-<div class="modal fade" id="updateChildModal" tabindex="-1" role="dialog" aria-labelledby="updateChildModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-       <div class="modal-content">
-          <div class="modal-header bg-danger bg-gradient text-light">
-             <h2 class="modal-title" id="updateChildModalLabel">Editer un Enfant {{editChild?.lastname}} {{editChild?.firstname}}</h2>
-             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-             </button>
-          </div>
-          <div class="modal-body">
-             <form #editForm="ngForm">
-                <div class="form-group">
-                   <label for="lastname">Nom</label>
-                   <input type="text" ngModel="{{editChild?.lastname}}" name="lastname" class="form-control" id="lastname" placeholder="Nom" required>
-                </div>
-                <div class="form-group">
-                   <label for="firstname">Prénom</label>
-                   <input type="text" ngModel="{{editChild?.firstname}}" name="firstname" class="form-control" id="firstname" placeholder="Prénom" required>
-                </div>
-                <input type="hidden" ngModel="{{editChild?.id}}"  name="id" class="form-control" id="id" placeholder="Id">
-                <div class="form-group">
-                   <label for="birthDate">Date de naissance</label>
-                   <input type="text" ngModel="{{editChild?.birthDate}}" name="birthDate" class="form-control" id="birthDate" placeholder="Date de naissance" required>
-                </div>
-                <div class="form-group row">
-                  <div class="col-6">
-                     <label for="beginContract">Début du Contrat</label>
-                     <input type="text" ngModel="{{editChild?.beginContract}}"  name="beginContract" class="form-control" id="beginContract" placeholder="01/09/2020" required>
-                  </div>
-                  <div class="col-6">
-                     <label for="endContract">Fin du Contrat</label>
-                     <input type="text" ngModel="{{editChild?.endContract}}"  name="endContract" class="form-control" id="endContract" placeholder="01/09/2020">
-                  </div>
-              </div>
-              <div class="form-group row">
-                 <div class="col-6">
-                     <label for="feesLunch" class="d-inline-block text-truncate">Tarif Repas</label>
-                     <input type="number" ngModel="{{editChild?.feesLunch}}"  name="feesLunch" class="form-control" id="feesLunch" placeholder="2.00€" required>
-                 </div>
-                 <div class="col-6">
-                     <label for="feesSnack" class="d-inline-block text-truncate">Tarif Goûter</label>
-                     <input type="number" ngModel="{{editChild?.feesSnack}}"  name="feesSnack" class="form-control" id="feesSnack" placeholder="0.50€" required>
-                  </div>
-               </div>
-                <div class="form-group">
-                   <label for="imageUrl">Image URL</label>
-                   <input type="text" ngModel="{{editChild?.imageUrl}}" name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
-                </div>
-                <div class="modal-footer">
-                   <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Annuler</button>
-                   <button  data-dismiss="modal" class="btn btn-danger" (click)="onUpdateChild(editForm.value)">Enregistrer</button>
-                </div>
-             </form>
-          </div>
-       </div>
-    </div>
-</div>
-<!-- Edit Child Modal end -->
- 
-<!-- Delete Child Modal -->
-<div class="modal fade" id="deleteChildModal" tabindex="-1" role="dialog" aria-labelledby="deleteChildModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-       <div class="modal-content">
-          <div class="modal-header bg-danger bg-gradient text-light">
-             <h2 class="modal-title" id="deleteChildModalLabel">Supprimer un Enfant</h2>
-             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-             <p>Etes-vous vraiment sûr de vouloir supprimer l'enfant {{deleteChild?.lastname}} {{deleteChild?.firstname}}? </p>
-             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
-                <button (click)="onDeleteChild(deleteChild.id)" class="btn btn-danger" data-dismiss="modal">Oui</button>
-             </div>
-          </div>
-       </div>
-    </div>
-</div>
-<!-- Delete Child Modal end -->
-
-<!-- Modal to display annual summary-->
-<div class="modal fade px-4" id="summaryModal" tabindex="-1" role="dialog" aria-labelledby="summaryModalLabel" aria-hidden="true">
-   <div class="modal-dialog"  role="document">
-     <div class="modal-content">
-       <div class="modal-header bg-danger text-light bg-gradient">
-         <h2 class="modal-title" id="summaryModalLabel">Rapport Annuel Total</h2>
-         <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-         </button>
-       </div>
-       <div class="modal-body px-5" id="print-modal-body">
-         <div class="col-xl-1 col-lg-1 col-md-2 col-sm-3 col-4 rounded-circle bg-light-pink bg-gradient shadow d-none d-print-block" id="logo">
-            <a class="navbar-brand" href="#">
-               <img src="./assets/logoAppAssMat.png" class="img-fluid ml-2"/>
-            </a>
-          </div>
-         <div class="row justify-content-center mb-3" id="list-children-title">
-            <h2 class="col-6 shadow d-none d-print-block font-italic rounded-pill text-center">Déclaration Annuelle Total</h2>
-         </div>
-         <form #summaryByYearForm="ngForm">
-            <div class="mb-3 row pr-2">
-               <label class="col-sm-5 col-form-label" for="summaryYear">Année</label>
-               <div class="col-sm-4 ">
-                  <input type="text" ngModel="{{yearPrecedingCurrentYear}}" name="summaryYear" class="form-control pl-2" id="summaryYear" placeholder="2022" required>
-               </div>
-            </div> 
-            <div class="mb-3 row">
-               <label for="sumTaxableSalary" class="col-sm-5 col-form-label">Salaire Imposable Total: </label>
-               <div class="col-sm-4 pl-4 pl-sm-3">
-                  <input type="text" readonly class="form-control-plaintext" id="sumTaxableSalary" value="{{sumTaxableSalary |  currency: 'EUR'}}">
-               </div>
-            </div>
-            <div class="mb-3 row">
-               <label for="sumTaxRelief" class="col-sm-5 col-form-label">Abatement Fiscal Total: </label>
-               <div class="col-sm-4 pl-4 pl-sm-3">
-                  <input type="text" readonly class="form-control-plaintext" name="sumTaxRelief" id="sumTaxRelief"  value="{{sumTaxRelief |  currency: 'EUR'}}" >
-               </div>
-            </div>
-            <div class="mb-3 row bg-light-pink font-weight-bold">
-             <label for="sumReportableAmounts" class="col-sm-5 col-form-label">Total à déclarer: </label>
-               <div class="col-sm-4 pl-4 pl-sm-3">
-                  <input type="text" readonly class="form-control-plaintext font-weight-bold" name="sumReportableAmounts" id="sumReportableAmounts" value="{{sumReportableAmount |  currency: 'EUR'}}">
-               </div>
-            </div>
-      
-         <div class="row modal-footer d-print-none justify-content-between pl-0 align-items-end">
-            <div class="col-5">
-               <button class="btn text-secondary pb-0" 
-               printTitle="Rapport Annuel"
-               [useExistingCss]="true"
-               printSectionId="print-modal-body" 
-               ngxPrint>
-                  <span class="material-icons fs-2 p-2 shadow rounded text-secondary" >print</span>
-            </button> 
-            </div>
-            <div class="col-5 d-flex justify-content-end">
-               <button type="button" class="btn btn-secondary mr-2" data-bs-dismiss="modal">Fermer</button>
-               <button (click)="onSummaryModal(summaryByYearForm.value.summaryYear)" [disabled]="summaryByYearForm.invalid" id="calculate-summary-by-year-btn" type="button" class="btn btn-danger">Calculer</button>
-            </div>
-         </div>
-         </form>
-      </div>
-     </div>
    </div>
- </div>
- <!-- Modal to display annual summary end -->
- 
-<!-- Notification for no Child -->
-<div *ngIf="children?.length === 0" class="col-lg-12 col-md-12 col-xl-12">
-    <div class="alert alert-info" role="alert">
-       <h4 class="alert-heading">Aucun Enfant !</h4>
-       <p>Aucun enfant trouvé.</p>
-    </div>
-</div>
-<!-- Notification for no Child end -->    
-  
+   <!-- Add Child Modal end -->
+
+
+   <!-- Add Monthly Modal -->
+   <div class="modal fade" id="addMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="addMonthlyModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header bg-danger bg-gradient text-light">
+               <h2 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle:
+                  {{addMonthlyChild?.lastname}} {{addMonthlyChild?.firstname}}</h2>
+               <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form #addMonthlyForm="ngForm" (ngSubmit)="onAddMonthly(addMonthlyForm)">
+                  <div class="form-group row">
+                     <div class="col-6">
+                        <label for="months">Mois</label>
+                        <select class="form-select form-group" aria-label="MonthSelect " name="months" id="months"
+                           [(ngModel)]="monthSelected">
+                           <option [value]="month" *ngFor="let month of calculAbatementMonthlyComponent.months"
+                              name="monthSelected" id="monthSelected">{{month}}</option>
+                        </select>
+                        <input type="hidden" ngModel="{{monthSelected}}" name="month" class="form-control" id="month"
+                           placeholder="JANVIER">
+                     </div>
+                     <div class="col-6">
+                        <label for="year">Année</label>
+                        <input type="text" ngModel="{{appComponent.currentYear}}" name="year" class="form-control"
+                           id="year" placeholder="2022" required>
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <div class="col-6">
+                        <label for="taxableSalary">Salaire Imposable(frais entretiens inclus)</label>
+                        <input type="number" ngModel="{{taxableSalarySibling}}" name="taxableSalary"
+                           class="form-control" id="taxableSalary" placeholder="650.20 €" required>
+                     </div>
+                     <div class="col-6">
+                        <label for="calcul-taxable-salary-sibling-form" class="d-inline-block text-truncate">Salaire
+                           Imposable Fraterie</label>
+                        <button (click)="onOpenModel(null,'taxableSalarySibling')" type="button"
+                           id="calcul-taxable-salary-sibling-form"
+                           class="btn btn-danger d-inline-block text-truncate m-0" data-toggle="modal">Calculer</button>
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <div class="col-6">
+                        <label for="dayWorked">Jours (plus de 8h par jour)</label>
+                        <input type="number" ngModel name="dayWorked" class="form-control" id="dayWorked"
+                           placeholder="20" required>
+                     </div>
+                     <div class="col-6">
+                        <label for="hoursWorked">Heures (moins de 8h par jour)</label>
+                        <input type="number" ngModel name="hoursWorked" class="form-control" id="hoursWorked"
+                           placeholder="8.00">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <div class="col-6">
+                        <label for="lunch">Repas</label>
+                        <input type="number" ngModel name="lunch" class="form-control" id="lunch" placeholder="20">
+                     </div>
+                     <div class="col-6">
+                        <label for="snack">Goûters</label>
+                        <input type="number" ngModel name="snack" class="form-control" id="snack" placeholder="20">
+                        <input type="hidden" ngModel="{{childId}}" name="childId" class="form-control" id="childId"
+                           placeholder="ChildId">
+                     </div>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" id="cancel-add-Monthly-form" class="btn btn-secondary"
+                        data-dismiss="modal">Annuler</button>
+                     <button [disabled]="addMonthlyForm.invalid" type="submit"
+                        class="btn bg-danger text-light">Enregistrer</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Add Monthly Modal end -->
+
+   <!-- Calculate Taxable Salary Sibling Modal -->
+   <div class="modal fade" id="taxableSalarySiblingModal" tabindex="-1" role="dialog"
+      aria-labelledby="taxableSalarySiblingModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header bg-gradient text-light" style="background-color: rgba(206, 50, 50, 0.856);">
+               <h2 class="modal-title" id="taxableSalarySiblingModalLabel">Calculer Salaire Imposable net (cas fraterie)
+               </h2>
+               <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close"
+                  style="background-color: rgba(206, 50, 50, 0.856);">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form #taxableSalarySiblingForm="ngForm"
+                  (ngSubmit)="onCalculateTaxableSalarySibling(taxableSalarySiblingForm)">
+                  <div class="form-group row">
+                     <div class="col-4">
+                        <label for="netSalary" class="d-inline-block text-truncate">Salaire net</label>
+                        <input type="number" ngModel name="netSalary" class="form-control" id="netSalary"
+                           placeholder="600.20€" required>
+                     </div>
+                     <div class="col-4">
+                        <label for="maintenanceCost" class="d-inline-block text-truncate">Frais Entretiens</label>
+                        <input type="number" ngModel name="maintenanceCost" class="form-control" id="maintenanceCost"
+                           placeholder="30.50€" required>
+                     </div>
+                     <div class="col-4">
+                        <label for="netBrutCoefficient" class="d-inline-block text-truncate">Coeff. net/brut</label>
+                        <input type="number" ngModel name="netBrutCoefficient" class="form-control"
+                           id="netBrutCoefficient" placeholder="0.7001" required>
+                     </div>
+                  </div>
+
+                  <div class="modal-footer">
+                     <button type="button" id="cancel-taxable-salary-sibling-form" class="btn btn-secondary"
+                        data-dismiss="modal">Annuler</button>
+                     <button [disabled]="taxableSalarySiblingForm.invalid" type="submit"
+                        class="btn btn-danger">Enregistrer</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Calculate Taxable Salary Sibling Modal -->
+
+   <!-- Edit Child Modal -->
+   <div class="modal fade" id="updateChildModal" tabindex="-1" role="dialog" aria-labelledby="updateChildModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header bg-danger bg-gradient text-light">
+               <h2 class="modal-title" id="updateChildModalLabel">Editer un Enfant {{editChild?.lastname}}
+                  {{editChild?.firstname}}</h2>
+               <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form #editForm="ngForm">
+                  <div class="form-group">
+                     <label for="lastname">Nom</label>
+                     <input type="text" ngModel="{{editChild?.lastname}}" name="lastname" class="form-control"
+                        id="lastname" placeholder="Nom" required>
+                  </div>
+                  <div class="form-group">
+                     <label for="firstname">Prénom</label>
+                     <input type="text" ngModel="{{editChild?.firstname}}" name="firstname" class="form-control"
+                        id="firstname" placeholder="Prénom" required>
+                  </div>
+                  <input type="hidden" ngModel="{{editChild?.id}}" name="id" class="form-control" id="id"
+                     placeholder="Id">
+                  <div class="form-group">
+                     <label for="birthDate">Date de naissance</label>
+                     <input type="text" ngModel="{{editChild?.birthDate}}" name="birthDate" class="form-control"
+                        id="birthDate" placeholder="Date de naissance" required>
+                  </div>
+                  <div class="form-group row">
+                     <div class="col-6">
+                        <label for="beginContract">Début du Contrat</label>
+                        <input type="text" ngModel="{{editChild?.beginContract}}" name="beginContract"
+                           class="form-control" id="beginContract" placeholder="01/09/2020" required>
+                     </div>
+                     <div class="col-6">
+                        <label for="endContract">Fin du Contrat</label>
+                        <input type="text" ngModel="{{editChild?.endContract}}" name="endContract" class="form-control"
+                           id="endContract" placeholder="01/09/2020">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <div class="col-6">
+                        <label for="feesLunch" class="d-inline-block text-truncate">Tarif Repas</label>
+                        <input type="number" ngModel="{{editChild?.feesLunch}}" name="feesLunch" class="form-control"
+                           id="feesLunch" placeholder="2.00€" required>
+                     </div>
+                     <div class="col-6">
+                        <label for="feesSnack" class="d-inline-block text-truncate">Tarif Goûter</label>
+                        <input type="number" ngModel="{{editChild?.feesSnack}}" name="feesSnack" class="form-control"
+                           id="feesSnack" placeholder="0.50€" required>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="imageUrl">Image URL</label>
+                     <input type="text" ngModel="{{editChild?.imageUrl}}" name="imageUrl" class="form-control"
+                        id="imageUrl" placeholder="Image URL" required>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Annuler</button>
+                     <button data-dismiss="modal" class="btn btn-danger"
+                        (click)="onUpdateChild(editForm.value)">Enregistrer</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Edit Child Modal end -->
+
+   <!-- Delete Child Modal -->
+   <div class="modal fade" id="deleteChildModal" tabindex="-1" role="dialog" aria-labelledby="deleteChildModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header bg-danger bg-gradient text-light">
+               <h2 class="modal-title" id="deleteChildModalLabel">Supprimer un Enfant</h2>
+               <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <p>Etes-vous vraiment sûr de vouloir supprimer l'enfant {{deleteChild?.lastname}}
+                  {{deleteChild?.firstname}}? </p>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                  <button (click)="onDeleteChild(deleteChild.id)" class="btn btn-danger"
+                     data-dismiss="modal">Oui</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Delete Child Modal end -->
+
+   <!-- Modal to display annual summary-->
+   <div class="modal fade px-4" id="summaryModal" tabindex="-1" role="dialog" aria-labelledby="summaryModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header bg-danger text-light bg-gradient">
+               <h2 class="modal-title" id="summaryModalLabel">Rapport Annuel Total</h2>
+               <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body px-5" id="print-modal-body">
+               <div
+                  class="col-xl-1 col-lg-1 col-md-2 col-sm-3 col-4 rounded-circle bg-light-pink bg-gradient shadow d-none d-print-block"
+                  id="logo">
+                  <a class="navbar-brand" href="#">
+                     <img src="./assets/logoAppAssMat.png" class="img-fluid ml-2" />
+                  </a>
+               </div>
+               <div class="row justify-content-center mb-3" id="list-children-title">
+                  <h2 class="col-6 shadow d-none d-print-block font-italic rounded-pill text-center">Déclaration
+                     Annuelle Total</h2>
+               </div>
+               <form #summaryByYearForm="ngForm">
+                  <div class="mb-3 row pr-2">
+                     <label class="col-sm-5 col-form-label" for="summaryYear">Année</label>
+                     <div class="col-sm-4 ">
+                        <input type="text" ngModel="{{yearPrecedingCurrentYear}}" name="summaryYear"
+                           class="form-control pl-2" id="summaryYear" placeholder="2022" required>
+                     </div>
+                  </div>
+                  <div class="mb-3 row">
+                     <label for="sumTaxableSalary" class="col-sm-5 col-form-label">Salaire Imposable Total: </label>
+                     <div class="col-sm-4 pl-4 pl-sm-3">
+                        <input type="text" readonly class="form-control-plaintext" id="sumTaxableSalary"
+                           value="{{sumTaxableSalary |  currency: 'EUR'}}">
+                     </div>
+                  </div>
+                  <div class="mb-3 row">
+                     <label for="sumTaxRelief" class="col-sm-5 col-form-label">Abatement Fiscal Total: </label>
+                     <div class="col-sm-4 pl-4 pl-sm-3">
+                        <input type="text" readonly class="form-control-plaintext" name="sumTaxRelief" id="sumTaxRelief"
+                           value="{{sumTaxRelief |  currency: 'EUR'}}">
+                     </div>
+                  </div>
+                  <div class="mb-3 row bg-light-pink font-weight-bold">
+                     <label for="sumReportableAmounts" class="col-sm-5 col-form-label">Total à déclarer: </label>
+                     <div class="col-sm-4 pl-4 pl-sm-3">
+                        <input type="text" readonly class="form-control-plaintext font-weight-bold"
+                           name="sumReportableAmounts" id="sumReportableAmounts"
+                           value="{{sumReportableAmount |  currency: 'EUR'}}">
+                     </div>
+                  </div>
+
+                  <div class="row modal-footer d-print-none justify-content-between pl-0 align-items-end">
+                     <div class="col-5">
+                        <button class="btn text-secondary pb-0" printTitle="Rapport Annuel" [useExistingCss]="true"
+                           printSectionId="print-modal-body" ngxPrint>
+                           <span class="material-icons fs-2 p-2 shadow rounded text-secondary">print</span>
+                        </button>
+                     </div>
+                     <div class="col-5 d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary mr-2" data-bs-dismiss="modal">Fermer</button>
+                        <button (click)="onSummaryModal(summaryByYearForm.value.summaryYear)"
+                           [disabled]="summaryByYearForm.invalid" id="calculate-summary-by-year-btn" type="button"
+                           class="btn btn-danger">Calculer</button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Modal to display annual summary end -->
+
+   <!-- Notification for no Child -->
+   <div *ngIf="children?.length === 0" class="col-lg-12 col-md-12 col-xl-12">
+      <div class="alert alert-info" role="alert">
+         <h4 class="alert-heading">Aucun Enfant !</h4>
+         <p>Aucun enfant trouvé.</p>
+      </div>
+   </div>
+   <!-- Notification for no Child end -->

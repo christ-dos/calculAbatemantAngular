@@ -61,6 +61,7 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getChildren();
+    
   }
 
   public getChildren(): void {
@@ -231,6 +232,29 @@ export class CalculAbatementHomeComponent implements OnInit {
       }
     );
   }
+
+  public searchChild(key: string): void {
+    const results: Child[] = [];
+    this.getChildren();
+    setTimeout(() => {
+      this.children.forEach(
+        (child) => {
+          if (child.firstname.toLowerCase().indexOf(key.toLowerCase()) !== -1
+          || child.lastname.toLowerCase().indexOf(key.toLowerCase()) !== -1
+          ) {
+            results.push(child);
+          }
+        }
+      )
+      this.children = results;
+      if(results.length === 0 || !key){
+        this.getChildren();
+      }
+    }, 100);
+   
+
+  }
+  
 
   public onOpenModel(monthly: any, mode: string): void {
     const container = document.getElementById('main-container');

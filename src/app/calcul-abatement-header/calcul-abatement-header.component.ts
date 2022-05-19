@@ -15,41 +15,28 @@ import { MonthlyService } from '../services/monthly.service';
 })
 export class CalculAbatementHeaderComponent implements OnInit {
   public calculAbatementHomeComponent!: CalculAbatementHomeComponent;
-  
+
   constructor
-  (private monthlyService: MonthlyService, 
-    public appComponent: AppComponent,
-    private childService: ChildService) {
-      this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService, monthlyService, appComponent);
-   
-     }
+    (private monthlyService: MonthlyService,
+      public appComponent: AppComponent,
+      private childService: ChildService) {
+    this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService, monthlyService, appComponent);
+
+  }
 
   public addMonthlyChild!: Child;
   public children!: Child[];
   ngOnInit(): void {
+    
   }
 
-  public getChildren(): Child[] {
+  public getChildren() : void {;
     this.childService.getAllChildren().subscribe(
       (response: Child[]) => {
         console.log(response);
         this.children = response;
-        },
-        );
-        return this.children;
-      }
-
-  public onOpenModel(mode: string): void {
-    const container = document.getElementById('main-container');
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.style.display = 'none';
-    button.setAttribute('data-toggle', 'modal');
-    if (mode === 'add') {
-      button.setAttribute('data-target', '#addChildModal');
-    }
-    container?.appendChild(button);
-    button.click();
+      },
+    );
   }
 
 }

@@ -10,8 +10,12 @@
        background-color: #c0c0c0e6;
    }
 
-   .bg-light-pink {
-       background-color: #FFD8D8;
+   .bg-light-gray {
+    background-color: #d9d6d647;
+}
+
+   .bg-white-smoke {
+       background-color: whitesmoke;
    }
 
    .avatar-pic {
@@ -27,3 +31,7 @@
    img {
        height: 120px;
    }
+
+  /* input::placeholder {
+    color: white;
+  }*/
