@@ -25,54 +25,54 @@
         <div class="row align-items-end pb-0">
             <label for="firstname" class="col-2 col-sm-1 col-md-2 col-lg-2 mr-sm-0 col-form-label" >Prénom: </label>
             <div class="col-10 col-sm-4 col-md-4 col-lg-4">
-                <input type="text" readonly class="form-control-plaintext text-info fs-6 pl-5 pl-sm-5 pl-md-0 font-weight-bold" id="firstname" value="{{childDetails.firstname}}">
+                <input type="text" readonly class="form-control-plaintext text-info fs-6 pl-5 pl-sm-5 pl-md-0 font-weight-bold" id="firstname" value="{{childDetails?.firstname}}">
             </div>
             <label for="lastname" class="col-2 col-sm-1 col-md-2 col-lg-2 py-0 col-form-label pb-1">Nom:</label>
             <div class="col-10 col-sm-4 col-md-4 col-lg-4 pl-md-0 pt-0">
-                <input type="text" readonly class="form-control-plaintext text-info fs-6 pb-1 pl-5 pl-sm-5 pl-md-0 pb-0 font-weight-bold" id="lastname" value="{{childDetails.lastname}}">
+                <input type="text" readonly class="form-control-plaintext text-info fs-6 pb-1 pl-5 pl-sm-5 pl-md-0 pb-0 font-weight-bold" id="lastname" value="{{childDetails?.lastname}}">
             </div>
         </div>
         <div class="row align-items-end pb-1">
             <label for="birthDate" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0">Date de Naissance:</label>
             <div class="col-4 col-sm-3 col-md-9 col-lg-4 pl-md-0">
-                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1 pl-md-3" id="birthDate" value="{{childDetails.birthDate}}">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1 pl-md-3" id="birthDate" value="{{childDetails?.birthDate}}">
             </div>
         </div>
-        <hr class="my-1 px-1">
+        <hr class="my-1 px-0">
         <div class="row align-items-end pb-1 ">
             <label for="beginContract" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0 ">Début Contrat: </label>
             <div class="col-4 col-sm-3 col-md-4 col-lg-4 pl-md-0 ">
-                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1 pl-md-3" id="beginContract" value="{{childDetails.beginContract}}">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1 pl-md-3" id="beginContract" value="{{childDetails?.beginContract}}">
             </div>
             <label for="endContract" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0">Fin Contrat: </label>
             <div class="col-4 col-sm-3 col-md-4 col-lg-4 p-0 ">
-                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-0 pl-md-0" id="endContract" value="{{childDetails.endContract}}">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-0 pl-md-0" id="endContract" value="{{childDetails?.endContract}}">
             </div>
         </div>
         <div class="row align-items-end pb-md-1">
             <label for="feesLunch" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0">Frais Repas: </label>
             <div class="col-4 col-sm-3 col-md-4 col-lg-4">
-                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1 pl-0" id="feesLunch" value="{{childDetails.feesLunch | currency: 'EUR' }}">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-2 pl-sm-1 pl-0" id="feesLunch" value="{{childDetails?.feesLunch | currency: 'EUR' }}">
             </div>
             <label for="feesSnacks" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0">Frais Goûter: </label>
             <div class="col-4 col-sm-3 col-md-4 col-lg-4 pl-0 pl-lg-0">
-                <input type="text" readonly class="form-control-plaintext text-info pb-0" id="feesSnacks" value="{{childDetails.feesSnack | currency: 'EUR'}}">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0" id="feesSnacks" value="{{childDetails?.feesSnack | currency: 'EUR'}}">
             </div>
         </div>
         <div class="row align-items-end pb-1">
             <label for="taxableSalary" class="col-2 col-sm-2 col-md-2 col-lg-2 mr-sm-0 col-form-label pb-0">Salaire Imposable: </label>
             <div class="col-4 col-sm-3 col-md-4 col-lg-4 pl-4 pl-lg-3">
-                <input type="text" readonly class="form-control-plaintext text-info pb-0" id="taxableSalary" value="{{childDetails.taxableSalary | currency: 'EUR'}}">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0" id="taxableSalary" value="{{childDetails?.taxableSalary | currency: 'EUR'}}">
             </div>
             <label for="taxRelief" class="col-2 col-sm-2  col-md-2 col-lg-2 col-form-label pb-0">Abatement Fiscal:</label>
             <div class="col-4 col-sm-3 col-md-4 col-lg-4 pl-0">
-                <input type="text" readonly class="form-control-plaintext text-info pb-0" id="taxRelief" value="{{childDetails.taxRelief | currency: 'EUR'}}">
+                <input type="text" readonly class="form-control-plaintext text-info pb-0" id="taxRelief" value="{{childDetails?.taxRelief | currency: 'EUR'}}">
             </div>
         </div>
         <div class="row align-items-end pb-1">
             <label for="reportableAmounts" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0 ">Somme à déclarer:</label>
             <div class="col-4 col-sm-4 col-md-4 col-lg-2 pl-0">
-                <input type="text" readonly class="form-control-plaintext text-info bg-light-magenta rounded-pill pb-0 font-weight-bold pl-4 pl-lg-3 py-1" id="reportableAmounts" value="{{childDetails.reportableAmounts| currency: 'EUR'}}">
+                <input type="text" readonly class="form-control-plaintext text-info bg-light-magenta rounded-pill pb-0 font-weight-bold pl-4 pl-lg-3 py-1" id="reportableAmounts" value="{{childDetails?.reportableAmounts| currency: 'EUR'}}">
             </div>
         </div>
     </div>
@@ -109,13 +109,13 @@
             </thead>
             <tbody>
                 <tr  *ngFor="let monthly of childDetails.monthlies | paginate: { itemsPerPage: 12, currentPage: page }">
-                    <td class="text-center bg-magenta color-light-gray" id="table-td-month">{{monthly.month}}</td>
-                    <td class="text-center  bg-light-magenta color-gray" >{{monthly.year}}</td>
-                    <td class="text-center">{{monthly.taxableSalary  |  currency: 'EUR'}} </td>
-                    <td class="text-center">{{monthly.dayWorked}}</td>
-                    <td class="text-center">{{monthly.hoursWorked}}</td>
-                    <td class="text-center">{{monthly.lunch}}</td>
-                    <td class="text-center">{{monthly.snack}}</td>
+                    <td class="text-center bg-magenta color-light-gray" id="table-td-month">{{monthly?.month}}</td>
+                    <td class="text-center  bg-light-magenta color-gray" >{{monthly?.year}}</td>
+                    <td class="text-center">{{monthly?.taxableSalary  |  currency: 'EUR'}} </td>
+                    <td class="text-center">{{monthly?.dayWorked}}</td>
+                    <td class="text-center">{{monthly?.hoursWorked}}</td>
+                    <td class="text-center">{{monthly?.lunch}}</td>
+                    <td class="text-center">{{monthly?.snack}}</td>
                     <td style="width: 15%" class="text-center d-print-none">
                         <a (click)="this.onOpenModel(monthly,'editMonthly')" class="btn tooltips" data-placement="top" data-original-title="Edit">
                             <i class="fa fa-pencil text-danger "></i>

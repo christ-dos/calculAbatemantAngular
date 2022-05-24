@@ -61,7 +61,6 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getChildren();
-    
   }
 
   public getChildren(): void {
@@ -128,13 +127,11 @@ export class CalculAbatementHomeComponent implements OnInit {
         this.getTaxableSalary(child, year);
         this.getTaxRelief(child, year);
         this.getAnnualReportableAmounts(child, year);
-        console.log("id: " + child.id);
       } else {
         child.taxableSalary = 0;
         child.taxRelief = 0;
         child.reportableAmounts = 0;
       }
-
     });
 
     setTimeout(() => {
@@ -240,21 +237,18 @@ export class CalculAbatementHomeComponent implements OnInit {
       this.children.forEach(
         (child) => {
           if (child.firstname.toLowerCase().indexOf(key.toLowerCase()) !== -1
-          || child.lastname.toLowerCase().indexOf(key.toLowerCase()) !== -1
+            || child.lastname.toLowerCase().indexOf(key.toLowerCase()) !== -1
           ) {
             results.push(child);
           }
         }
       )
       this.children = results;
-      if(results.length === 0 || !key){
+      if (results.length === 0 || !key) {
         this.getChildren();
       }
     }, 100);
-   
-
   }
-  
 
   public onOpenModel(monthly: any, mode: string): void {
     const container = document.getElementById('main-container');

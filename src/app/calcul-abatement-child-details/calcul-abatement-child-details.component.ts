@@ -63,18 +63,16 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   public getChildDetails(id: number): void{
     this.childService.getChildById(id).subscribe({
       next: child =>{
-       // const yearPrecedingCurrentYear = new String(new Date().getFullYear() -1);
         this.childDetails = child;
-        console.log("mon child details:" + child);
+        console.log(child);
         this.getMonthliesByChildIdOrderByYearDescAndMonthDesc(id)
 
-        
         if (this.childDetails.monthlies.some(monthly => monthly.year === this.appComponent.currentYear)){
           this.calculAbatementHomeComponent.getTaxableSalary(child, this.appComponent.currentYear);
           this.calculAbatementHomeComponent.getTaxRelief(child, this.appComponent.currentYear);
           this.calculAbatementHomeComponent.getAnnualReportableAmounts(child, this.appComponent.currentYear);
           this.calculAbatementMonthlyComponent.getMonths();
-          console.log("childDetails: " + child);
+         
         }else{
           this.childDetails.taxableSalary = 0;
           this.childDetails.taxRelief = 0;
@@ -84,7 +82,6 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       },
       error: err => {
         this.errorMsg = err.message;
-        console.log("mon erreur: " + this.errorMsg);
       }
     }
     );

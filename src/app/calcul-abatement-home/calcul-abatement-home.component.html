@@ -18,26 +18,28 @@
 
    <div class="row px-5">
       <div class="row d-print-none d-flex pr-0 pb-4 justify-content-md-center">
-           <!-- Form search -->
-           <div class="col-8 col-md-6 col-lg-4 d-flex align-items-center justify-content-end justify-content-lg-end justify-content-md-end">
+         <!-- Form search -->
+         <div
+            class="col-8 col-md-6 col-lg-4 d-flex align-items-center justify-content-end justify-content-lg-end justify-content-md-end">
             <form class="form-inline">
                <input type="search" (ngModelChange)="this.searchChild(key.value)" #key="ngModel" ngModel name="key"
-                  id="searchName" class="form-control bg-white-smoke shadow "  style="font-family:Arial, FontAwesome" placeholder="&#xF002;  Rechercher un Enfant  " required>
+                  id="searchName" class="form-control bg-white-smoke shadow " style="font-family:Arial, FontAwesome"
+                  placeholder="&#xF002;  Rechercher un Enfant  " required>
             </form>
          </div>
          <!-- Form search end -->
-         <button type="button" class="btn col-2 col-md-1 col-lg-1 pl-3 pl-md-0 d-flex justify-content-lg-end pr-lg-1" data-bs-toggle="modal" data-bs-target="#summaryModal">
-            <span *ngIf="children" class="material-icons color-pink fs-2 p-2 shadow rounded bg-white-smoke" 
+         <button type="button" class="btn col-2 col-md-1 col-lg-1 pl-3 pl-md-0 d-flex justify-content-lg-end pr-lg-1"
+            data-bs-toggle="modal" data-bs-target="#summaryModal">
+            <span *ngIf="children" class="material-icons color-pink fs-2 p-2 shadow rounded bg-white-smoke"
                data-md-tooltip="Rapport Annuel">summarize</span>
          </button>
-         <button class="btn col-2 col-md-1 col-lg-1 justify-content-end pl-0 pr-md-0 text-secondary d-flex justify-content-lg-start" 
-            printTitle="Listes Enfants" 
-            [useExistingCss]="true"
-            printSectionId="main-container" 
-            ngxPrint>
-            <span class="material-icons fs-2 p-2 shadow rounded text-secondary bg-white-smoke" data-md-tooltip="Imprimer">print</span>
+         <button
+            class="btn col-2 col-md-1 col-lg-1 justify-content-end pl-0 pr-md-0 text-secondary d-flex justify-content-lg-start"
+            printTitle="Listes Enfants" [useExistingCss]="true" printSectionId="main-container" ngxPrint>
+            <span class="material-icons fs-2 p-2 shadow rounded text-secondary bg-white-smoke"
+               data-md-tooltip="Imprimer">print</span>
          </button>
-         
+
       </div>
       <div *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4">
          <div class="card m-b-30 shadow rounded " id="content">
@@ -76,8 +78,8 @@
                   <p class="m-0 fs-6"><i class="fa fa-birthday-cake float-right ml-2"></i>{{child?.birthDate}}</p>
                </div>
             </div>
-            <ul class="list-group list-group-flush">
-               <li class="list-group-item font-italic" id="year-home-card"><strong>Année {{currentYear}}: </strong></li>
+            <ul class="list-group list-group-flush px-1">
+               <li class="list-group-item font-italic" id="year-home-card"><strong> Année {{currentYear}}: </strong></li>
                <li class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable:
                   {{child?.taxableSalary | currency: 'EUR'}}</li>
                <li class="list-group-item font-italic "><i class="fa fa-money float-right"></i>Abatement Fiscal:
