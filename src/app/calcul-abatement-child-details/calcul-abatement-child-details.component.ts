@@ -18,41 +18,40 @@ import { MonthlyService } from '../services/monthly.service';
 export class CalculAbatementChildDetailsComponent implements OnInit {
   public calculAbatementMonthlyComponent!: CalculAbatementMonthlyComponent;
   public calculAbatementHomeComponent!: CalculAbatementHomeComponent;
-  
+
 
   constructor(
-    private monthlyService: MonthlyService, 
+    private monthlyService: MonthlyService,
     private route: ActivatedRoute,
     private childService: ChildService,
     public appComponent: AppComponent,
-  ) 
-  { 
+  ) {
     this.calculAbatementMonthlyComponent = new CalculAbatementMonthlyComponent(
-      monthlyService,appComponent,childService);
-    this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService,monthlyService,appComponent);
-    
+      monthlyService, appComponent, childService);
+    this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService, monthlyService, appComponent);
+
   }
 
   public page: number = 1;
   public childDetails!: Child;
   public childId!: string;
-  public editMonthly!:Monthly;
-  public deleteMonthly!:Monthly;
+  public editMonthly!: Monthly;
+  public deleteMonthly!: Monthly;
   public addMonthlyChild!: Monthly;
 
   public errorMsg!: String;
-  public taxableSalarySibling!:number;
+  public taxableSalarySibling!: number;
 
   public monthSelected!: String;
   public monthliesFiltered!: Monthly[];
   public monthliesByChildIdOrderedByYearDescAndMonthDesc!: Monthly[];
-  
+
   public sumTaxableSalary!: number;
   public sumDaysWorked!: number;
   public sumHoursWorked!: number;
   public sumLunches!: number;
   public sumSnacks!: number;
- 
+
 
   ngOnInit(): void {
     const id: number = +this.route.snapshot.paramMap.get('childId')!;
@@ -60,25 +59,25 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     this.calculAbatementMonthlyComponent.getMonths();
   }
 
-  public getChildDetails(id: number): void{
+  public getChildDetails(id: number): void {
     this.childService.getChildById(id).subscribe({
-      next: child =>{
+      next: child => {
         this.childDetails = child;
         console.log(child);
         this.getMonthliesByChildIdOrderByYearDescAndMonthDesc(id)
 
-        if (this.childDetails.monthlies.some(monthly => monthly.year === this.appComponent.currentYear)){
+        if (this.childDetails.monthlies.some(monthly => monthly.year === this.appComponent.currentYear)) {
           this.calculAbatementHomeComponent.getTaxableSalary(child, this.appComponent.currentYear);
           this.calculAbatementHomeComponent.getTaxRelief(child, this.appComponent.currentYear);
           this.calculAbatementHomeComponent.getAnnualReportableAmounts(child, this.appComponent.currentYear);
           this.calculAbatementMonthlyComponent.getMonths();
-         
-        }else{
+
+        } else {
           this.childDetails.taxableSalary = 0;
           this.childDetails.taxRelief = 0;
-          this.childDetails.reportableAmounts= 0;
+          this.childDetails.reportableAmounts = 0;
         }
-      
+
       },
       error: err => {
         this.errorMsg = err.message;
@@ -89,111 +88,205 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
 
   public onAddMonthly(addMonthlyForm: NgForm): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
-    console.log("childDetailId: " + this.childDetails.id);
-    console.log("addMonthlyFormBefore: " + addMonthlyForm.value.childId);
     addMonthlyForm.controls['childId'].setValue(this.childDetails.id);
-    console.log("addMonthlyFormAfter: " + addMonthlyForm.value.childId);
-    //todo clean les console.log
-   this.monthlyService.addMonthly(addMonthlyForm.value).subscribe(
-      (response: Monthly) => {
-        console.log(response);
+    //  this.monthlyService.addMonthly(addMonthlyForm.value).subscribe(
+    //     (response: Monthly) => {
+    //       console.log(response);
+    //       this.getChildDetails(addMonthlyForm.value.childId);
+    //       addMonthlyForm.reset();
+
+    //     }
+    //   );
+
+    this.monthlyService.addMonthly(addMonthlyForm.value).subscribe({
+      next: monthly => {
+        console.log(monthly);
         this.getChildDetails(addMonthlyForm.value.childId);
         addMonthlyForm.reset();
-    
+      },
+      error: err => {
+        this.errorMsg = err.message;
       }
+    }
     );
+
   }
 
   public onUpdateMonthly(monthly: Monthly): void {
-    this.monthlyService.updateMonthly(monthly).subscribe(
-      (response: Monthly) => {
-        console.log(response);
-       this.getChildDetails(monthly.childId);
+    // this.monthlyService.updateMonthly(monthly).subscribe(
+    //   (response: Monthly) => {
+    //     console.log(response);
+    //    this.getChildDetails(monthly.childId);
+    //   }
+    // );
+
+    this.monthlyService.updateMonthly(monthly).subscribe({
+      next: monthly => {
+        console.log(monthly);
+        this.getChildDetails(monthly.childId);
+      },
+      error: err => {
+        this.errorMsg = err.message;
       }
+    }
     );
   }
 
   public onDeleteMonthly(monthlyId: number): void {
-    this.monthlyService.deleteMonthly(monthlyId).subscribe(
-      (response: void) => {
-        console.log(response);
+    // this.monthlyService.deleteMonthly(monthlyId).subscribe(
+    //   (response: void) => {
+    //     console.log(response);
+    //     document.getElementById('search-monthlies')?.click();
+    //     this.getChildDetails(this.deleteMonthly.childId);
+
+    //   }
+    // );
+
+    this.monthlyService.deleteMonthly(monthlyId).subscribe({
+      next: monthly => {
+        console.log(monthly);
         document.getElementById('search-monthlies')?.click();
         this.getChildDetails(this.deleteMonthly.childId);
-        
+      }, 
+      error: err => {
+        this.errorMsg = err.message;
+      }
+      }
+    );
+
+  }
+
+  public getMonthliesByChildIdOrderByYearDescAndMonthDesc(childDetailId: number): void {
+    // this.monthlyService.getMonthliesByChildIdOrderByYearDescAndMonthDesc(childDetailId).subscribe(
+    //   (response: Monthly[]) => {
+    //     console.log(response);
+    //     this.childDetails.monthlies = response;
+    //   }
+    // );
+
+    this.monthlyService.getMonthliesByChildIdOrderByYearDescAndMonthDesc(childDetailId).subscribe({
+      next: monthlies => {
+        console.log(monthlies);
+        this.childDetails.monthlies = monthlies;
+      },
+      error: err => {
+        this.errorMsg = err.message;
+      }
+    }
+     
+    );
+  }
+
+  public onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm: NgForm): void {
+    // this.monthlyService.getMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm.value.year, this.childDetails.id).subscribe(
+    //   (response: Monthly[]) => {
+    //     this.childDetails.monthlies = response;
+    //     console.log(response);
+
+    //     if (this.childDetails.monthlies.some(monthly => monthly.year === monthliesByYearAndByChildIdForm.value.year)
+    //     ) {
+    //       this.getTaxRelief(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
+    //       this.getAnnualReportableAmounts(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
+    //     } else {
+    //       this.childDetails.taxRelief = 0;
+    //       this.childDetails.reportableAmounts = 0;
+    //     }
+
+    //     this.sumTaxableSalary = this.childDetails.monthlies.reduce((accumulator, monthly) => {
+    //       return accumulator + monthly.taxableSalary;
+    //     }, 0);
+
+    //     this.childDetails.taxableSalary = this.sumTaxableSalary;
+
+    //     this.sumDaysWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
+    //       return accumulator + monthly.dayWorked;
+    //     }, 0);
+
+    //     this.sumHoursWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
+    //       return accumulator + monthly.hoursWorked;
+    //     }, 0);
+
+    //     this.sumLunches = this.childDetails.monthlies.reduce((accumulator, monthly) => {
+    //       return accumulator + monthly.lunch;
+    //     }, 0);
+
+    //     this.sumSnacks = this.childDetails.monthlies.reduce((accumulator, monthly) => {
+    //       return accumulator + monthly.snack;
+    //     }, 0);
+
+
+    //     console.log("sumTaxableSalary: " + this.sumTaxableSalary); // clean code
+    //     // this.getChildDetails(this.childDetails.id);
+
+    //   }
+    // );
+
+    this.monthlyService.getMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm.value.year, this.childDetails.id).subscribe(
+      {
+        next: monthlies => {
+          this.childDetails.monthlies = monthlies;
+          console.log(monthlies);
+  
+          if (this.childDetails.monthlies.some(monthly => monthly.year === monthliesByYearAndByChildIdForm.value.year)
+          ) {
+            this.getTaxRelief(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
+            this.getAnnualReportableAmounts(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
+          } else {
+            this.childDetails.taxRelief = 0;
+            this.childDetails.reportableAmounts = 0;
+          }
+  
+          this.sumTaxableSalary = this.childDetails.monthlies.reduce((accumulator, monthly) => {
+            return accumulator + monthly.taxableSalary;
+          }, 0);
+  
+          this.childDetails.taxableSalary = this.sumTaxableSalary;
+  
+          this.sumDaysWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
+            return accumulator + monthly.dayWorked;
+          }, 0);
+  
+          this.sumHoursWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
+            return accumulator + monthly.hoursWorked;
+          }, 0);
+  
+          this.sumLunches = this.childDetails.monthlies.reduce((accumulator, monthly) => {
+            return accumulator + monthly.lunch;
+          }, 0);
+  
+          this.sumSnacks = this.childDetails.monthlies.reduce((accumulator, monthly) => {
+            return accumulator + monthly.snack;
+          }, 0);
+  
+  
+          console.log("sumTaxableSalary: " + this.sumTaxableSalary); // clean code
+          // this.getChildDetails(this.childDetails.id);
+  
+        },
+        error: err => {
+          this.errorMsg = err.message;
+        }
+      }
+    );
+
+  }
+
+  public getAnnualReportableAmounts(child: Child, year: String): void {
+    this.childService.getAnnualReportableAmounts(child.id, year).subscribe(
+      (response: number) => {
+        console.log(response);
+        this.childDetails.reportableAmounts = response;
       }
     );
   }
 
-  public getMonthliesByChildIdOrderByYearDescAndMonthDesc(childDetailId: number): void{
-    this.monthlyService.getMonthliesByChildIdOrderByYearDescAndMonthDesc(childDetailId).subscribe(
-      (response: Monthly[]) => {
-         console.log(response);
-         this.childDetails.monthlies = response;
-        }
-      )
-    }
-
-  public onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm: NgForm): void{
-    this.monthlyService.getMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm.value.year, this.childDetails.id).subscribe(
-      (response: Monthly[]) => {
-       this.childDetails.monthlies = response;
-       console.log(response);
-
-       if(this.childDetails.monthlies.some(monthly => monthly.year === monthliesByYearAndByChildIdForm.value.year)
-       ){
-          this.getTaxRelief(this.childDetails, monthliesByYearAndByChildIdForm.value.year); 
-          this.getAnnualReportableAmounts(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
-        }else{
-          this.childDetails.taxRelief = 0;
-          this.childDetails.reportableAmounts = 0;
-        }
-      
-       this.sumTaxableSalary = this.childDetails.monthlies.reduce((accumulator, monthly) => {
-         return accumulator + monthly.taxableSalary;
-        }, 0);
-
-       this.childDetails.taxableSalary = this.sumTaxableSalary;
- 
-       this.sumDaysWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
-         return accumulator + monthly.dayWorked;
-       }, 0);
- 
-       this.sumHoursWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
-         return accumulator + monthly.hoursWorked;
-       }, 0);
- 
-       this.sumLunches = this.childDetails.monthlies.reduce((accumulator, monthly) => {
-         return accumulator + monthly.lunch;
-       }, 0);
- 
-       this.sumSnacks = this.childDetails.monthlies.reduce((accumulator, monthly) => {
-         return accumulator + monthly.snack;
-       }, 0);
-
-      
-       console.log("sumTaxableSalary: " + this.sumTaxableSalary); // clean code
-      // this.getChildDetails(this.childDetails.id);
-       
-       }
-     )
-   }
-
-   public getAnnualReportableAmounts(child: Child,  year: String): void {
-    this.childService.getAnnualReportableAmounts(child.id, year).subscribe(
-    (response: number) => {
-       console.log(response);
-       this.childDetails.reportableAmounts = response;
-      }
-    )
-  }
-
-  public getTaxRelief(child: Child,  year: String): void {
+  public getTaxRelief(child: Child, year: String): void {
     this.childService.getTaxRelief(child.id, year).subscribe(
       (response: number) => {
         console.log(response);
         this.childDetails.taxRelief = response;
       }
-    )
+    );
   }
 
   public onOpenModel(monthly: any, mode: string): void {
@@ -221,9 +314,9 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     button.click();
   }
 
- 
 
 
-  
+
+
 
 }
