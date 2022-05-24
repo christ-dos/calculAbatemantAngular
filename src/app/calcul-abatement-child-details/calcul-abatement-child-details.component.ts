@@ -272,19 +272,41 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   }
 
   public getAnnualReportableAmounts(child: Child, year: String): void {
-    this.childService.getAnnualReportableAmounts(child.id, year).subscribe(
-      (response: number) => {
-        console.log(response);
-        this.childDetails.reportableAmounts = response;
+    // this.childService.getAnnualReportableAmounts(child.id, year).subscribe(
+    //   (response: number) => {
+    //     console.log(response);
+    //     this.childDetails.reportableAmounts = response;
+    //   }
+    // );
+
+    this.childService.getAnnualReportableAmounts(child.id, year).subscribe({
+        next: annualReportableAmounts => {
+          console.log(annualReportableAmounts);
+          this.childDetails.reportableAmounts = annualReportableAmounts;
+        },
+        error: err => {
+          this.errorMsg = err.message;
+        }
       }
     );
   }
 
   public getTaxRelief(child: Child, year: String): void {
-    this.childService.getTaxRelief(child.id, year).subscribe(
-      (response: number) => {
-        console.log(response);
-        this.childDetails.taxRelief = response;
+    // this.childService.getTaxRelief(child.id, year).subscribe(
+    //   (response: number) => {
+    //     console.log(response);
+    //     this.childDetails.taxRelief = response;
+    //   }
+    // );
+
+    this.childService.getTaxRelief(child.id, year).subscribe({
+        next: taxRelief=> {
+          console.log(taxRelief);
+          this.childDetails.taxRelief = taxRelief;
+        },
+        error: err => {
+          this.errorMsg = err.message;
+        }
       }
     );
   }
@@ -313,10 +335,5 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     container?.appendChild(button);
     button.click();
   }
-
-
-
-
-
 
 }
