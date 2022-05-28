@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { Child } from './models/child.model';
 import { ChildService } from './services/child.service';
 import { NgForm } from '@angular/forms';
@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.currentYear = new String(new Date().getFullYear());
     this.currentMonth = new Date();
+   // this.getChildren();
    
   }
 

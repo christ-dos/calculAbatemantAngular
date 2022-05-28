@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppComponent } from '../app.component';
@@ -25,18 +25,19 @@ export class CalculAbatementHeaderComponent implements OnInit {
   }
 
   public addMonthlyChild!: Child;
-  public children!: Child[];
+
+  public ChildrenHeader!: Child[];
   ngOnInit(): void {
     
   }
-
-  public getChildren() : void {;
-    this.childService.getAllChildren().subscribe(
-      (response: Child[]) => {
-        console.log(response);
-        this.children = response;
-      },
-    );
-  }
+  
+  // public getChildren() : void {;
+  //   this.childService.getAllChildren().subscribe(
+  //     (response: Child[]) => {
+  //       console.log(response);
+  //       this.ChildrenHeader = response;
+  //     },
+  //   );
+  // }
 
 }

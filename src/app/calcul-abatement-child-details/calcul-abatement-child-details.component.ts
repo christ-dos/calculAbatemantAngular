@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs/internal/observable/of';
 import { AppComponent } from '../app.component';
 import { CalculAbatementHomeComponent } from '../calcul-abatement-home/calcul-abatement-home.component';
 import { CalculAbatementMonthlyComponent } from '../calcul-abatement-monthly/calcul-abatement-monthly.component';
@@ -89,14 +88,6 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   public onAddMonthly(addMonthlyForm: NgForm): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
     addMonthlyForm.controls['childId'].setValue(this.childDetails.id);
-    //  this.monthlyService.addMonthly(addMonthlyForm.value).subscribe(
-    //     (response: Monthly) => {
-    //       console.log(response);
-    //       this.getChildDetails(addMonthlyForm.value.childId);
-    //       addMonthlyForm.reset();
-
-    //     }
-    //   );
 
     this.monthlyService.addMonthly(addMonthlyForm.value).subscribe({
       next: monthly => {
@@ -113,13 +104,6 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   }
 
   public onUpdateMonthly(monthly: Monthly): void {
-    // this.monthlyService.updateMonthly(monthly).subscribe(
-    //   (response: Monthly) => {
-    //     console.log(response);
-    //    this.getChildDetails(monthly.childId);
-    //   }
-    // );
-
     this.monthlyService.updateMonthly(monthly).subscribe({
       next: monthly => {
         console.log(monthly);
@@ -133,37 +117,21 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   }
 
   public onDeleteMonthly(monthlyId: number): void {
-    // this.monthlyService.deleteMonthly(monthlyId).subscribe(
-    //   (response: void) => {
-    //     console.log(response);
-    //     document.getElementById('search-monthlies')?.click();
-    //     this.getChildDetails(this.deleteMonthly.childId);
-
-    //   }
-    // );
-
     this.monthlyService.deleteMonthly(monthlyId).subscribe({
       next: monthly => {
         console.log(monthly);
         document.getElementById('search-monthlies')?.click();
         this.getChildDetails(this.deleteMonthly.childId);
-      }, 
+      },
       error: err => {
         this.errorMsg = err.message;
       }
-      }
+    }
     );
 
   }
 
   public getMonthliesByChildIdOrderByYearDescAndMonthDesc(childDetailId: number): void {
-    // this.monthlyService.getMonthliesByChildIdOrderByYearDescAndMonthDesc(childDetailId).subscribe(
-    //   (response: Monthly[]) => {
-    //     console.log(response);
-    //     this.childDetails.monthlies = response;
-    //   }
-    // );
-
     this.monthlyService.getMonthliesByChildIdOrderByYearDescAndMonthDesc(childDetailId).subscribe({
       next: monthlies => {
         console.log(monthlies);
@@ -173,60 +141,17 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
         this.errorMsg = err.message;
       }
     }
-     
+
     );
   }
 
   public onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm: NgForm): void {
-    // this.monthlyService.getMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm.value.year, this.childDetails.id).subscribe(
-    //   (response: Monthly[]) => {
-    //     this.childDetails.monthlies = response;
-    //     console.log(response);
-
-    //     if (this.childDetails.monthlies.some(monthly => monthly.year === monthliesByYearAndByChildIdForm.value.year)
-    //     ) {
-    //       this.getTaxRelief(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
-    //       this.getAnnualReportableAmounts(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
-    //     } else {
-    //       this.childDetails.taxRelief = 0;
-    //       this.childDetails.reportableAmounts = 0;
-    //     }
-
-    //     this.sumTaxableSalary = this.childDetails.monthlies.reduce((accumulator, monthly) => {
-    //       return accumulator + monthly.taxableSalary;
-    //     }, 0);
-
-    //     this.childDetails.taxableSalary = this.sumTaxableSalary;
-
-    //     this.sumDaysWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
-    //       return accumulator + monthly.dayWorked;
-    //     }, 0);
-
-    //     this.sumHoursWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
-    //       return accumulator + monthly.hoursWorked;
-    //     }, 0);
-
-    //     this.sumLunches = this.childDetails.monthlies.reduce((accumulator, monthly) => {
-    //       return accumulator + monthly.lunch;
-    //     }, 0);
-
-    //     this.sumSnacks = this.childDetails.monthlies.reduce((accumulator, monthly) => {
-    //       return accumulator + monthly.snack;
-    //     }, 0);
-
-
-    //     console.log("sumTaxableSalary: " + this.sumTaxableSalary); // clean code
-    //     // this.getChildDetails(this.childDetails.id);
-
-    //   }
-    // );
-
     this.monthlyService.getMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm.value.year, this.childDetails.id).subscribe(
       {
         next: monthlies => {
           this.childDetails.monthlies = monthlies;
           console.log(monthlies);
-  
+
           if (this.childDetails.monthlies.some(monthly => monthly.year === monthliesByYearAndByChildIdForm.value.year)
           ) {
             this.getTaxRelief(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
@@ -235,33 +160,28 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
             this.childDetails.taxRelief = 0;
             this.childDetails.reportableAmounts = 0;
           }
-  
+
           this.sumTaxableSalary = this.childDetails.monthlies.reduce((accumulator, monthly) => {
             return accumulator + monthly.taxableSalary;
           }, 0);
-  
+
           this.childDetails.taxableSalary = this.sumTaxableSalary;
-  
+
           this.sumDaysWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
             return accumulator + monthly.dayWorked;
           }, 0);
-  
+
           this.sumHoursWorked = this.childDetails.monthlies.reduce((accumulator, monthly) => {
             return accumulator + monthly.hoursWorked;
           }, 0);
-  
+
           this.sumLunches = this.childDetails.monthlies.reduce((accumulator, monthly) => {
             return accumulator + monthly.lunch;
           }, 0);
-  
+
           this.sumSnacks = this.childDetails.monthlies.reduce((accumulator, monthly) => {
             return accumulator + monthly.snack;
           }, 0);
-  
-  
-          console.log("sumTaxableSalary: " + this.sumTaxableSalary); // clean code
-          // this.getChildDetails(this.childDetails.id);
-  
         },
         error: err => {
           this.errorMsg = err.message;
@@ -272,42 +192,28 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   }
 
   public getAnnualReportableAmounts(child: Child, year: String): void {
-    // this.childService.getAnnualReportableAmounts(child.id, year).subscribe(
-    //   (response: number) => {
-    //     console.log(response);
-    //     this.childDetails.reportableAmounts = response;
-    //   }
-    // );
-
     this.childService.getAnnualReportableAmounts(child.id, year).subscribe({
-        next: annualReportableAmounts => {
-          console.log(annualReportableAmounts);
-          this.childDetails.reportableAmounts = annualReportableAmounts;
-        },
-        error: err => {
-          this.errorMsg = err.message;
-        }
+      next: annualReportableAmounts => {
+        console.log(annualReportableAmounts);
+        this.childDetails.reportableAmounts = annualReportableAmounts;
+      },
+      error: err => {
+        this.errorMsg = err.message;
       }
+    }
     );
   }
 
   public getTaxRelief(child: Child, year: String): void {
-    // this.childService.getTaxRelief(child.id, year).subscribe(
-    //   (response: number) => {
-    //     console.log(response);
-    //     this.childDetails.taxRelief = response;
-    //   }
-    // );
-
     this.childService.getTaxRelief(child.id, year).subscribe({
-        next: taxRelief=> {
-          console.log(taxRelief);
-          this.childDetails.taxRelief = taxRelief;
-        },
-        error: err => {
-          this.errorMsg = err.message;
-        }
+      next: taxRelief => {
+        console.log(taxRelief);
+        this.childDetails.taxRelief = taxRelief;
+      },
+      error: err => {
+        this.errorMsg = err.message;
       }
+    }
     );
   }
 
@@ -335,5 +241,4 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     container?.appendChild(button);
     button.click();
   }
-
 }

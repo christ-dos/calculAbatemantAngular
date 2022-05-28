@@ -41,7 +41,7 @@
          </button>
 
       </div>
-      <div *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4">
+      <div  *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4">
          <div class="card m-b-30 shadow rounded " id="content">
             <div class="col-12 d-print-none">
                <span (click)="onOpenModel(child.id,'addMonthly')"
@@ -178,7 +178,7 @@
                   <div class="modal-footer">
                      <button type="button" id="cancel-add-child-form" class="btn btn-secondary"
                         data-dismiss="modal">Annuler</button>
-                     <button [disabled]="addForm.invalid" type="submit" class="btn btn-danger">Enregistrer</button>
+                     <button [disabled]="addForm.invalid" type="submit" class="btn btn-danger" id="btn-add-child">Enregistrer</button>
                   </div>
                </form>
             </div>
