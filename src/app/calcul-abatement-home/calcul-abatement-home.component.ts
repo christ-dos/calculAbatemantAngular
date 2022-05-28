@@ -2,7 +2,6 @@
 
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { jsPDF } from 'jspdf';
 import { AppComponent } from '../app.component';
 import { CalculAbatementMonthlyComponent } from '../calcul-abatement-monthly/calcul-abatement-monthly.component';
 import { Child } from '../models/child.model';
@@ -26,7 +25,7 @@ export class CalculAbatementHomeComponent implements OnInit {
     this.calculAbatementMonthlyComponent = new CalculAbatementMonthlyComponent(
       monthlyService, appComponent, childService);
   }
-  
+
 
   public children!: Child[];
   public editChild!: Child;
@@ -101,14 +100,6 @@ export class CalculAbatementHomeComponent implements OnInit {
   }
 
   public getAnnualReportableAmounts(child: Child, year: String): void {
-    // this.childService.getAnnualReportableAmounts(child.id, year).subscribe(
-    //   (response: number) => {
-    //     console.log(response);
-    //     this.reportableAmounts = response;
-    //     child.reportableAmounts = this.reportableAmounts;
-    //   }
-    // );
-
     this.childService.getAnnualReportableAmounts(child.id, year).subscribe({
       next: annualReportableAmounts => {
         console.log(annualReportableAmounts);
@@ -123,14 +114,6 @@ export class CalculAbatementHomeComponent implements OnInit {
   }
 
   public getTaxRelief(child: Child, year: String): void {
-    // this.childService.getTaxRelief(child.id, year).subscribe(
-    //   (response: number) => {
-    //     console.log(response);
-    //     this.taxRelief = response;
-    //     child.taxRelief = this.taxRelief;
-    //   }
-    // );
-
     this.childService.getTaxRelief(child.id, year).subscribe({
       next: taxRelief => {
         console.log(taxRelief);
@@ -200,14 +183,6 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   public onAddChild(addForm: NgForm): void {
     document.getElementById('cancel-add-child-form')?.click();
-    //todo clean code
-    // this.childService.addChild(addForm.value).subscribe(
-    //   (response: Child) => {
-    //     console.log(response);
-    //     this.getChildren();
-    //     addForm.reset();
-    //   }
-    // );
 
     this.childService.addChild(addForm.value).subscribe({
       next: child => {
@@ -215,7 +190,7 @@ export class CalculAbatementHomeComponent implements OnInit {
         this.getChildren();
         addForm.reset();
       },
-       error: err => {
+      error: err => {
         this.errorMsg = err.message;
       }
     }
@@ -227,21 +202,10 @@ export class CalculAbatementHomeComponent implements OnInit {
     console.log("addMonthlyForm: " + addMonthlyForm.value.childId);
     document.getElementById('cancel-add-Monthly-form')?.click();
     addMonthlyForm.controls['childId'].setValue(this.childId);
-    //todo clean code
-
-    // this.monthlyService.addMonthly(addMonthlyForm.value).subscribe(
-    //   (response: Monthly) => {
-    //     console.log(response);
-    //     console.log(addMonthlyForm.value);
-    //     this.getChildren();
-    //     addMonthlyForm.reset();
-    //   }
-    // );
 
     this.monthlyService.addMonthly(addMonthlyForm.value).subscribe({
       next: monthly => {
         console.log(monthly);
-        // console.log(addMonthlyForm.value);// todo clean code
         this.getChildren();
         addMonthlyForm.reset();
       }, error: err => {
@@ -254,20 +218,6 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   public onCalculateTaxableSalarySibling(taxableSalarySiblingForm: NgForm) {
     document.getElementById('cancel-taxable-salary-sibling-form')?.click();
-
-    //todo clean code
-
-    // this.monthlyService.getTaxableSalarySibling(
-    //   taxableSalarySiblingForm.value.netSalary,
-    //   taxableSalarySiblingForm.value.netBrutCoefficient,
-    //   taxableSalarySiblingForm.value.maintenanceCost)
-    //   .subscribe(
-    //     (response: number) => {
-    //       this.taxableSalarySibling = response
-    //       console.log(response);
-    //       taxableSalarySiblingForm.reset();
-    //     }
-    //   );
 
     this.monthlyService.getTaxableSalarySibling(
       taxableSalarySiblingForm.value.netSalary,
@@ -287,14 +237,6 @@ export class CalculAbatementHomeComponent implements OnInit {
   }
 
   public onUpdateChild(child: Child): void {
-    // todo clean code
-    // this.childService.updateChild(child).subscribe(
-    //   (response: Child) => {
-    //     console.log(response);
-    //     this.getChildren();
-    //   }
-    // );
-
     this.childService.updateChild(child).subscribe({
       next: childUpdated => {
         console.log(childUpdated);
@@ -308,14 +250,6 @@ export class CalculAbatementHomeComponent implements OnInit {
   }
 
   public onDeleteChild(childId: number): void {
-    // console.log("childId: " + childId); todo clean code
-    // this.childService.deleteChild(childId).subscribe(
-    //   (response: void) => {
-    //     console.log("message de suppresion: " + response);
-    //     this.getChildren();
-    //   }
-    // );
-
     this.childService.deleteChild(childId).subscribe({
       next: childDeleted => {
         console.log(childDeleted);
