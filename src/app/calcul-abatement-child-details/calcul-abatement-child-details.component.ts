@@ -28,7 +28,6 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     this.calculAbatementMonthlyComponent = new CalculAbatementMonthlyComponent(
       monthlyService, appComponent, childService);
     this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService, monthlyService, appComponent);
-
   }
 
   public page: number = 1;
@@ -42,8 +41,8 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   public taxableSalarySibling!: number;
 
   public monthSelected!: String;
-  public monthliesFiltered!: Monthly[];
-  public monthliesByChildIdOrderedByYearDescAndMonthDesc!: Monthly[];
+  //public monthliesFiltered!: Monthly[];
+  //public monthliesByChildIdOrderedByYearDescAndMonthDesc!: Monthly[]; todo clean code
 
   public sumTaxableSalary!: number;
   public sumDaysWorked!: number;
@@ -88,7 +87,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   public onAddMonthly(addMonthlyForm: NgForm): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
     addMonthlyForm.controls['childId'].setValue(this.childDetails.id);
-
+    console.log(addMonthlyForm.form);
     this.monthlyService.addMonthly(addMonthlyForm.value).subscribe({
       next: monthly => {
         console.log(monthly);

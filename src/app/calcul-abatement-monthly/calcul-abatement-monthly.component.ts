@@ -42,9 +42,12 @@ export class CalculAbatementMonthlyComponent implements OnInit {
 
   public errorMsg!: String;
 
+  public valueSelected!: number;
+
   ngOnInit(): void {
     this.getChildren();
     this.getMonths();
+    this.valueSelected = 0;
   }
 
   public onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm: NgForm): void {
