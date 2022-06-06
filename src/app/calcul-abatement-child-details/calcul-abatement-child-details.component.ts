@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, NgForm, AbstractControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppComponent } from '../app.component';
 import { CalculAbatementHomeComponent } from '../calcul-abatement-home/calcul-abatement-home.component';
@@ -18,12 +18,15 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   public calculAbatementMonthlyComponent!: CalculAbatementMonthlyComponent;
   public calculAbatementHomeComponent!: CalculAbatementHomeComponent;
 
+  public addMonthlyInChildDetailsForm!: FormGroup;
+
 
   constructor(
     private monthlyService: MonthlyService,
     private route: ActivatedRoute,
     private childService: ChildService,
     public appComponent: AppComponent,
+    private fb: FormBuilder,
   ) {
     this.calculAbatementMonthlyComponent = new CalculAbatementMonthlyComponent(
       monthlyService, appComponent, childService);
@@ -32,15 +35,16 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
 
   public page: number = 1;
   public childDetails!: Child;
-  public childId!: string;
+  //public childId!: string;
   public editMonthly!: Monthly;
   public deleteMonthly!: Monthly;
   public addMonthlyChild!: Monthly;
 
   public errorMsg!: String;
+  public errorsValidation!: String;
   public taxableSalarySibling!: number;
 
-  public monthSelected!: String;
+  public months!: String[];
   //public monthliesFiltered!: Monthly[];
   //public monthliesByChildIdOrderedByYearDescAndMonthDesc!: Monthly[]; todo clean code
 
@@ -50,12 +54,73 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   public sumLunches!: number;
   public sumSnacks!: number;
 
+  public validationErrorsMessages: any = {
+    required: "Ce champ est requis",
+    min: "Le nombre ne peut être inferieur à 0",
+    max: "Le nombr est trop grand",
+    minlength: "L\'année doit contenir 4 caractères au minimum",
+    maxlength: "L\'année doit contenir 4 caractères au maximum",
+  
+  };
+
+
 
   ngOnInit(): void {
     const id: number = +this.route.snapshot.paramMap.get('childId')!;
     this.getChildDetails(id);
     this.calculAbatementMonthlyComponent.getMonths();
+
+    this.addMonthlyInChildDetailsForm = this.fb.group({
+      month: ["", [Validators.required]],
+      year: [this.appComponent.currentYear,
+        [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+      taxableSalary: [null,
+        [Validators.required, Validators.min(0), Validators.max(10000)]],
+      dayWorked: [null,
+        [Validators.required, Validators.min(0), Validators.max(31)]],
+
+      hoursWorked: [null,
+        [Validators.min(0), Validators.max(500)]],
+
+      lunch: [null,
+        [Validators.min(0), Validators.max(100)]],
+
+      snack: [null,
+        [Validators.min(0), Validators.max(100)]],
+      childId: 'this.childDetails.id'
+
+    });
+
+    const monthControl = this.addMonthlyInChildDetailsForm.get('month');
+    const yearControl = this.addMonthlyInChildDetailsForm.get('year');
+    
+    monthControl?.valueChanges.subscribe(value => {
+      console.log(value);
+      this.setMessage(monthControl);
+    
+    });
+
+    yearControl?.valueChanges.subscribe(value1 => {
+      console.log(value1);
+      this.setMessage(yearControl);
+    
+    });
+
   }
+
+  private setMessage(value: AbstractControl): void{
+    this.errorsValidation = '';
+
+    if((value.touched || value.dirty || value.pristine) && value.errors){
+      console.log(Object.keys(value.errors));
+      this.errorsValidation = Object.keys(value.errors).map(
+        key => this.validationErrorsMessages[key]).join(' ');
+
+        console.log("mon erreur:" + this.errorsValidation);
+
+    }
+  }
+
 
   public getChildDetails(id: number): void {
     this.childService.getChildById(id).subscribe({
@@ -64,7 +129,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
         console.log(child);
         this.getMonthliesByChildIdOrderByYearDescAndMonthDesc(id)
 
-        if (this.childDetails.monthlies.some(monthly => monthly.year === this.appComponent.currentYear)) {
+        if (this.childDetails.monthlies?.some(monthly => monthly.year === this.appComponent.currentYear)) {
           this.calculAbatementHomeComponent.getTaxableSalary(child, this.appComponent.currentYear);
           this.calculAbatementHomeComponent.getTaxRelief(child, this.appComponent.currentYear);
           this.calculAbatementHomeComponent.getAnnualReportableAmounts(child, this.appComponent.currentYear);
@@ -84,15 +149,15 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     );
   }
 
-  public onAddMonthly(addMonthlyForm: NgForm): void {
+  public onAddMonthly(): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
-    addMonthlyForm.controls['childId'].setValue(this.childDetails.id);
-    console.log(addMonthlyForm.form);
-    this.monthlyService.addMonthly(addMonthlyForm.value).subscribe({
+    this.addMonthlyInChildDetailsForm.controls['childId'].setValue(this.childDetails.id);
+    //console.log(this.addMonthlyInChildDetailsForm);
+    this.monthlyService.addMonthly(this.addMonthlyInChildDetailsForm.value).subscribe({
       next: monthly => {
         console.log(monthly);
-        this.getChildDetails(addMonthlyForm.value.childId);
-        addMonthlyForm.reset();
+        this.getChildDetails(this.addMonthlyInChildDetailsForm.value.childId);
+        this.addMonthlyInChildDetailsForm.reset();
       },
       error: err => {
         this.errorMsg = err.message;
@@ -117,10 +182,11 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
 
   public onDeleteMonthly(monthlyId: number): void {
     this.monthlyService.deleteMonthly(monthlyId).subscribe({
-      next: monthly => {
-        console.log(monthly);
+      next: message => {
+        console.log(message);
         document.getElementById('search-monthlies')?.click();
         this.getChildDetails(this.deleteMonthly.childId);
+        
       },
       error: err => {
         this.errorMsg = err.message;
@@ -214,6 +280,10 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       }
     }
     );
+  }
+
+  public hideError(): void{
+    this.errorMsg = '';
   }
 
   public onOpenModel(monthly: any, mode: string): void {

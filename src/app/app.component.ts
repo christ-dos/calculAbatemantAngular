@@ -18,13 +18,13 @@ export class AppComponent implements OnInit {
   
   }
   public currentYear!: String;
-  public currentMonth!: Date;
+  public currentMonth!: String;
 
   public children!: Child[];
   
   ngOnInit(): void {
     this.currentYear = new String(new Date().getFullYear());
-    this.currentMonth = new Date();
+    this.currentMonth = new String(new Date().getMonth);
    // this.getChildren();
    
   }
