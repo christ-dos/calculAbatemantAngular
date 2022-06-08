@@ -85,6 +85,10 @@ export class CalculAbatementHomeComponent implements OnInit {
     });
   }
 
+  public hideError(): void{
+    this.errorMsg = '';
+  }
+
   public getTaxableSalary(child: Child, year: String): void {
     this.childService.getTaxableSalary(child.id, year).subscribe({
       next: taxableSalary => {

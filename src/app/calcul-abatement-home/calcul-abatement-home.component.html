@@ -18,7 +18,7 @@
 
    <div class="row px-5">
       <div class="row d-print-none d-flex pr-0 pb-4 justify-content-md-center">
-         <!-- Form search -->
+         <!-- Form search child-->
          <div
             class="col-8 col-md-6 col-lg-4 d-flex align-items-center justify-content-end justify-content-lg-end justify-content-md-end">
             <form class="form-inline">
@@ -27,7 +27,7 @@
                   placeholder="&#xF002;  Rechercher un Enfant  " required>
             </form>
          </div>
-         <!-- Form search end -->
+         <!-- Form search end child-->
          <button type="button" class="btn col-2 col-md-1 col-lg-1 pl-3 pl-md-0 d-flex justify-content-lg-end pr-lg-1"
             data-bs-toggle="modal" data-bs-target="#summaryModal">
             <span *ngIf="children" class="material-icons color-pink fs-2 p-2 shadow rounded bg-white-smoke"
@@ -41,6 +41,13 @@
          </button>
 
       </div>
+      <ng-container *ngIf="errorMsg">
+         <div class="alert alert-warning d-flex align-items-center mt-2 p-2 d-print-none">
+             <span class="material-icons color-gray mr-2">error</span>
+             {{errorMsg}}
+             <span class="material-icons color-gray ml-auto" (click)="hideError()">close</span>
+         </div>
+     </ng-container>
       <div  *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4">
          <div class="card m-b-30 shadow rounded " id="content">
             <div class="col-12 d-print-none">

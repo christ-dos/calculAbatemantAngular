@@ -30,8 +30,8 @@ export class ChildService {
         return this.http.put<Child>(`${this.apiCalculAbatementUrl}/child/update`, child);
     }
 
-    public deleteChild(childId: number): Observable<String> {
-        return this.http.delete<String>(`${this.apiCalculAbatementUrl}/child/delete/${childId}`);
+    public deleteChild(childId: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiCalculAbatementUrl}/child/delete/${childId}`);
     }
 
     public getTaxableSalary(childId: number, year: String): Observable<number> {

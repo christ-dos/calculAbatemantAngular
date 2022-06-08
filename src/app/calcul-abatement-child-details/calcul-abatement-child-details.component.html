@@ -207,24 +207,25 @@
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="month">Mois</label>
-                            <select class="form-select form-group mb-0" aria-label="MonthSelect" name="month"
+                            <select class="form-select form-group mb-0" aria-label="MonthSelect" 
                                 id="month" formControlName="month"
-                                [ngClass]="{'is-invalid': addMonthlyInChildDetailsForm.touched,
+                                [ngClass]="{'is-invalid':(addMonthlyInChildDetailsForm.get('month')?.touched && addMonthlyInChildDetailsForm.get('month')?.pristine),
                                 'is-valid': addMonthlyInChildDetailsForm.get('month')?.valid}">
                                 <option *ngFor="let month of this.calculAbatementMonthlyComponent.months"
                                     [ngValue]="month" name="monthSelected" id="monthSelected">{{month}}</option>
                             </select>
-                            <div *ngIf="addMonthlyInChildDetailsForm.get('month')?.errors?.['required']" class="invalid-feedback pl-1">
-                                <span>Sélectionner le mois</span>
+                            <div *ngIf="addMonthlyInChildDetailsForm.get('month')?.pristine && addMonthlyInChildDetailsForm.get('month')?.invalid" class="invalid-feedback pl-1">
+                                <span>Selectionner le mois</span>
                             </div>
                         </div>
                         <div class="col-6">
                             <label for="year">Année</label>
                             <input type="text" class="form-control" id="year" placeholder="2022" 
                             formControlName="year"
-                            [ngClass]="{'is-invalid': errorsValidation
+                            [ngClass]="{'is-invalid':(addMonthlyInChildDetailsForm.get('year')?.touched ||  addMonthlyInChildDetailsForm.get('year')?.dirty) && errorsValidation,
+                                        'is-valid': (addMonthlyInChildDetailsForm.get('year')?.touched ||  addMonthlyInChildDetailsForm.get('year')?.dirty) && addMonthlyInChildDetailsForm.get('year')?.valid
                               }">
-                            <div  class="invalid-feedback pl-1">
+                            <div class="invalid-feedback pl-1">
                                 <span>{{errorsValidation}}</span>
                             </div>
                         </div>
@@ -232,11 +233,13 @@
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="taxableSalary">Salaire Imposable</label>
-                            <input type="number" ngModel="{{taxableSalarySibling}}" name="taxableSalary"
+                            <input type="number"  name="taxableSalary"
                                 class="form-control" id="taxableSalary" placeholder="650.20 €" 
                                 formControlName="taxableSalary"
-                                [ngClass]="{'is-invalid': errorsValidation}">
-                                <div  class="invalid-feedback pl-1">
+                                [ngClass]="{'is-invalid': (addMonthlyInChildDetailsForm.get('taxableSalary')?.touched ||  addMonthlyInChildDetailsForm.get('taxableSalary')?.dirty) && errorsValidation,
+                                'is-valid': addMonthlyInChildDetailsForm.get('taxableSalary')?.dirty && addMonthlyInChildDetailsForm.get('taxableSalary')?.valid
+                            }">
+                                <div class="invalid-feedback pl-1">
                                     <span>{{errorsValidation}}</span>
                                 </div>
                         </div>
@@ -255,12 +258,12 @@
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="dayWorked">Jours (plus de 8h par jour)</label>
-                            <input type="number" ngModel name="dayWorked" class="form-control" id="dayWorked"
+                            <input type="number" name="dayWorked" class="form-control" id="dayWorked"
                                 placeholder="20" formControlName="dayWorked">
                         </div>
                         <div class="col-6">
                             <label for="hoursWorked">Heures (moins de 8h par jour)</label>
-                            <input type="number" ngModel name="hoursWorked" class="form-control" id="hoursWorked"
+                            <input type="number"  name="hoursWorked" class="form-control" id="hoursWorked"
                                 placeholder="8.00" formControlName="hoursWorked" >
                         </div>
                     </div>

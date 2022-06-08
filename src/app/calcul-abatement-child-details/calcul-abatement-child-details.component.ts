@@ -42,7 +42,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
 
   public errorMsg!: String;
   public errorsValidation!: String;
-  public taxableSalarySibling!: number;
+  //public taxableSalarySibling!: number; à implementer
 
   public months!: String[];
   //public monthliesFiltered!: Monthly[];
@@ -74,7 +74,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       month: ["", [Validators.required]],
       year: [this.appComponent.currentYear,
         [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
-      taxableSalary: [null,
+      taxableSalary: ['this.taxableSalarySibling',
         [Validators.required, Validators.min(0), Validators.max(10000)]],
       dayWorked: [null,
         [Validators.required, Validators.min(0), Validators.max(31)]],
@@ -100,8 +100,8 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     
     });
 
-    yearControl?.valueChanges.subscribe(value1 => {
-      console.log(value1);
+    yearControl?.valueChanges.subscribe(value=> {
+      console.log(value);
       this.setMessage(yearControl);
     
     });
