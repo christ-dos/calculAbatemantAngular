@@ -1,7 +1,7 @@
 
 
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { AppComponent } from '../app.component';
 import { CalculAbatementMonthlyComponent } from '../calcul-abatement-monthly/calcul-abatement-monthly.component';
 import { Child } from '../models/child.model';
@@ -16,14 +16,16 @@ import { MonthlyService } from '../services/monthly.service';
 })
 export class CalculAbatementHomeComponent implements OnInit {
   public calculAbatementMonthlyComponent!: CalculAbatementMonthlyComponent;
+  public addMonthlyForm!: FormGroup;
 
   constructor(
     private childService: ChildService,
     private monthlyService: MonthlyService,
-    public appComponent: AppComponent
+    public appComponent: AppComponent,
+    private fb: FormBuilder,
   ) {
     this.calculAbatementMonthlyComponent = new CalculAbatementMonthlyComponent(
-      monthlyService, appComponent, childService);
+      monthlyService, appComponent, childService, fb);
   }
 
 
@@ -39,7 +41,7 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   public childId!: number;
   public addMonthlyChild!: Child;
-  public monthSelected!: String;
+  //public monthSelected!: String;
 
   public sumTaxRelief!: number;
   public sumReportableAmount!: number;
@@ -52,14 +54,86 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   public selectedFile!: File;
   public urlLink!: string;
+
   public errorMsg!: String;
+  public successMsg!: String;
+  public errorsValidation!: String;
+
+  public validationErrorsMessages: any = {
+    required: "Ce champ est requis",
+    min: "Le nombre ne peut être inferieur à 0",
+    max: "Le nombre est trop grand",
+    minlength: "L\' année doit contenir 4 caractères min",
+    maxlength: "L\' année doit contenir 4 caractères max",
+    pattern: "Uniquement les nombres sont acceptés"
+  };
 
   @ViewChild('content', { static: false })
   public el!: ElementRef;
 
   ngOnInit(): void {
     this.getChildren();
+    this.addMonthlyForm = this.fb.group({
+      month: ["", [Validators.required]],
+      year: [this.appComponent.currentYear,
+      [Validators.required, Validators.minLength(4), Validators.maxLength(4),
+      Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+      taxableSalary: ["",
+        [Validators.required, Validators.min(0), Validators.max(10000)]],
+      dayWorked: [null,
+        [Validators.required, Validators.min(0), Validators.max(31)]],
+
+      hoursWorked: [null,
+        [Validators.min(0), Validators.max(350)]],
+
+      lunch: [null,
+        [Validators.min(0), Validators.max(100)]],
+
+      snack: [null,
+        [Validators.min(0), Validators.max(100)]],
+      childId: 'this.childDetails.id'
+
+    });
+
+    const monthControl = this.addMonthlyForm.get('month');
+    const yearControl = this.addMonthlyForm.get('year');
+    const taxableSalaryControl = this.addMonthlyForm.get('taxableSalary');
+    const dayWorkedControl = this.addMonthlyForm.get('dayWorked');
+    const hoursWorkedControl = this.addMonthlyForm.get('hoursWorked');
+    const lunchControl = this.addMonthlyForm.get('lunch');
+    const snackControl = this.addMonthlyForm.get('snack');
+
+    this.formControlsValueChange(monthControl);
+    this.formControlsValueChange(yearControl);
+    this.formControlsValueChange(taxableSalaryControl);
+    this.formControlsValueChange(dayWorkedControl);
+    this.formControlsValueChange(hoursWorkedControl);
+    this.formControlsValueChange(lunchControl);
+    this.formControlsValueChange(snackControl);
+
   }
+
+  public formControlsValueChange(fromControl: AbstractControl | null): void{
+    fromControl?.valueChanges.subscribe(value => {
+      console.log(value);
+      this.setMessage(fromControl);
+    
+    }); 
+  }
+
+  private setMessage(value: AbstractControl): void{
+    this.errorsValidation = '';
+
+    if((value.touched || value.dirty || value.untouched || value.pristine) && value.errors){
+      console.log(Object.keys(value.errors));
+      this.errorsValidation = Object.keys(value.errors).map(
+        key => this.validationErrorsMessages[key]).join(' ');
+
+        console.log("mon erreur:" + this.errorsValidation);
+
+    }
+  }
+
 
   public getChildren(): void {
     this.childService.getAllChildren().subscribe({
@@ -85,9 +159,6 @@ export class CalculAbatementHomeComponent implements OnInit {
     });
   }
 
-  public hideError(): void{
-    this.errorMsg = '';
-  }
 
   public getTaxableSalary(child: Child, year: String): void {
     this.childService.getTaxableSalary(child.id, year).subscribe({
@@ -202,21 +273,32 @@ export class CalculAbatementHomeComponent implements OnInit {
     document.getElementById('btn-add-child');
   }
 
-  public onAddMonthly(addMonthlyForm: NgForm): void {
-    console.log("addMonthlyForm: " + addMonthlyForm.value.childId);
-    document.getElementById('cancel-add-Monthly-form')?.click();
-    addMonthlyForm.controls['childId'].setValue(this.childId);
-
-    this.monthlyService.addMonthly(addMonthlyForm.value).subscribe({
+  public onAddMonthly(): void {
+   document.getElementById('cancel-add-Monthly-form')?.click();
+   this. addMonthlyForm.controls['childId'].setValue(this.childId);
+    console.log(this.addMonthlyForm);
+    this.monthlyService.addMonthly(this.addMonthlyForm.value).subscribe({
       next: monthly => {
         console.log(monthly);
-        this.getChildren();
-        addMonthlyForm.reset();
+        this.childService.getChildById(monthly.childId).subscribe({
+          next: childById => {
+            console.log(childById);
+            this.addMonthlyChild = childById;
+            this.successMsg = "Déclaration Mensuelle ajouté avec succés pour: " 
+            +  this.addMonthlyChild?.firstname + " " + this.addMonthlyChild?.lastname + "!";
+          },
+          error: err => {
+            this.erroMessage = err;
+            console.log( " mon erreur:" + this.erroMessage);
+          }
+        }
+        );
+       this.getChildren();
+        this.addMonthlyForm.reset();
       }, error: err => {
         this.errorMsg = err.message;
       }
     }
-
     );
   }
 
@@ -231,6 +313,9 @@ export class CalculAbatementHomeComponent implements OnInit {
         next: taxableSalarySibling => {
           this.taxableSalarySibling = taxableSalarySibling;
           console.log(taxableSalarySibling);
+          this.addMonthlyForm.patchValue({
+            taxableSalary:this.taxableSalarySibling
+          })
           taxableSalarySiblingForm.reset();
         },
         error: err => {
@@ -285,6 +370,15 @@ export class CalculAbatementHomeComponent implements OnInit {
       }
     }, 100);
   }
+
+  public hideError(errorToHide: String): void {
+    console.log(errorToHide);
+    if(errorToHide === "errorMsg"){
+      this.errorMsg = '';
+    } 
+    this.successMsg = '';
+  }
+
 
   public onOpenModel(monthly: any, mode: string): void {
     const container = document.getElementById('main-container');

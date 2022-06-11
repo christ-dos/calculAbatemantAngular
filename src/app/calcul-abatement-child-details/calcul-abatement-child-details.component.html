@@ -1,4 +1,3 @@
-
 <div class="container " id="main-container">
     <ng-container *ngIf="errorMsg">
         <div class="alert alert-warning d-flex align-items-center mt-2 p-2 d-print-none">
@@ -111,13 +110,22 @@
             </div>
             <div class="col-10 col-lg-11 pr-0  d-flex justify-content-end align-items-start">
                 <div class="col-8 d-flex flex-column align-items-end pr-0">
-                    <input type="text" name="year" min="0" maxlength="4" minlength="4"
+                    <input type="text" name="year" maxlength="4" minlength="4" pattern="[0-9]{4}"
                         class=" col-5 col-lg-2 form-control-plaintext border border-secondary rounded-pill mr-2  px-auto shadow-sm"
-                        ngModel id="year" placeholder="Année" required #yearFilterVar="ngModel"
-                        [ngClass]="{'is-invalid' : yearFilterVar.touched && !yearFilterVar.valid }" />
-                    <div *ngIf="yearFilterVar.errors"
-                        class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0">
+                        ngModel id="year" placeholder="Année" required #yearFilterVar="ngModel" [ngClass]="{'is-invalid' : (yearFilterVar.touched || yearFilterVar.dirty) && !yearFilterVar.valid,
+                                    'is-valid'  : yearFilterVar.valid}" />
+                    <div *ngIf="yearFilterVar?.hasError('required')"
+                        class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0 alert alert-danger p-0 mb-0">
                         <span>Entrer une année</span>
+                    </div>
+                    <div *ngIf="yearFilterVar?.hasError('minlength')"
+                        class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0 alert alert-danger p-0 mb-0">
+                        <span>4 caractères min</span>
+
+                    </div>
+                    <div *ngIf="yearFilterVar?.hasError('pattern')"
+                        class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0 alert alert-danger p-0 mb-0">
+                        <span>Entrer un nombre</span>
                     </div>
                 </div>
                 <button
@@ -207,24 +215,24 @@
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="month">Mois</label>
-                            <select class="form-select form-group mb-0" aria-label="MonthSelect" 
-                                id="month" formControlName="month"
-                                [ngClass]="{'is-invalid':(addMonthlyInChildDetailsForm.get('month')?.touched && addMonthlyInChildDetailsForm.get('month')?.pristine),
+                            <select class="form-select form-group mb-0" aria-label="MonthSelect" id="month"
+                                formControlName="month" [ngClass]="{'is-invalid':(addMonthlyInChildDetailsForm.get('month')?.touched && addMonthlyInChildDetailsForm.get('month')?.pristine),
                                 'is-valid': addMonthlyInChildDetailsForm.get('month')?.valid}">
                                 <option *ngFor="let month of this.calculAbatementMonthlyComponent.months"
-                                    [ngValue]="month" name="monthSelected" id="monthSelected">{{month}}</option>
+                                    [ngValue]="month" name="monthSelected" id="monthSelected">{{month}}
+                                </option>
                             </select>
-                            <div *ngIf="addMonthlyInChildDetailsForm.get('month')?.pristine && addMonthlyInChildDetailsForm.get('month')?.invalid" class="invalid-feedback pl-1">
+                            <div *ngIf="addMonthlyInChildDetailsForm.get('month')?.pristine && addMonthlyInChildDetailsForm.get('month')?.invalid"
+                                class="invalid-feedback pl-1 p-0">
                                 <span>Selectionner le mois</span>
                             </div>
                         </div>
                         <div class="col-6">
                             <label for="year">Année</label>
-                            <input type="text" class="form-control" id="year" placeholder="2022" 
-                            formControlName="year"
-                            [ngClass]="{'is-invalid':(addMonthlyInChildDetailsForm.get('year')?.touched ||  addMonthlyInChildDetailsForm.get('year')?.dirty) && errorsValidation,
-                                        'is-valid': (addMonthlyInChildDetailsForm.get('year')?.touched ||  addMonthlyInChildDetailsForm.get('year')?.dirty) && addMonthlyInChildDetailsForm.get('year')?.valid
-                              }">
+                            <input type="text" ng-pattern="/0-9/" class="form-control" id="year" placeholder="2022"
+                                formControlName="year" [ngClass]="{'is-invalid': addMonthlyInChildDetailsForm.get('year')?.dirty && addMonthlyInChildDetailsForm.get('year')?.invalid,
+                                        'is-valid':addMonthlyInChildDetailsForm.get('year')?.valid
+                              }" />
                             <div class="invalid-feedback pl-1">
                                 <span>{{errorsValidation}}</span>
                             </div>
@@ -233,50 +241,65 @@
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="taxableSalary">Salaire Imposable</label>
-                            <input type="number"  name="taxableSalary"
-                                class="form-control" id="taxableSalary" placeholder="650.20 €" 
-                                formControlName="taxableSalary"
-                                [ngClass]="{'is-invalid': (addMonthlyInChildDetailsForm.get('taxableSalary')?.touched ||  addMonthlyInChildDetailsForm.get('taxableSalary')?.dirty) && errorsValidation,
+                            <input type="number" name="taxableSalary" class="form-control" id="taxableSalary"
+                                placeholder="650.20 €" formControlName="taxableSalary" [ngClass]="{'is-invalid': addMonthlyInChildDetailsForm.get('taxableSalary')?.dirty && addMonthlyInChildDetailsForm.get('taxableSalary')?.invalid,
                                 'is-valid': addMonthlyInChildDetailsForm.get('taxableSalary')?.dirty && addMonthlyInChildDetailsForm.get('taxableSalary')?.valid
-                            }">
-                                <div class="invalid-feedback pl-1">
-                                    <span>{{errorsValidation}}</span>
-                                </div>
-                        </div>
-                        <div class="invalid-feedback">
-                            <span>Le salaire imposable doit être compris entre 0 et 10 000</span>
+                                }" />
+                            <div class="invalid-feedback pl-1">
+                                <span>{{errorsValidation}}</span>
+                            </div>
                         </div>
                         <div class="col-6">
                             <label for="calcul-taxable-salary-sibling-form" class="d-inline-block text-truncate">Salaire
                                 Imposable Fraterie</label>
                             <button (click)="calculAbatementMonthlyComponent.onOpenModel(null,'taxableSalarySibling')"
                                 type="button" id="calcul-taxable-salary-sibling-form"
-                                class="btn btn-danger d-inline-block text-truncate m-0"
-                                data-toggle="modal">Calculer</button>
+                                class="btn btn-danger d-inline-block text-truncate m-0" data-toggle="modal">Calculer
+                            </button>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="dayWorked">Jours (plus de 8h par jour)</label>
-                            <input type="number" name="dayWorked" class="form-control" id="dayWorked"
-                                placeholder="20" formControlName="dayWorked">
+                            <input type="number" class="form-control" id="dayWorked" placeholder="20"
+                                formControlName="dayWorked" [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('dayWorked')?.dirty &&  addMonthlyInChildDetailsForm.get('dayWorked')?.invalid,
+                                'is-valid': addMonthlyInChildDetailsForm.get('dayWorked')?.dirty && addMonthlyInChildDetailsForm.get('dayWorked')?.valid
+                                }" />
+                            <div class="invalid-feedback pl-1">
+                                <span>{{errorsValidation}}</span>
+                            </div>
                         </div>
                         <div class="col-6">
                             <label for="hoursWorked">Heures (moins de 8h par jour)</label>
-                            <input type="number"  name="hoursWorked" class="form-control" id="hoursWorked"
-                                placeholder="8.00" formControlName="hoursWorked" >
+                            <input type="number" name="hoursWorked" class="form-control" id="hoursWorked"
+                                placeholder="8.00" formControlName="hoursWorked" [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('hoursWorked')?.dirty &&  addMonthlyInChildDetailsForm.get('hoursWorked')?.invalid,
+                                'is-valid': addMonthlyInChildDetailsForm.get('hoursWorked')?.dirty && addMonthlyInChildDetailsForm.get('hoursWorked')?.valid
+                            }" />
+                            <div class="invalid-feedback pl-1">
+                                <span>{{errorsValidation}}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="lunch">Repas</label>
                             <input type="number" name="lunch" class="form-control" id="lunch" placeholder="20"
-                                formControlName="lunch">
+                                formControlName="lunch" [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('lunch')?.dirty &&  addMonthlyInChildDetailsForm.get('lunch')?.invalid,
+                                'is-valid': addMonthlyInChildDetailsForm.get('lunch')?.dirty && addMonthlyInChildDetailsForm.get('lunch')?.valid
+                                }" />
+                            <div class="invalid-feedback pl-1">
+                                <span>{{errorsValidation}}</span>
+                            </div>
                         </div>
                         <div class="col-6">
                             <label for="snack">Goûters</label>
                             <input type="number" name="snack" class="form-control" id="snack" placeholder="20"
-                                formControlName="snack">
+                                formControlName="snack" [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('snack')?.dirty &&  addMonthlyInChildDetailsForm.get('snack')?.invalid,
+                                'is-valid': addMonthlyInChildDetailsForm.get('snack')?.dirty && addMonthlyInChildDetailsForm.get('snack')?.valid
+                                }" />
+                            <div class="invalid-feedback pl-1">
+                                <span>{{errorsValidation}}</span>
+                            </div>
 
                             <!-- <input type="hidden" name="childId" class="form-control"
                                 id="childId" placeholder="ChildId" formControlName="childId"> -->
@@ -308,63 +331,120 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form #editMonthlyForm="ngForm" (ngSubmit)="this.onUpdateMonthly(editMonthlyForm.value)">
+                <form novalidate [formGroup]="editMonthlyForm">
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="month">Mois</label>
-                            <input type="text" ngModel="{{editMonthly?.month | uppercase}}"
-                                onkeyup="this.value = this.value.toUpperCase()" name="month" class="form-control"
-                                id="month" placeholder="JANVIER" required>
+                            <select class="form-select form-group mb-0" aria-label="MonthSelect" 
+                                id="month"
+                                formControlName="month" 
+                                [ngClass]="{'is-invalid':(editMonthlyForm.get('month')?.touched && editMonthlyForm.get('month')?.pristine),
+                                'is-valid': editMonthlyForm.get('month')?.valid}">
+                                <option *ngFor="let month of this.calculAbatementMonthlyComponent.months"
+                                    [ngValue]="month" name="monthSelected" id="monthSelected">{{month}}
+                                </option>
+                            </select>
+                            <div *ngIf="editMonthlyForm.get('month')?.pristine && editMonthlyForm.get('month')?.invalid"
+                                class="invalid-feedback pl-1 p-0">
+                                <span>Selectionner le mois</span>
+                            </div>
                         </div>
                         <div class="col-6">
                             <label for="year">Année</label>
-                            <input type="text" ngModel="{{editMonthly?.year}}" name="year" class="form-control"
-                                id="year" placeholder="2022" required minlength="4" maxlength="4">
+                            <input type="text" ng-pattern="/0-9/" class="form-control" 
+                            id="year" placeholder="2022"
+                            formControlName="year" 
+                            [ngClass]="{'is-invalid': editMonthlyForm.get('year')?.dirty 
+                            && editMonthlyForm.get('year')?.invalid,
+                               'is-valid': editMonthlyForm.get('year')?.valid
+                            }" />
+                     <div class="invalid-feedback pl-1">
+                        <span>{{errorsValidation}}</span>
+                     </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="taxableSalary">Salaire Imposable</label>
-                            <input type="number" ngModel="{{editMonthly?.taxableSalary}}" name="taxableSalary"
-                                class="form-control" id="taxableSalary" placeholder="650.20 €" required min="0"
-                                max="10000">
+                            <input type="number" name="taxableSalary" 
+                            class="form-control" id="taxableSalary"
+                            placeholder="650.20 €" 
+                            formControlName="taxableSalary" 
+                            [ngClass]="{'is-invalid': editMonthlyForm.get('taxableSalary')?.dirty && editMonthlyForm.get('taxableSalary')?.invalid,
+                            'is-valid': editMonthlyForm.get('taxableSalary')?.dirty && editMonthlyForm.get('taxableSalary')?.valid
+                            }" />
+                         <div class="invalid-feedback pl-1">
+                            <span>{{errorsValidation}}</span>
+                         </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="dayWorked">Jours (plus de 8h par jour)</label>
-                            <input type="number" ngModel="{{editMonthly?.dayWorked}}" name="dayWorked"
-                                class="form-control" id="dayWorked" placeholder="20" required min="0" max="31">
+                            <input type="number"  class="form-control" id="dayWorked"
+                            placeholder="20" 
+                            formControlName="dayWorked"
+                            [ngClass]="{'is-invalid': editMonthlyForm.get('dayWorked')?.dirty
+                             &&  editMonthlyForm.get('dayWorked')?.invalid,
+                            'is-valid': editMonthlyForm.get('dayWorked')?.dirty 
+                            && editMonthlyForm.get('dayWorked')?.valid
+                            }"/>
+                            <div  class="invalid-feedback pl-1">
+                                <span>{{errorsValidation}}</span>
+                            </div> 
                         </div>
                         <div class="col-6">
                             <label for="hoursWorked">Heures (moins de 8h par jour)</label>
-                            <input type="number" ngModel="{{editMonthly?.hoursWorked}}" name="hoursWorked"
-                                class="form-control" id="hoursWorked" placeholder="8.00" min="0" max="500">
+                            <input type="number"  name="hoursWorked" class="form-control" id="hoursWorked"
+                           placeholder="8.00" 
+                           formControlName="hoursWorked"
+                           [ngClass]="{'is-invalid': editMonthlyForm.get('hoursWorked')?.dirty 
+                           &&  editMonthlyForm.get('hoursWorked')?.invalid,
+                           'is-valid': editMonthlyForm.get('hoursWorked')?.dirty 
+                           && editMonthlyForm.get('hoursWorked')?.valid
+                           }" />
+                          <div class="invalid-feedback pl-1">
+                            <span>{{errorsValidation}}</span>
+                          </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="lunch">Repas</label>
-                            <input type="number" ngModel="{{editMonthly?.lunch}}" name="lunch" class="form-control"
-                                id="lunch" placeholder="20" min="0" max="100">
+                            <input type="number" name="lunch" class="form-control" id="lunch" placeholder="20"
+                            formControlName="lunch"
+                            [ngClass]="{'is-invalid': editMonthlyForm.get('lunch')?.dirty 
+                            &&  editMonthlyForm.get('lunch')?.invalid,
+                            'is-valid': editMonthlyForm.get('lunch')?.dirty 
+                            && editMonthlyForm.get('lunch')?.valid
+                            }" />
+                            <div class="invalid-feedback pl-1">
+                                <span>{{errorsValidation}}</span>
+                            </div>
                         </div>
                         <div class="col-6">
                             <label for="snack">Goûters</label>
-                            <input type="number" ngModel="{{editMonthly?.snack}}" name="snack" class="form-control"
-                                id="snack" placeholder="20" min="0" max="100">
+                            <input type="number" name="snack" class="form-control" id="snack" placeholder="20"
+                            formControlName="snack"
+                            [ngClass]="{'is-invalid': editMonthlyForm.get('snack')?.dirty 
+                            &&  editMonthlyForm.get('snack')?.invalid,
+                            'is-valid': editMonthlyForm.get('snack')?.dirty && editMonthlyForm.get('snack')?.valid
+                            }" />
+                            <div class="invalid-feedback pl-1">
+                                <span>{{errorsValidation}}</span>
+                            </div>
 
-                            <input type="hidden" ngModel="{{editMonthly?.childId}}" name="childId" class="form-control"
+                            <!-- <input type="hidden" ngModel="{{editMonthly?.childId}}" name="childId" class="form-control"
                                 id="childId" placeholder="ChildId">
                             <input type="hidden" ngModel="{{editMonthly?.monthlyId}}" name="monthlyId"
-                                class="form-control" id="monthlyId" placeholder="MonthlyId">
+                                class="form-control" id="monthlyId" placeholder="MonthlyId"> -->
 
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="cancel-edit-Monthly-form" class="btn btn-secondary"
                             data-dismiss="modal">Annuler</button>
-                        <button data-dismiss="modal" class="btn bg-danger text-light"
-                            (click)="onUpdateMonthly(editMonthlyForm.value)"
+                        <button data-dismiss="modal" class="btn bg-danger text-light" (click)="onUpdateMonthly()"
                             [disabled]="editMonthlyForm.invalid">Enregistrer</button>
                     </div>
                 </form>

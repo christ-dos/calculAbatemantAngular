@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppComponent } from '../app.component';
 import { CalculAbatementHomeComponent } from '../calcul-abatement-home/calcul-abatement-home.component';
@@ -19,8 +19,10 @@ export class CalculAbatementHeaderComponent implements OnInit {
   constructor
     (private monthlyService: MonthlyService,
       public appComponent: AppComponent,
-      private childService: ChildService) {
-    this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService, monthlyService, appComponent);
+      private childService: ChildService,
+      private fb: FormBuilder,) {
+
+    this.calculAbatementHomeComponent = new CalculAbatementHomeComponent(childService, monthlyService, appComponent, fb);
 
   }
 

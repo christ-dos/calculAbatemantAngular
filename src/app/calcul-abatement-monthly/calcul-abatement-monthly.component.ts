@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { AppComponent } from '../app.component';
 import { CalculAbatementHomeComponent } from '../calcul-abatement-home/calcul-abatement-home.component';
 import { Child } from '../models/child.model';
@@ -14,11 +14,13 @@ import { MonthlyService } from '../services/monthly.service';
   styleUrls: ['./calcul-abatement-monthly.component.css']
 })
 export class CalculAbatementMonthlyComponent implements OnInit {
+  public addMonthlyModalForm!: FormGroup
 
   constructor(
     private monthlyService: MonthlyService,
     public appComponent: AppComponent,
     private childService: ChildService,
+    private fb: FormBuilder
   ) { }
 
   public monthlies!: Monthly[];
@@ -32,7 +34,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   public taxableSalarySibling!: number;
 
   public months!: String[];
-  public monthSelected!: String;
+ // public monthSelected!: String;
 
   public sumTaxableSalary!: number;
   public sumDaysWorked!: number;
@@ -41,6 +43,16 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   public sumSnacks!: number;
 
   public errorMsg!: String;
+  public errorsValidation!: String;
+
+  public validationErrorsMessages: any = {
+    required: "Ce champ est requis",
+    min: "Le nombre ne peut être inferieur à 0",
+    max: "Le nombre est trop grand",
+    minlength: "L\' année doit contenir 4 caractères min",
+    maxlength: "L\' année doit contenir 4 caractères max",
+    pattern:"Uniquement les nombres sont acceptés"
+  };
 
   public valueSelected!: number;
 
@@ -48,6 +60,69 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     this.getChildren();
     this.getMonths();
     this.valueSelected = 0;
+
+    this.addMonthlyModalForm = this.fb.group({
+      month: ["", [Validators.required]],
+      year: [this.appComponent.currentYear,
+        [Validators.required, Validators.minLength(4), Validators.maxLength(4),
+          Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+      taxableSalary: ["",
+        [Validators.required, Validators.min(0), Validators.max(10000)]],
+      dayWorked: [null,
+        [Validators.required, Validators.min(0), Validators.max(31)]],
+     
+        hoursWorked: [null,
+        [Validators.min(0), Validators.max(350)]],
+
+      lunch: [null,
+        [Validators.min(0), Validators.max(100)]],
+
+      snack: [null,
+        [Validators.min(0), Validators.max(100)]],
+      childId: 'this.childDetails.id'
+    });
+
+    const monthControl = this.addMonthlyModalForm.get('month');
+    const yearControl = this.addMonthlyModalForm.get('year');
+    const taxableSalaryControl = this.addMonthlyModalForm.get('taxableSalary');
+    const dayWorkedControl = this.addMonthlyModalForm.get('dayWorked');
+    const hoursWorkedControl = this.addMonthlyModalForm.get('hoursWorked');
+    const lunchControl = this.addMonthlyModalForm.get('lunch');
+    const snackControl = this.addMonthlyModalForm.get('snack');
+
+    this.formControlsValueChange(monthControl);
+    this.formControlsValueChange(yearControl);
+    this.formControlsValueChange(taxableSalaryControl);
+    this.formControlsValueChange(dayWorkedControl);
+    this.formControlsValueChange(hoursWorkedControl);
+    this.formControlsValueChange(lunchControl);
+    this.formControlsValueChange(snackControl);
+
+  }
+
+  public formControlsValueChange(fromControl: AbstractControl | null): void{
+    fromControl?.valueChanges.subscribe(value => {
+      console.log(value);
+      this.setMessage(fromControl);
+    
+    }); 
+  }
+
+  private setMessage(value: AbstractControl): void{
+    this.errorsValidation = '';
+
+    if((value.touched || value.dirty || value.untouched || value.pristine) && value.errors){
+      console.log(Object.keys(value.errors));
+      this.errorsValidation = Object.keys(value.errors).map(
+        key => this.validationErrorsMessages[key]).join(' ');
+
+        console.log("mon erreur:" + this.errorsValidation);
+
+    }
+  }
+
+  public hideError(): void{
+    this.errorMsg = '';
   }
 
   public onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm: NgForm): void {
@@ -128,18 +203,20 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     );
   }
 
-  public onAddMonthly(addMonthlyForm: NgForm): void {
+  public onAddMonthly(): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
 
-    addMonthlyForm.controls['childId'].setValue(this.childId);
-    addMonthlyForm.controls['month'].setValue(this.monthSelected);
-
-    this.monthlyService.addMonthly(addMonthlyForm.value).subscribe({
+    this.addMonthlyModalForm.controls['childId'].setValue(this.childId);
+   // this.addMonthlyModal.controls['month'].setValue(this.monthSelected);
+   // console.log(JSON.stringify(this.addMonthlyModal.value));
+   //todo clean code
+    this.monthlyService.addMonthly(this.addMonthlyModalForm.value).subscribe({
       next: monthly => {
         console.log(monthly);
-        this.getMonthliesByYearAndChildId(addMonthlyForm.value.year, addMonthlyForm.value.childId)
+        this.getMonthliesByYearAndChildId(this.addMonthlyModalForm.value.year,
+           this.addMonthlyModalForm.value.childId)
 
-        addMonthlyForm.reset();
+        this.addMonthlyModalForm.reset();
         document.getElementById('search-monthlies')?.click();
       },
       error: err => {
@@ -157,6 +234,11 @@ export class CalculAbatementMonthlyComponent implements OnInit {
         next: taxableSalarySibling => {
           this.taxableSalarySibling = taxableSalarySibling;
           console.log(taxableSalarySibling);
+
+          this.addMonthlyModalForm.patchValue({
+          taxableSalary: this.taxableSalarySibling
+         });
+
           taxableSalarySiblingForm.reset();
         },
         error: err => {

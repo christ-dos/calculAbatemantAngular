@@ -4,6 +4,21 @@
 
 <!--Main container-->
 <div class="container" id="main-container">
+   <ng-container *ngIf="errorMsg">
+      <div class="alert alert-warning d-flex align-items-center mt-2 p-2 mb-0 d-print-none">
+         <span class="material-icons color-gray mr-2">error</span>
+         {{errorMsg}}
+         <span class="material-icons color-gray ml-auto" (click)="hideError('errorMsg')">close</span>
+      </div>
+   </ng-container>
+   <ng-container *ngIf="successMsg">
+      <div class="alert alert-success d-flex align-items-center mt-2 p-2 mb-0 d-print-none">
+         <span class="material-icons color-gray mr-2">done</span>
+         {{successMsg}}
+         <span class="material-icons color-gray ml-auto" (click)="hideError('successMsg')">close</span>
+      </div>
+   </ng-container>
+   <!-- for printing (hidden)-->
    <div
       class="col-xl-1 col-lg-1 col-md-2 col-sm-3 col-4 rounded-circle bg-light-pink bg-gradient shadow d-none d-print-block"
       id="logo">
@@ -15,7 +30,7 @@
       <h2 class="col-6 shadow d-none d-print-block font-italic rounded-pill text-center">Liste des Enfants Accueillis
       </h2>
    </div>
-
+   <!-- for printing (hidden) end-->
    <div class="row px-5">
       <div class="row d-print-none d-flex pr-0 pb-4 justify-content-md-center">
          <!-- Form search child-->
@@ -41,14 +56,7 @@
          </button>
 
       </div>
-      <ng-container *ngIf="errorMsg">
-         <div class="alert alert-warning d-flex align-items-center mt-2 p-2 d-print-none">
-             <span class="material-icons color-gray mr-2">error</span>
-             {{errorMsg}}
-             <span class="material-icons color-gray ml-auto" (click)="hideError()">close</span>
-         </div>
-     </ng-container>
-      <div  *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4">
+      <div *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4">
          <div class="card m-b-30 shadow rounded " id="content">
             <div class="col-12 d-print-none">
                <span (click)="onOpenModel(child.id,'addMonthly')"
@@ -86,7 +94,8 @@
                </div>
             </div>
             <ul class="list-group list-group-flush px-1">
-               <li class="list-group-item font-italic" id="year-home-card"><strong> Année {{currentYear}}: </strong></li>
+               <li class="list-group-item font-italic" id="year-home-card"><strong> Année {{currentYear}}: </strong>
+               </li>
                <li class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable:
                   {{child?.taxableSalary | currency: 'EUR'}}</li>
                <li class="list-group-item font-italic "><i class="fa fa-money float-right"></i>Abatement Fiscal:
@@ -185,7 +194,8 @@
                   <div class="modal-footer">
                      <button type="button" id="cancel-add-child-form" class="btn btn-secondary"
                         data-dismiss="modal">Annuler</button>
-                     <button [disabled]="addForm.invalid" type="submit" class="btn btn-danger" id="btn-add-child">Enregistrer</button>
+                     <button [disabled]="addForm.invalid" type="submit" class="btn btn-danger"
+                        id="btn-add-child">Enregistrer</button>
                   </div>
                </form>
             </div>
@@ -208,60 +218,112 @@
                </button>
             </div>
             <div class="modal-body">
-               <form #addMonthlyForm="ngForm" (ngSubmit)="onAddMonthly(addMonthlyForm)">
+               <form novalidate (ngSubmit)="onAddMonthly()" [formGroup]="addMonthlyForm">
                   <div class="form-group row">
                      <div class="col-6">
-                        <label for="months">Mois</label>
-                        <select class="form-select form-group" aria-label="MonthSelect " name="months" id="months"
-                           [(ngModel)]="monthSelected">
-                           <option [value]="month" *ngFor="let month of calculAbatementMonthlyComponent.months"
-                              name="monthSelected" id="monthSelected">{{month}}</option>
+                        <label for="month">Mois</label>
+                        <select class="form-select form-group mb-0" 
+                        aria-label="MonthSelect" 
+                        id="month"
+                        formControlName="month" 
+                        [ngClass]="{'is-invalid':(addMonthlyForm.get('month')?.touched && addMonthlyForm.get('month')?.pristine),
+                                'is-valid': addMonthlyForm.get('month')?.valid}">
+                           <option *ngFor="let month of this.calculAbatementMonthlyComponent.months" [ngValue]="month"
+                              name="monthSelected" id="monthSelected">{{month}}
+                           </option>
                         </select>
-                        <input type="hidden" ngModel="{{monthSelected}}" name="month" class="form-control" id="month"
-                           placeholder="JANVIER">
+                        <div *ngIf="addMonthlyForm.get('month')?.pristine && addMonthlyForm.get('month')?.invalid"
+                           class="invalid-feedback pl-1 p-0">
+                           <span>Selectionner le mois</span>
+                        </div>
                      </div>
                      <div class="col-6">
                         <label for="year">Année</label>
-                        <input type="text" ngModel="{{appComponent.currentYear}}" name="year" class="form-control"
-                           id="year" placeholder="2022" required>
+                        <input type="text" 
+                        ng-pattern="/0-9/" class="form-control" 
+                        id="year" placeholder="2022" 
+                        formControlName="year"
+                        [ngClass]="{'is-invalid': addMonthlyForm.get('year')?.dirty && addMonthlyForm.get('year')?.invalid,
+                                    'is-valid':addMonthlyForm.get('year')?.valid
+                          }"/>
+                        <div class="invalid-feedback pl-1">
+                            <span>{{errorsValidation}}</span>
+                        </div>
                      </div>
                   </div>
                   <div class="form-group row">
                      <div class="col-6">
                         <label for="taxableSalary">Salaire Imposable(frais entretiens inclus)</label>
-                        <input type="number" ngModel="{{taxableSalarySibling}}" name="taxableSalary"
-                           class="form-control" id="taxableSalary" placeholder="650.20 €" required>
+                        <input type="number"  name="taxableSalary"
+                        class="form-control" id="taxableSalary" placeholder="650.20 €" 
+                        formControlName="taxableSalary"
+                        [ngClass]="{'is-invalid': addMonthlyForm.get('taxableSalary')?.dirty && addMonthlyForm.get('taxableSalary')?.invalid,
+                        'is-valid': addMonthlyForm.get('taxableSalary')?.dirty && addMonthlyForm.get('taxableSalary')?.valid
+                        }"/>
+                    <div  class="invalid-feedback pl-1">
+                        <span>{{errorsValidation}}</span>
+                    </div>
                      </div>
                      <div class="col-6">
                         <label for="calcul-taxable-salary-sibling-form" class="d-inline-block text-truncate">Salaire
                            Imposable Fraterie</label>
                         <button (click)="onOpenModel(null,'taxableSalarySibling')" type="button"
                            id="calcul-taxable-salary-sibling-form"
-                           class="btn btn-danger d-inline-block text-truncate m-0" data-toggle="modal">Calculer</button>
+                           class="btn btn-danger d-inline-block text-truncate m-0" 
+                           data-toggle="modal">Calculer
+                        </button>
                      </div>
                   </div>
                   <div class="form-group row">
                      <div class="col-6">
                         <label for="dayWorked">Jours (plus de 8h par jour)</label>
-                        <input type="number" ngModel name="dayWorked" class="form-control" id="dayWorked"
-                           placeholder="20" required>
+                        <input type="number"  class="form-control" id="dayWorked"
+                                placeholder="20" 
+                                formControlName="dayWorked"
+                                [ngClass]="{'is-invalid':addMonthlyForm.get('dayWorked')?.dirty &&  addMonthlyForm.get('dayWorked')?.invalid,
+                                'is-valid': addMonthlyForm.get('dayWorked')?.dirty && addMonthlyForm.get('dayWorked')?.valid
+                                }"/>
+                            <div  class="invalid-feedback pl-1">
+                                <span>{{errorsValidation}}</span>
+                            </div>   
                      </div>
                      <div class="col-6">
                         <label for="hoursWorked">Heures (moins de 8h par jour)</label>
-                        <input type="number" ngModel name="hoursWorked" class="form-control" id="hoursWorked"
-                           placeholder="8.00">
+                        <input type="number"  name="hoursWorked" class="form-control" id="hoursWorked"
+                                placeholder="8.00" 
+                                formControlName="hoursWorked"
+                                [ngClass]="{'is-invalid':addMonthlyForm.get('hoursWorked')?.dirty &&  addMonthlyForm.get('hoursWorked')?.invalid,
+                                'is-valid': addMonthlyForm.get('hoursWorked')?.dirty && addMonthlyForm.get('hoursWorked')?.valid
+                            }" />
+                            <div class="invalid-feedback pl-1">
+                                <span>{{errorsValidation}}</span>
+                            </div>
                      </div>
                   </div>
                   <div class="form-group row">
                      <div class="col-6">
                         <label for="lunch">Repas</label>
-                        <input type="number" ngModel name="lunch" class="form-control" id="lunch" placeholder="20">
-                     </div>
+                        <input type="number" name="lunch" class="form-control" id="lunch" placeholder="20"
+                        formControlName="lunch"
+                        [ngClass]="{'is-invalid':addMonthlyForm.get('lunch')?.dirty &&  addMonthlyForm.get('lunch')?.invalid,
+                        'is-valid': addMonthlyForm.get('lunch')?.dirty && addMonthlyForm.get('lunch')?.valid
+                        }" />
+                    <div class="invalid-feedback pl-1">
+                        <span>{{errorsValidation}}</span>
+                    </div>
+                  </div>
                      <div class="col-6">
                         <label for="snack">Goûters</label>
-                        <input type="number" ngModel name="snack" class="form-control" id="snack" placeholder="20">
-                        <input type="hidden" ngModel="{{childId}}" name="childId" class="form-control" id="childId"
-                           placeholder="ChildId">
+                        <input type="number" name="snack" class="form-control" id="snack" placeholder="20"
+                        formControlName="snack"
+                        [ngClass]="{'is-invalid':addMonthlyForm.get('snack')?.dirty &&  addMonthlyForm.get('snack')?.invalid,
+                        'is-valid': addMonthlyForm.get('snack')?.dirty && addMonthlyForm.get('snack')?.valid
+                        }" />
+                    <div class="invalid-feedback pl-1">
+                        <span>{{errorsValidation}}</span>
+                    </div>
+                        <!-- <input type="hidden" ngModel="{{childId}}" name="childId" class="form-control" id="childId"
+                           placeholder="ChildId"> -->
                      </div>
                   </div>
                   <div class="modal-footer">
