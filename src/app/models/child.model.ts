@@ -15,7 +15,7 @@ export class Child{
        public taxRelief: number,
        public feesLunch: number,
        public feesSnack: number,
-       public monthlies: Monthly[]
+       public monthlies?: Monthly[]
   ){} 
 
 }

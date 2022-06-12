@@ -105,6 +105,10 @@ a {
     background-color: rgba(176, 48, 62, 0.4);
 }
 
+.color-red {
+    color: red;
+}
+
 
 @media print {
     body {

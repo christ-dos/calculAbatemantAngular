@@ -48,7 +48,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   public months!: String[];
   //public monthliesFiltered!: Monthly[];
   //public monthliesByChildIdOrderedByYearDescAndMonthDesc!: Monthly[]; todo clean code
-
+  //todo clean code
   public sumTaxableSalary!: number;
   public sumDaysWorked!: number;
   public sumHoursWorked!: number;
@@ -71,8 +71,8 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     this.getChildDetails(id);
     this.calculAbatementMonthlyComponent.getMonths();
 
-    this.getaddMonthlyInChildDetailsForm();
-    this.geteditMonthlyForm();
+    this.getAddMonthlyInChildDetailsForm();
+    this.getEditMonthlyForm();
   }
 
   public formControlsValueChange(fromControl: AbstractControl | null): void{
@@ -96,7 +96,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     }
   }
 
-  public getaddMonthlyInChildDetailsForm(): void{
+  public getAddMonthlyInChildDetailsForm(): void{
     this.addMonthlyInChildDetailsForm = this.fb.group({
       month: ["", [Validators.required]],
       year: [this.appComponent.currentYear,
@@ -135,7 +135,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     this.formControlsValueChange(snackControl);
   }
 
-  public geteditMonthlyForm(): void{
+  public getEditMonthlyForm(): void{
     this.editMonthlyForm = this.fb.group({
 
       monthlyId: [""],
@@ -159,7 +159,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       childId: [""]
     });
 
-    const monthlyId = this.editMonthlyForm.get('monthlyId');
+   // const monthlyId = this.editMonthlyForm.get('monthlyId');
     const monthControl = this.editMonthlyForm.get('month');
     const yearControl = this.editMonthlyForm.get('year');
     const taxableSalaryControl = this.editMonthlyForm.get('taxableSalary');
@@ -168,7 +168,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     const lunchControl = this.editMonthlyForm.get('lunch');
     const snackControl = this.editMonthlyForm.get('snack');
 
-    this.formControlsValueChange(monthlyId);
+   // this.formControlsValueChange(monthlyId);
     this.formControlsValueChange(monthControl);
     this.formControlsValueChange(yearControl);
     this.formControlsValueChange(taxableSalaryControl);
@@ -218,6 +218,9 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       },
       error: err => {
         this.errorMsg = err.message;
+        this.errorMsg = "La déclaration mensuelle pour: " 
+        + this.addMonthlyInChildDetailsForm.value.month + " "  + this.addMonthlyInChildDetailsForm.value.year + " existe déjà!";
+      
       }
     }
     );
@@ -225,7 +228,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
   }
 
   public onUpdateMonthly(): void {
-    console.log(JSON.stringify( this.editMonthlyForm.value));
+   // console.log(JSON.stringify( this.editMonthlyForm.value));
     this.monthlyService.updateMonthly(this.editMonthlyForm.value).subscribe({
       next: monthly => {
         console.log(monthly);
@@ -233,11 +236,12 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
           monthlyId: this.editMonthly.monthlyId,
           childId: this.editMonthly.childId
          });
-        
         this.getChildDetails(monthly.childId);
       },
       error: err => {
         this.errorMsg = err.message;
+        this.errorMsg = "La déclaration mensuelle pour: " 
+        + this.editMonthlyForm.value.month + " "  + this.editMonthlyForm.value.year + " existe déjà!";
       }
     }
     );
@@ -273,17 +277,21 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     );
   }
 
-  public onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm: NgForm): void {
-    this.monthlyService.getMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm.value.year, this.childDetails.id).subscribe(
+  public onGetMonthliesByYearAndChildId(filterMonthliesForm: NgForm): void {
+    this.monthlyService.getMonthliesByYearAndChildId(filterMonthliesForm.value.year, this.childDetails.id).subscribe(
       {
         next: monthlies => {
           this.childDetails.monthlies = monthlies;
           console.log(monthlies);
+          if(!monthlies.length){
+            this.errorMsg = "Aucune déclaration enregistré en: " 
+            + filterMonthliesForm.value.year ;
+          }
 
-          if (this.childDetails.monthlies.some(monthly => monthly.year === monthliesByYearAndByChildIdForm.value.year)
+          if (this.childDetails.monthlies.some(monthly => monthly.year === filterMonthliesForm.value.year)
           ) {
-            this.getTaxRelief(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
-            this.getAnnualReportableAmounts(this.childDetails, monthliesByYearAndByChildIdForm.value.year);
+            this.getTaxRelief(this.childDetails, filterMonthliesForm.value.year);
+            this.getAnnualReportableAmounts(this.childDetails, filterMonthliesForm.value.year);
           } else {
             this.childDetails.taxRelief = 0;
             this.childDetails.reportableAmounts = 0;

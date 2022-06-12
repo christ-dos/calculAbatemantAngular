@@ -43,6 +43,10 @@
     color: rgb(113, 102, 102);
 }
 
+.color-red {
+    color: red;
+}
+
 
 #AddMonthly:hover {
     color: rgb(150, 27, 88);

@@ -142,7 +142,7 @@ export class CalculAbatementHomeComponent implements OnInit {
         this.children = children;
         this.calculAbatementMonthlyComponent.getMonths();
         this.children.forEach((child) => {
-          if (child.monthlies.some(monthly => monthly.year === this.appComponent.currentYear)) {
+          if (child.monthlies?.some(monthly => monthly.year === this.appComponent.currentYear)) {
             this.getTaxableSalary(child, this.appComponent.currentYear);
             this.getAnnualReportableAmounts(child, this.appComponent.currentYear);
             this.getTaxRelief(child, this.appComponent.currentYear);
@@ -207,7 +207,7 @@ export class CalculAbatementHomeComponent implements OnInit {
     this.currentYear = year;
 
     this.children.forEach((child) => {
-      if (child.monthlies.some(monthly => monthly.year === year)) {
+      if (child.monthlies?.some(monthly => monthly.year === year)) {
         this.getTaxableSalary(child, year);
         this.getTaxRelief(child, year);
         this.getAnnualReportableAmounts(child, year);
