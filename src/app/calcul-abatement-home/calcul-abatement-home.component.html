@@ -4,20 +4,6 @@
 
 <!--Main container-->
 <div class="container" id="main-container">
-   <ng-container *ngIf="errorMsg">
-      <div class="alert alert-warning d-flex align-items-center mt-2 p-2 mb-0 d-print-none">
-         <span class="material-icons color-gray mr-2">error</span>
-         {{errorMsg}}
-         <span class="material-icons color-gray ml-auto" (click)="hideError('errorMsg')">close</span>
-      </div>
-   </ng-container>
-   <ng-container *ngIf="successMsg">
-      <div class="alert alert-success d-flex align-items-center mt-2 p-2 mb-0 d-print-none">
-         <span class="material-icons color-gray mr-2">done</span>
-         {{successMsg}}
-         <span class="material-icons color-gray ml-auto" (click)="hideError('successMsg')">close</span>
-      </div>
-   </ng-container>
    <!-- for printing (hidden)-->
    <div
       class="col-xl-1 col-lg-1 col-md-2 col-sm-3 col-4 rounded-circle bg-light-pink bg-gradient shadow d-none d-print-block"
@@ -59,7 +45,7 @@
       <div *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4">
          <div class="card m-b-30 shadow rounded " id="content">
             <div class="col-12 d-print-none">
-               <span (click)="onOpenModel(child.id,'addMonthly')"
+               <span (click)="onOpenModel(child,'addMonthly')"
                   class="material-icons color-pink fs-3 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle"
                   id="AddMonthly" name="AddMonthly">post_add</span>
             </div>
@@ -353,23 +339,81 @@
                </button>
             </div>
             <div class="modal-body">
-               <form #taxableSalarySiblingForm="ngForm"
-                  (ngSubmit)="onCalculateTaxableSalarySibling(taxableSalarySiblingForm)">
+               <form novalidate [formGroup]="taxableSalarySiblingForm"
+                  (ngSubmit)="onCalculateTaxableSalarySibling()">
                   <div class="form-group row">
                      <div class="col-4">
                         <label for="netSalary" class="d-inline-block text-truncate">Salaire net</label>
-                        <input type="number" ngModel name="netSalary" class="form-control" id="netSalary"
-                           placeholder="600.20€" required>
+                        <input type="number" 
+                           class="form-control" id="netSalary"
+                           placeholder="600.20€"
+                           formControlName="netSalary" 
+                           [ngClass]="{'is-invalid':(taxableSalarySiblingForm.get('netSalary')?.dirty || taxableSalarySiblingForm.get('netSalary')?.touched)  &&  taxableSalarySiblingForm.get('netSalary')?.invalid,
+                              'is-valid': taxableSalarySiblingForm.get('netSalary')?.dirty && taxableSalarySiblingForm.get('netSalary')?.valid
+                           }" />
+                          
+                        <div *ngIf="taxableSalarySiblingForm.get('netSalary')?.hasError('max')" 
+                           class="invalid-feedback pl-1">
+                           <span>Salaire net doit être infèrieur à 10000</span>
+                        </div>
+                        <div *ngIf="taxableSalarySiblingForm.get('netSalary')?.hasError('min')"
+                           class="invalid-feedback pl-1">
+                           <span>Salaire net ne peut être négatif</span>
+                        </div>
+                        <div *ngIf="taxableSalarySiblingForm.get('netSalary')?.hasError('required')"
+                           class="invalid-feedback pl-1">
+                           <span>le champs est requis</span>
+                        </div>
                      </div>
                      <div class="col-4">
                         <label for="maintenanceCost" class="d-inline-block text-truncate">Frais Entretiens</label>
-                        <input type="number" ngModel name="maintenanceCost" class="form-control" id="maintenanceCost"
-                           placeholder="30.50€" required>
+                        <input type="number" 
+                           class="form-control" 
+                           id="maintenanceCost"
+                           placeholder="30.50€"
+                           formControlName="maintenanceCost" 
+                           [ngClass]="{'is-invalid':(taxableSalarySiblingForm.get('maintenanceCost')?.dirty || taxableSalarySiblingForm.get('maintenanceCost')?.touched)  
+                              &&  taxableSalarySiblingForm.get('maintenanceCost')?.invalid,
+                              'is-valid': taxableSalarySiblingForm.get('maintenanceCost')?.dirty && taxableSalarySiblingForm.get('maintenanceCost')?.valid
+                           }" />
+
+                        <div *ngIf="taxableSalarySiblingForm.get('maintenanceCost')?.hasError('max')" 
+                           class="invalid-feedback pl-1">
+                           <span>Frais Entretiens doit être infèrieur à 1500</span>
+                        </div>
+                        <div *ngIf="taxableSalarySiblingForm.get('maintenanceCost')?.hasError('min')"
+                           class="invalid-feedback pl-1">
+                           <span>Frais Entretiens ne peut être négatif</span>
+                        </div>
+                        <div *ngIf="taxableSalarySiblingForm.get('maintenanceCost')?.hasError('required')"
+                           class="invalid-feedback pl-1">
+                           <span>le champ est requis</span>
+                        </div>
                      </div>
                      <div class="col-4">
                         <label for="netBrutCoefficient" class="d-inline-block text-truncate">Coeff. net/brut</label>
-                        <input type="number" ngModel name="netBrutCoefficient" class="form-control"
-                           id="netBrutCoefficient" placeholder="0.7001" required>
+                        <input type="number" 
+                           class="form-control"
+                           id="netBrutCoefficient" 
+                           placeholder="0.7001"
+                           formControlName="netBrutCoefficient" 
+                           [ngClass]="{'is-invalid':(taxableSalarySiblingForm.get('netBrutCoefficient')?.dirty || taxableSalarySiblingForm.get('netBrutCoefficient')?.touched) 
+                               &&  taxableSalarySiblingForm.get('netBrutCoefficient')?.invalid,
+                              'is-valid': taxableSalarySiblingForm.get('netBrutCoefficient')?.dirty && taxableSalarySiblingForm.get('netBrutCoefficient')?.valid
+                           }" />
+
+                        <div *ngIf="taxableSalarySiblingForm.get('netBrutCoefficient')?.hasError('required')" 
+                           class="invalid-feedback pl-1">
+                           <span>Le champ est requis</span>
+                        </div>
+                        <div *ngIf="taxableSalarySiblingForm.get('netBrutCoefficient')?.hasError('min')"
+                           class="invalid-feedback pl-1">
+                           <span>Le coeff. net/brut ne peut être négatif</span>
+                        </div>
+                        <div *ngIf="taxableSalarySiblingForm.get('netBrutCoefficient')?.hasError('pattern')"
+                           class="invalid-feedback pl-1">
+                           <span>Format du champ incorrect (0.7801)</span>
+                        </div>
                      </div>
                   </div>
 
@@ -558,11 +602,28 @@
    </div>
    <!-- Modal to display annual summary end -->
 
-   <!-- Notification for no Child -->
-   <div *ngIf="children?.length === 0" class="col-lg-12 col-md-12 col-xl-12">
-      <div class="alert alert-info" role="alert">
-         <h4 class="alert-heading">Aucun Enfant !</h4>
-         <p>Aucun enfant trouvé.</p>
+   <!-- Notification for Child  error-->
+   <div class="container">
+      <div style="position: fixed; bottom: 0; right: 0;" 
+            class="col-lg-12 col-md-12 col-xl-12 mt-5 px-5">
+         <div  *ngIf="errorMsg" class="alert alert-warning" role="alert">
+            <h4 class="alert-heading d-flex align-items-end mb-1">Une erreur est survenue!
+               <span class=" material-icons color-gray ml-auto" (click)="hideError('errorMsg')">close</span>
+            </h4>
+            <p class="d-flex align-items-end">
+               <span class="material-icons color-gray mr-2 color-red">error</span>
+               {{errorMsg}}
+            </p>
+         </div>
+         <div *ngIf="successMsg" class="alert alert-success" role="alert">
+            <h4 class="alert-heading d-flex align-items-end mb-1">Opération réussie!
+               <span class=" material-icons color-gray ml-auto" (click)="hideError('errorMsg')">close</span>
+            </h4>
+            <p class="d-flex align-items-end">
+               <span class="material-icons color-gray mr-2 text-success">done</span>
+               {{successMsg}}
+            </p>
+         </div>
       </div>
    </div>
-   <!-- Notification for no Child end -->
+   <!-- Notification for Child  error end -->

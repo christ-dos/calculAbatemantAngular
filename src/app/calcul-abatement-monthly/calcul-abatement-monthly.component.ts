@@ -271,10 +271,13 @@ export class CalculAbatementMonthlyComponent implements OnInit {
         document.getElementById('search-monthlies')?.click();
       },
       error: err => {
-        this.errorMsg = err.message;
-        this.errorMsg = "La déclaration mensuelle pour: " 
-        + this.addMonthlyModalForm.value.month + " "  + this.addMonthlyModalForm.value.year + " existe déjà!";
-      
+        if (err.message === "Cette déclaration existe déjà !") {
+          this.errorMsg = "La déclaration mensuelle pour: "
+            + this.addMonthlyModalForm.value.month + " " 
+            + this.addMonthlyModalForm.value.year + " existe déjà!";
+        } else {
+          this.errorMsg = err.message;
+        }
       }
     }
     );

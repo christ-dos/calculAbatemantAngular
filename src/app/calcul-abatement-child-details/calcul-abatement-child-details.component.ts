@@ -220,7 +220,6 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
         this.errorMsg = err.message;
         this.errorMsg = "La déclaration mensuelle pour: " 
         + this.addMonthlyInChildDetailsForm.value.month + " "  + this.addMonthlyInChildDetailsForm.value.year + " existe déjà!";
-      
       }
     }
     );

@@ -486,18 +486,7 @@
 </div>
 <!-- Delete Monthly Modal end -->
 
-<!-- Notification for no Child -->
-<!-- <div class="container">
-    <div *ngIf="!childDetails.monthlies?.length " class="col-lg-12 col-md-12 col-xl-12">
-        <div class="alert alert-info justify-content-center " role="alert">
-            <h4 class="alert-heading">Aucune Déclaration Mensuelle!</h4>
-            <p>il n'y a aucune déclaration enregistré en {{filterMonthliesForm.value.year}} pour l'enfant:
-                {{childDetails?.firstname}} {{childDetails?.lastname}}
-            </p>
-        </div>
-    </div>
-</div> -->
-
+<!-- Notification for Child error-->
 <div class="container">
     <div *ngIf="errorMsg" style="position: fixed; bottom: 0; right: 0;" 
           class="col-lg-12 col-md-12 col-xl-12 mt-5 px-5">
@@ -513,4 +502,4 @@
     </div>
  </div>
 
-<!-- Notification for no Child end -->
+<!-- Notification for Child error end -->
