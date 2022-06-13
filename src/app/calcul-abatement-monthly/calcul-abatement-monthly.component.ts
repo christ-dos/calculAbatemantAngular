@@ -16,6 +16,7 @@ import { MonthlyService } from '../services/monthly.service';
 export class CalculAbatementMonthlyComponent implements OnInit {
   public addMonthlyModalForm!: FormGroup;
   public editMonthlyForm!: FormGroup;
+  public taxableSalarySiblingForm!: FormGroup;
 
   constructor(
     private monthlyService: MonthlyService,
@@ -64,9 +65,28 @@ export class CalculAbatementMonthlyComponent implements OnInit {
 
     this.getAddMonthlyForm();
     this.getEditMonthlyForm();
+    this.getTaxableSalarySiblingFrom();
 
    
   }
+
+  public getTaxableSalarySiblingFrom():void{
+    this.taxableSalarySiblingForm = this.fb.group({
+      netSalary: [null, [Validators.required, Validators.min(0), Validators.max(10000)]],
+      maintenanceCost: [null, [Validators.required, Validators.min(0), Validators.max(1500)]],
+      netBrutCoefficient: [0.7801, [Validators.required, Validators.pattern(/^\d+\.\d{4}$/)]]
+    });
+
+    const netSalaryControl = this.taxableSalarySiblingForm.get('netSalary');
+    const maintenanceCostControl = this.taxableSalarySiblingForm.get('maintenanceCost');
+    const netBrutCoefficientControl = this.taxableSalarySiblingForm.get('netBrutCoefficient');
+
+    this.formControlsValueChange(netSalaryControl);
+    this.formControlsValueChange(maintenanceCostControl);
+    this.formControlsValueChange(netBrutCoefficientControl);
+
+  }
+
 
   public getAddMonthlyForm(): void{
     this.addMonthlyModalForm = this.fb.group({
@@ -283,10 +303,12 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     );
   }
 
-  public onCalculateTaxableSalarySibling(taxableSalarySiblingForm: NgForm) {
+  public onCalculateTaxableSalarySibling() {
     document.getElementById('cancel-taxable-salary-sibling-form')?.click();
     this.monthlyService.getTaxableSalarySibling(
-      taxableSalarySiblingForm.value.netSalary, taxableSalarySiblingForm.value.netBrutCoefficient, taxableSalarySiblingForm.value.maintenanceCost)
+     this. taxableSalarySiblingForm.value.netSalary, 
+     this.taxableSalarySiblingForm.value.netBrutCoefficient, 
+     this.taxableSalarySiblingForm.value.maintenanceCost)
       .subscribe({
         next: taxableSalarySibling => {
           this.taxableSalarySibling = taxableSalarySibling;
@@ -295,7 +317,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
           this.addMonthlyModalForm.patchValue({
           taxableSalary: this.taxableSalarySibling
          });
-          taxableSalarySiblingForm.reset();
+          this.taxableSalarySiblingForm.reset();
         },
         error: err => {
           this.errorMsg = err.message;

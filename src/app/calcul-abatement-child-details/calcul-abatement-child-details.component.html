@@ -238,7 +238,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row  d-flex align-items-end">
                         <div class="col-6">
                             <label for="taxableSalary">Salaire Imposable</label>
                             <input type="number" name="taxableSalary" class="form-control" id="taxableSalary"
@@ -317,6 +317,90 @@
     </div>
 </div>
 <!-- Add Monthly Modal end -->
+
+ <!-- Calculate Taxable Salary Sibling Modal -->
+ <div class="modal fade" id="taxableSalarySiblingModal" tabindex="-1" role="dialog"
+ aria-labelledby="taxableSalarySiblingModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header bg-gradient text-light" style="background-color: rgba(206, 50, 50, 0.856);">
+          <h2 class="modal-title" id="taxableSalarySiblingModalLabel">Calculer Salaire Imposable net (cas fraterie)
+          </h2>
+          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close"
+             style="background-color: rgba(206, 50, 50, 0.856);">
+             <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+          <form novalidate [formGroup]="taxableSalarySiblingForm"
+             (ngSubmit)="onCalculateTaxableSalarySibling()">
+             <div class="form-group row">
+                <div class="col-4">
+                   <label for="netSalary" class="d-inline-block text-truncate">Salaire net</label>
+                   <input type="number" 
+                      class="form-control" id="netSalary"
+                      placeholder="600.20€"
+                      formControlName="netSalary" 
+                      [ngClass]="{'is-invalid':(taxableSalarySiblingForm.get('netSalary')?.dirty || taxableSalarySiblingForm.get('netSalary')?.touched)  &&  taxableSalarySiblingForm.get('netSalary')?.invalid,
+                         'is-valid': taxableSalarySiblingForm.get('netSalary')?.dirty && taxableSalarySiblingForm.get('netSalary')?.valid
+                      }" />
+                     
+                   <div class="invalid-feedback pl-1">
+                      <span>{{errorsValidation}}</span>
+                   </div>
+                </div>
+                <div class="col-4">
+                   <label for="maintenanceCost" class="d-inline-block text-truncate">Frais Entretiens</label>
+                   <input type="number" 
+                      class="form-control" 
+                      id="maintenanceCost"
+                      placeholder="30.50€"
+                      formControlName="maintenanceCost" 
+                      [ngClass]="{'is-invalid':(taxableSalarySiblingForm.get('maintenanceCost')?.dirty || taxableSalarySiblingForm.get('maintenanceCost')?.touched)  
+                         &&  taxableSalarySiblingForm.get('maintenanceCost')?.invalid,
+                         'is-valid': taxableSalarySiblingForm.get('maintenanceCost')?.dirty && taxableSalarySiblingForm.get('maintenanceCost')?.valid
+                      }" />
+
+                   <div class="invalid-feedback pl-1">
+                      <span>{{errorsValidation}}</span>
+                   </div>
+                </div>
+                <div class="col-4">
+                   <label for="netBrutCoefficient" class="d-inline-block text-truncate">Coeff. net/brut</label>
+                   <input type="number" 
+                      class="form-control"
+                      id="netBrutCoefficient" 
+                      placeholder="0.7001"
+                      formControlName="netBrutCoefficient" 
+                      [ngClass]="{'is-invalid':(taxableSalarySiblingForm.get('netBrutCoefficient')?.dirty || taxableSalarySiblingForm.get('netBrutCoefficient')?.touched) 
+                          &&  taxableSalarySiblingForm.get('netBrutCoefficient')?.invalid,
+                         'is-valid': taxableSalarySiblingForm.get('netBrutCoefficient')?.dirty && taxableSalarySiblingForm.get('netBrutCoefficient')?.valid
+                      }" />
+
+                   <div  *ngIf="!taxableSalarySiblingForm.get('netBrutCoefficient')?.hasError('pattern')" 
+                      class="invalid-feedback pl-1">
+                      <span>{{errorsValidation}}</span>
+                   </div>
+                   <div *ngIf="taxableSalarySiblingForm.get('netBrutCoefficient')?.hasError('pattern')"
+                      class="invalid-feedback pl-1">
+                      <span>Format du champ incorrect (0.7801)</span>
+                   </div>
+                </div>
+             </div>
+
+             <div class="modal-footer">
+                <button type="button" id="cancel-taxable-salary-sibling-form" class="btn btn-secondary"
+                   data-dismiss="modal">Annuler</button>
+                <button [disabled]="taxableSalarySiblingForm.invalid" type="submit"
+                   class="btn btn-danger">Enregistrer</button>
+             </div>
+          </form>
+       </div>
+    </div>
+ </div>
+</div>
+<!-- Calculate Taxable Salary Sibling Modal -->
+
 
 <!-- Edit Monthly Modal -->
 <div class="modal fade" id="updateMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="updateMonthlyModalLabel"

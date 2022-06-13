@@ -43,8 +43,7 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   public childId!: number;
   public addMonthlyChild!: Child;
-  //public monthSelected!: String;
-
+ 
   public sumTaxRelief!: number;
   public sumReportableAmount!: number;
   public sumTaxableSalary!: number;
@@ -75,6 +74,7 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getChildren();
+
     this.getAddMonthlyForm();
     this.getTaxableSalarySiblingFrom();
    
@@ -84,12 +84,12 @@ export class CalculAbatementHomeComponent implements OnInit {
     this.taxableSalarySiblingForm = this.fb.group({
       netSalary: [null, [Validators.required, Validators.min(0), Validators.max(10000)]],
       maintenanceCost: [null, [Validators.required, Validators.min(0), Validators.max(1500)]],
-      netBrutCoefficient: [0.7801, [Validators.required, Validators.min(0), Validators.pattern(/^\d+\.\d{4}$/)]]
+      netBrutCoefficient: [0.7801, [Validators.required, Validators.pattern(/^\d+\.\d{4}$/)]]
     });
 
-    const netSalaryControl = this.addMonthlyForm.get('netSalary');
-    const maintenanceCostControl = this.addMonthlyForm.get('maintenanceCost');
-    const netBrutCoefficientControl = this.addMonthlyForm.get('netBrutCoefficient');
+    const netSalaryControl = this.taxableSalarySiblingForm.get('netSalary');
+    const maintenanceCostControl = this.taxableSalarySiblingForm.get('maintenanceCost');
+    const netBrutCoefficientControl = this.taxableSalarySiblingForm.get('netBrutCoefficient');
 
     this.formControlsValueChange(netSalaryControl);
     this.formControlsValueChange(maintenanceCostControl);
@@ -135,10 +135,6 @@ export class CalculAbatementHomeComponent implements OnInit {
     this.formControlsValueChange(hoursWorkedControl);
     this.formControlsValueChange(lunchControl);
     this.formControlsValueChange(snackControl);
-
-    
-
-
   }
 
   public formControlsValueChange(formControl: AbstractControl | null): void {

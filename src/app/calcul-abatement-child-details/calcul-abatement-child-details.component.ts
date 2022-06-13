@@ -20,6 +20,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
 
   public addMonthlyInChildDetailsForm!: FormGroup;
   public editMonthlyForm!: FormGroup;
+  public taxableSalarySiblingForm!: FormGroup;
 
 
   constructor(
@@ -36,19 +37,15 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
 
   public page: number = 1;
   public childDetails!: Child;
-  //public childId!: string; //todo clean code
   public editMonthly!: Monthly;
   public deleteMonthly!: Monthly;
   public addMonthlyChild!: Monthly;
+  public taxableSalarySibling!: number;
 
   public errorMsg!: String;
   public errorsValidation!: String;
-  //public taxableSalarySibling!: number; à implementer
-
+  
   public months!: String[];
-  //public monthliesFiltered!: Monthly[];
-  //public monthliesByChildIdOrderedByYearDescAndMonthDesc!: Monthly[]; todo clean code
-  //todo clean code
   public sumTaxableSalary!: number;
   public sumDaysWorked!: number;
   public sumHoursWorked!: number;
@@ -61,7 +58,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     max: "Le nombre est trop grand",
     minlength: "L\' année doit contenir 4 caractères min",
     maxlength: "L\' année doit contenir 4 caractères max",
-    pattern:"Uniquement les nombres sont acceptés"
+    pattern: "Uniquement les nombres sont acceptés"
   };
 
 
@@ -73,41 +70,61 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
 
     this.getAddMonthlyInChildDetailsForm();
     this.getEditMonthlyForm();
+    this.getTaxableSalarySiblingFrom();
   }
 
-  public formControlsValueChange(fromControl: AbstractControl | null): void{
+  public formControlsValueChange(fromControl: AbstractControl | null): void {
     fromControl?.valueChanges.subscribe(value => {
       console.log(value);
       this.setMessage(fromControl);
-    
-    }); 
+
+    });
   }
 
-  private setMessage(value: AbstractControl): void{
+  private setMessage(value: AbstractControl): void {
     this.errorsValidation = '';
 
-    if((value.touched || value.dirty || value.untouched || value.pristine) && value.errors){
+    if ((value.touched || value.dirty || value.untouched || value.pristine) && value.errors) {
       console.log(Object.keys(value.errors));
       this.errorsValidation = Object.keys(value.errors).map(
         key => this.validationErrorsMessages[key]).join(' ');
 
-        console.log("mon erreur:" + this.errorsValidation);
+      console.log("mon erreur:" + this.errorsValidation);
 
     }
   }
 
-  public getAddMonthlyInChildDetailsForm(): void{
+  public getTaxableSalarySiblingFrom(): void {
+    this.taxableSalarySiblingForm = this.fb.group({
+      netSalary: [null, [Validators.required, Validators.min(0), Validators.max(10000)]],
+      maintenanceCost: [null, [Validators.required, Validators.min(0), Validators.max(1500)]],
+      netBrutCoefficient: [0.7801, [Validators.required, Validators.pattern(/^\d+\.\d{4}$/)]]
+    });
+
+    const netSalaryControl = this.taxableSalarySiblingForm.get('netSalary');
+    const maintenanceCostControl = this.taxableSalarySiblingForm.get('maintenanceCost');
+    const netBrutCoefficientControl = this.taxableSalarySiblingForm.get('netBrutCoefficient');
+
+    this.formControlsValueChange(netSalaryControl);
+    this.formControlsValueChange(maintenanceCostControl);
+    this.formControlsValueChange(netBrutCoefficientControl);
+
+  }
+
+
+
+  public getAddMonthlyInChildDetailsForm(): void {
     this.addMonthlyInChildDetailsForm = this.fb.group({
       month: ["", [Validators.required]],
       year: [this.appComponent.currentYear,
-        [Validators.required, Validators.minLength(4), Validators.maxLength(4),
-          Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+      [Validators.required, Validators.minLength(4), Validators.maxLength(4),
+      Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
       taxableSalary: ["",
         [Validators.required, Validators.min(0), Validators.max(10000)]],
       dayWorked: [null,
         [Validators.required, Validators.min(0), Validators.max(31)]],
-     
-        hoursWorked: [null,
+
+      hoursWorked: [null,
         [Validators.min(0), Validators.max(350)]],
 
       lunch: [null,
@@ -135,20 +152,20 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     this.formControlsValueChange(snackControl);
   }
 
-  public getEditMonthlyForm(): void{
+  public getEditMonthlyForm(): void {
     this.editMonthlyForm = this.fb.group({
 
       monthlyId: [""],
       month: ["", [Validators.required]],
       year: [this.appComponent.currentYear,
-        [Validators.required, Validators.minLength(4), Validators.maxLength(4),
-          Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+      [Validators.required, Validators.minLength(4), Validators.maxLength(4),
+      Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
       taxableSalary: ["",
         [Validators.required, Validators.min(0), Validators.max(10000)]],
       dayWorked: [null,
         [Validators.required, Validators.min(0), Validators.max(31)]],
-     
-        hoursWorked: [null,
+
+      hoursWorked: [null,
         [Validators.min(0), Validators.max(350)]],
 
       lunch: [null,
@@ -159,7 +176,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       childId: [""]
     });
 
-   // const monthlyId = this.editMonthlyForm.get('monthlyId');
+    // const monthlyId = this.editMonthlyForm.get('monthlyId');
     const monthControl = this.editMonthlyForm.get('month');
     const yearControl = this.editMonthlyForm.get('year');
     const taxableSalaryControl = this.editMonthlyForm.get('taxableSalary');
@@ -168,7 +185,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     const lunchControl = this.editMonthlyForm.get('lunch');
     const snackControl = this.editMonthlyForm.get('snack');
 
-   // this.formControlsValueChange(monthlyId);
+    // this.formControlsValueChange(monthlyId);
     this.formControlsValueChange(monthControl);
     this.formControlsValueChange(yearControl);
     this.formControlsValueChange(taxableSalaryControl);
@@ -197,7 +214,6 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
           this.childDetails.taxRelief = 0;
           this.childDetails.reportableAmounts = 0;
         }
-
       },
       error: err => {
         this.errorMsg = err.message;
@@ -218,29 +234,53 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       },
       error: err => {
         this.errorMsg = err.message;
-        this.errorMsg = "La déclaration mensuelle pour: " 
-        + this.addMonthlyInChildDetailsForm.value.month + " "  + this.addMonthlyInChildDetailsForm.value.year + " existe déjà!";
+        this.errorMsg = "La déclaration mensuelle pour: "
+          + this.addMonthlyInChildDetailsForm.value.month + " " + this.addMonthlyInChildDetailsForm.value.year + " existe déjà!";
       }
     }
     );
-
   }
 
+  public onCalculateTaxableSalarySibling() {
+    document.getElementById('cancel-taxable-salary-sibling-form')?.click();
+
+    this.monthlyService.getTaxableSalarySibling(
+      this.taxableSalarySiblingForm.value.netSalary,
+      this.taxableSalarySiblingForm.value.netBrutCoefficient,
+      this.taxableSalarySiblingForm.value.maintenanceCost)
+      .subscribe({
+        next: taxableSalarySibling => {
+          this.taxableSalarySibling = taxableSalarySibling;
+          console.log(taxableSalarySibling);
+
+          this.addMonthlyInChildDetailsForm.patchValue({
+            taxableSalary: this.taxableSalarySibling
+          })
+          this.taxableSalarySiblingForm.reset();
+        },
+        error: err => {
+          this.errorMsg = err.message;
+        }
+      }
+      );
+  }
+
+
   public onUpdateMonthly(): void {
-   // console.log(JSON.stringify( this.editMonthlyForm.value));
+    // console.log(JSON.stringify( this.editMonthlyForm.value));
     this.monthlyService.updateMonthly(this.editMonthlyForm.value).subscribe({
       next: monthly => {
         console.log(monthly);
         this.editMonthlyForm.patchValue({
           monthlyId: this.editMonthly.monthlyId,
           childId: this.editMonthly.childId
-         });
+        });
         this.getChildDetails(monthly.childId);
       },
       error: err => {
         this.errorMsg = err.message;
-        this.errorMsg = "La déclaration mensuelle pour: " 
-        + this.editMonthlyForm.value.month + " "  + this.editMonthlyForm.value.year + " existe déjà!";
+        this.errorMsg = "La déclaration mensuelle pour: "
+          + this.editMonthlyForm.value.month + " " + this.editMonthlyForm.value.year + " existe déjà!";
       }
     }
     );
@@ -252,7 +292,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
         console.log(message);
         document.getElementById('search-monthlies')?.click();
         this.getChildDetails(this.deleteMonthly.childId);
-        
+
       },
       error: err => {
         this.errorMsg = err.message;
@@ -282,9 +322,9 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
         next: monthlies => {
           this.childDetails.monthlies = monthlies;
           console.log(monthlies);
-          if(!monthlies.length){
-            this.errorMsg = "Aucune déclaration enregistré en: " 
-            + filterMonthliesForm.value.year ;
+          if (!monthlies.length) {
+            this.errorMsg = "Aucune déclaration enregistré en: "
+              + filterMonthliesForm.value.year;
           }
 
           if (this.childDetails.monthlies.some(monthly => monthly.year === filterMonthliesForm.value.year)
@@ -352,22 +392,22 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     );
   }
 
-  public hideError(): void{
+  public hideError(): void {
     this.errorMsg = '';
   }
 
-  public setUpdateMonthlyModalValues(): void{
-      this.editMonthlyForm.setValue({
-        monthlyId: this.editMonthly.monthlyId,
-        month: this.editMonthly.month,
-        year: this.editMonthly.year,
-        taxableSalary: this.editMonthly.taxableSalary,
-        dayWorked: this.editMonthly.dayWorked,
-        hoursWorked: this.editMonthly.hoursWorked,
-        lunch: this.editMonthly.lunch,
-        snack: this.editMonthly.snack ,
-        childId: this.editMonthly.childId
-      })
+  public setUpdateMonthlyModalValues(): void {
+    this.editMonthlyForm.setValue({
+      monthlyId: this.editMonthly.monthlyId,
+      month: this.editMonthly.month,
+      year: this.editMonthly.year,
+      taxableSalary: this.editMonthly.taxableSalary,
+      dayWorked: this.editMonthly.dayWorked,
+      hoursWorked: this.editMonthly.hoursWorked,
+      lunch: this.editMonthly.lunch,
+      snack: this.editMonthly.snack,
+      childId: this.editMonthly.childId
+    })
   }
 
   public onOpenModel(monthly: any, mode: string): void {

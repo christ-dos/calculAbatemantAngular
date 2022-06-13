@@ -127,7 +127,7 @@
                      </div>
                   </div>
                </div>
-               <div class="form-group row">
+               <div class="form-group row d-flex align-items-end">
                   <div class="col-6">
                      <label for="taxableSalary">Salaire Imposable</label>
                      <input type="number" name="taxableSalary" 
@@ -204,8 +204,6 @@
                      <div class="invalid-feedback pl-1">
                         <span>{{errorsValidation}}</span>
                      </div>
-                     <!-- <input type="hidden" ngModel="{{childId}}" name="childId" class="form-control" id="childId"
-                        placeholder="ChildId"> -->
                   </div>
                </div>
                <div class="modal-footer">
@@ -235,23 +233,61 @@
             </button>
          </div>
          <div class="modal-body">
-            <form #taxableSalarySiblingForm="ngForm"
-               (ngSubmit)="onCalculateTaxableSalarySibling(taxableSalarySiblingForm)">
+            <form novalidate [formGroup]="taxableSalarySiblingForm" 
+            (ngSubmit)="onCalculateTaxableSalarySibling()">
                <div class="form-group row">
                   <div class="col-4">
                      <label for="netSalary" class="d-inline-block text-truncate">Salaire net</label>
-                     <input type="number" ngModel name="netSalary" class="form-control" id="netSalary"
-                        placeholder="600.20€" required>
+                     <input type="number" 
+                        class="form-control" 
+                        id="maintenanceCost"
+                        placeholder="30.50€"
+                        formControlName="maintenanceCost" 
+                        [ngClass]="{'is-invalid':(taxableSalarySiblingForm.get('maintenanceCost')?.dirty || taxableSalarySiblingForm.get('maintenanceCost')?.touched)  
+                           &&  taxableSalarySiblingForm.get('maintenanceCost')?.invalid,
+                           'is-valid': taxableSalarySiblingForm.get('maintenanceCost')?.dirty && taxableSalarySiblingForm.get('maintenanceCost')?.valid
+                        }" />
+
+                     <div class="invalid-feedback pl-1">
+                        <span>{{errorsValidation}}</span>
+                     </div>
                   </div>
                   <div class="col-4">
                      <label for="maintenanceCost" class="d-inline-block text-truncate">Frais Entretiens</label>
-                     <input type="number" ngModel name="maintenanceCost" class="form-control" id="maintenanceCost"
-                        placeholder="30.50€" required>
+                     <input type="number" 
+                        class="form-control" 
+                        id="maintenanceCost"
+                        placeholder="30.50€"
+                        formControlName="maintenanceCost" 
+                        [ngClass]="{'is-invalid':(taxableSalarySiblingForm.get('maintenanceCost')?.dirty || taxableSalarySiblingForm.get('maintenanceCost')?.touched)  
+                           &&  taxableSalarySiblingForm.get('maintenanceCost')?.invalid,
+                           'is-valid': taxableSalarySiblingForm.get('maintenanceCost')?.dirty && taxableSalarySiblingForm.get('maintenanceCost')?.valid
+                        }" />
+
+                     <div class="invalid-feedback pl-1">
+                        <span>{{errorsValidation}}</span>
+                     </div>
                   </div>
                   <div class="col-4">
                      <label for="netBrutCoefficient" class="d-inline-block text-truncate">Coeff. net/brut</label>
-                     <input type="number" ngModel name="netBrutCoefficient" class="form-control" id="netBrutCoefficient"
-                        placeholder="0.7001" required>
+                     <input type="number" 
+                        class="form-control"
+                        id="netBrutCoefficient" 
+                        placeholder="0.7001"
+                        formControlName="netBrutCoefficient" 
+                        [ngClass]="{'is-invalid':(taxableSalarySiblingForm.get('netBrutCoefficient')?.dirty || taxableSalarySiblingForm.get('netBrutCoefficient')?.touched) 
+                           &&  taxableSalarySiblingForm.get('netBrutCoefficient')?.invalid,
+                           'is-valid': taxableSalarySiblingForm.get('netBrutCoefficient')?.dirty && taxableSalarySiblingForm.get('netBrutCoefficient')?.valid
+                        }" />
+
+                     <div  *ngIf="!taxableSalarySiblingForm.get('netBrutCoefficient')?.hasError('pattern')" 
+                        class="invalid-feedback pl-1">
+                        <span>{{errorsValidation}}</span>
+                     </div>
+                     <div *ngIf="taxableSalarySiblingForm.get('netBrutCoefficient')?.hasError('pattern')"
+                        class="invalid-feedback pl-1">
+                        <span>Format du champ incorrect (0.7801)</span>
+                     </div>
                   </div>
                </div>
 
