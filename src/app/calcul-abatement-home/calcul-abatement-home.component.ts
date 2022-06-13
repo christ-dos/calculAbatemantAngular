@@ -43,7 +43,7 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   public childId!: number;
   public addMonthlyChild!: Child;
- 
+
   public sumTaxRelief!: number;
   public sumReportableAmount!: number;
   public sumTaxableSalary!: number;
@@ -51,7 +51,9 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   public yearPrecedingCurrentYear: String = new String(new Date().getFullYear() - 1);
   public erroMessage!: String;
+  public months!: String[];
   public currentYear: String = this.appComponent.currentYear;
+  public currentMonth!: String;
 
   public selectedFile!: File;
   public urlLink!: string;
@@ -74,13 +76,15 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getChildren();
-
+    this.getMonths()
+    
     this.getAddMonthlyForm();
     this.getTaxableSalarySiblingFrom();
-   
   }
 
-  public getTaxableSalarySiblingFrom():void{
+
+
+  public getTaxableSalarySiblingFrom(): void {
     this.taxableSalarySiblingForm = this.fb.group({
       netSalary: [null, [Validators.required, Validators.min(0), Validators.max(10000)]],
       maintenanceCost: [null, [Validators.required, Validators.min(0), Validators.max(1500)]],
@@ -97,10 +101,10 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   }
 
-  public getAddMonthlyForm(): void{
+  public getAddMonthlyForm(): void {
     this.addMonthlyForm = this.fb.group({
       month: ["", [Validators.required]],
-      year: [this.appComponent.currentYear,
+      year: ["",
       [Validators.required, Validators.minLength(4), Validators.maxLength(4),
       Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
       taxableSalary: ["",
@@ -186,6 +190,23 @@ export class CalculAbatementHomeComponent implements OnInit {
     });
   }
 
+  public getMonths(): void {
+    this.monthlyService.getMonths().subscribe({
+      next: months => {
+        console.log(months);
+        this.months = months;
+
+        const currentMonthNumber = this.appComponent.currentMonth;
+        this.currentMonth = this.months[currentMonthNumber];
+        console.log(this.currentMonth);
+      },
+      error: err => {
+        this.errorMsg = err.message;
+      }
+    }
+    );
+  }
+
 
   public getTaxableSalary(child: Child, year: String): void {
     this.childService.getTaxableSalary(child.id, year).subscribe({
@@ -195,7 +216,6 @@ export class CalculAbatementHomeComponent implements OnInit {
       },
       error: err => {
         this.erroMessage = err;
-        console.log("mon erreur: " + this.erroMessage);
       }
     }
     );
@@ -324,7 +344,7 @@ export class CalculAbatementHomeComponent implements OnInit {
       }, error: err => {
         if (err.message === "Cette déclaration existe déjà !") {
           this.errorMsg = "La déclaration mensuelle pour: "
-            + this.addMonthlyForm.value.month + " " 
+            + this.addMonthlyForm.value.month + " "
             + this.addMonthlyForm.value.year + " existe déjà!";
         } else {
           this.errorMsg = err.message;
@@ -434,6 +454,11 @@ export class CalculAbatementHomeComponent implements OnInit {
     if (mode === "addMonthly") {
       this.addMonthlyChild = monthly;
       button.setAttribute('data-target', '#addMonthlyModal');
+
+      this.addMonthlyForm.patchValue({
+        month: this.currentMonth,
+        year: this.currentYear
+      });
     }
     if (mode === "taxableSalarySibling") {
       button.setAttribute('data-target', '#taxableSalarySiblingModal');

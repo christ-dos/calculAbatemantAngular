@@ -23,12 +23,28 @@
          <div
             class="col-8 col-md-6 col-lg-4 d-flex align-items-center justify-content-end justify-content-lg-end justify-content-md-end">
             <form class="form-inline">
-               <input type="search" (ngModelChange)="this.searchChild(key.value)" #key="ngModel" ngModel name="key"
-                  id="searchName" class="form-control bg-white-smoke shadow " style="font-family:Arial, FontAwesome"
-                  placeholder="&#xF002;  Rechercher un Enfant  " required>
+               <input type="search" (ngModelChange)="this.searchChild(searchChildForm.value)" 
+                  ngModel name="searchChildForm"
+                  id="searchChild" class="form-control bg-white-smoke shadow " style="font-family:Arial, FontAwesome"
+                  placeholder="&#xF002;  Rechercher un Enfant" 
+                  required
+                  pattern="[a-zA-Z]{1,30}" 
+                  #searchChildForm="ngModel" 
+                  [ngClass]="{'is-invalid' : (searchChildForm?.touched || searchChildForm?.dirty) 
+                            && !searchChildForm?.valid,
+                           'is-valid'  : searchChildForm?.dirty && searchChildForm?.valid
+                           }"/>
+              
+               <div *ngIf="searchChildForm?.hasError('pattern')" class="invalid-feedback pl-1">
+                  <span>Uniquement des lettres maximum 30 caractères</span>
+               </div>
+               <div *ngIf="searchChildForm?.hasError('required')" class="invalid-feedback pl-1">
+                  <span>Saisir une lettre pour rechercher un enfant</span>
+               </div>
             </form>
          </div>
          <!-- Form search end child-->
+
          <button type="button" class="btn col-2 col-md-1 col-lg-1 pl-3 pl-md-0 d-flex justify-content-lg-end pr-lg-1"
             data-bs-toggle="modal" data-bs-target="#summaryModal">
             <span *ngIf="children" class="material-icons color-pink fs-2 p-2 shadow rounded bg-white-smoke"
@@ -534,9 +550,35 @@
                <form #summaryByYearForm="ngForm">
                   <div class="mb-3 row pr-2">
                      <label class="col-sm-5 col-form-label" for="summaryYear">Année</label>
-                     <div class="col-sm-4 ">
-                        <input type="text" ngModel="{{yearPrecedingCurrentYear}}" name="summaryYear"
-                           class="form-control pl-2" id="summaryYear" placeholder="2022" required>
+                     <div class="col-sm-6 ">
+                        <input type="text" 
+                           ngModel="{{yearPrecedingCurrentYear}}" 
+                           name="summaryYear"
+                           class="form-control pl-2" id="summaryYear" 
+                           placeholder="2022"
+                           maxlength="4"
+                           pattern="[0-9]{4}"
+                           class="form-control pl-2"
+                           ngModel id="year" placeholder="Année" 
+                           required 
+                           #summaryYearVar="ngModel" 
+                           [ngClass]="{'is-invalid' : (summaryYearVar?.touched || summaryYearVar?.dirty) 
+                               && !summaryYearVar?.valid,
+                                       'is-valid'  : summaryYearVar?.valid
+                           }"/>
+
+                        <div *ngIf="summaryYearVar?.hasError('required')"
+                              class=" invalid-feedback pl-1">
+                              <span>Champ requis</span>
+                        </div>
+                        <div *ngIf="summaryYearVar?.hasError('maxlength')"
+                              class=" invalid-feedback pl-1">
+                              <span>Maximum 4 caractères</span>
+                        </div>
+                        <div *ngIf="summaryYearVar?.hasError('pattern')"
+                           class=" invalid-feedback pl-1">
+                           <span>Entrer minimum 4 caractères des nombres uniquement</span>
+                    </div>
                      </div>
                   </div>
                   <div class="mb-3 row">

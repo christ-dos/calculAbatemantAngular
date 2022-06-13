@@ -104,16 +104,25 @@
         <div class="row pb-1 d-print-none d-flex align-items-start">
             <div class="col-2 col-lg-1 border border-secondary shadow-sm rounded-pill justify-content-center d-flex">
                 <span (click)="calculAbatementMonthlyComponent.onOpenModel(childDetails,'addMonthly')"
-                    class="material-icons color-pink fs-2 py-1" data-md-tooltip="Déclaration Mensuelle" id="AddMonthly"
+                    class="material-icons color-pink fs-2 py-1" 
+                    data-md-tooltip="Déclaration Mensuelle" id="AddMonthly"
                     name="AddMonthly">post_add
                 </span>
             </div>
             <div class="col-10 col-lg-11 pr-0  d-flex justify-content-end align-items-start">
                 <div class="col-8 d-flex flex-column align-items-end pr-0">
-                    <input type="text" name="year" maxlength="4" minlength="4" pattern="[0-9]{4}"
+                    <input type="text" name="year" 
+                        maxlength="4"
+                        minlength="4" 
+                        pattern="[0-9]{4}"
                         class=" col-5 col-lg-2 form-control-plaintext border border-secondary rounded-pill mr-2  px-auto shadow-sm"
-                        ngModel id="year" placeholder="Année" required #yearFilterVar="ngModel" [ngClass]="{'is-invalid' : (yearFilterVar?.touched || yearFilterVar?.dirty) && !yearFilterVar?.valid,
-                                    'is-valid'  : yearFilterVar?.valid}" />
+                        ngModel id="year" placeholder="Année" 
+                        required 
+                        #yearFilterVar="ngModel" 
+                        [ngClass]="{'is-invalid' : (yearFilterVar?.touched || yearFilterVar?.dirty) 
+                            && !yearFilterVar?.valid,
+                                    'is-valid'  : yearFilterVar?.valid
+                                }"/>
                     <div *ngIf="yearFilterVar?.hasError('required')"
                         class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0 alert alert-danger p-0 mb-0">
                         <span>Entrer une année</span>
@@ -124,7 +133,7 @@
 
                     </div>
                     <div *ngIf="yearFilterVar?.hasError('pattern')"
-                        class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0 alert alert-danger p-0 mb-0">
+                        class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0 p-0 mb-0">
                         <span>Entrer un nombre</span>
                     </div>
                 </div>
@@ -134,9 +143,7 @@
                     <mat-icon class="fs-4 text-secondary px-auto" data-md-tooltip="Filtrer" name="filterIcon"
                         id="filterIcon">filter_alt</mat-icon>
                 </button>
-
             </div>
-
         </div>
     </form>
 

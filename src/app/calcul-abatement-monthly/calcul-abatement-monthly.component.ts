@@ -276,6 +276,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     }
     );
   }
+  
 
   public onAddMonthly(): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
