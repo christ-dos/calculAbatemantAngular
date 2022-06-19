@@ -41,58 +41,185 @@ aria-hidden="true">
          </button>
       </div>
       <div class="modal-body">
-         <form #addForm="ngForm" (ngSubmit)="this.calculAbatementHomeComponent.onAddChild(addForm)">
+         <form novalidate [formGroup]="addChildForm" (ngSubmit)="onAddChild()">
             <div class="form-group">
                <label for="lastname">Nom</label>
-               <input type="text" ngModel name="lastname" class="form-control" id="lastname" placeholder="Nom"
-                  required>
+               <input type="text" 
+                  class="form-control" 
+                  id="lastname" placeholder="Nom"
+                  class="form-control" 
+                  formControlName="lastname"
+                  [ngClass]="{'is-invalid': addChildForm.get('lastname')?.dirty && addChildForm.get('lastname')?.invalid,
+                              'is-valid': addChildForm.get('lastname')?.touched && addChildForm.get('lastname')?.valid
+                  }"/>
+
+               <div *ngIf="addChildForm.get('lastname')?.hasError('required')" 
+                  class="invalid-feedback pl-1">
+                  <span>{{errorsValidation}}</span>
+               </div>
+              <div *ngIf="addChildForm.get('lastname')?.hasError('minlength')" 
+                  class="invalid-feedback pl-1">
+                  <span>Saisir 2 caractères min</span>
+              </div>
+              <div *ngIf="addChildForm.get('lastname')?.hasError('maxlength')" 
+                  class="invalid-feedback pl-1">
+                  <span>Saisir 30 caractères max</span>
+              </div>
+              <div *ngIf="addChildForm.get('lastname')?.hasError('pattern')" class="invalid-feedback pl-1">
+                  <span>Ce champs accepte uniquement des lettres</span>
+              </div>
             </div>
             <div class="form-group">
                <label for="firstname">Prénom</label>
-               <input type="text" ngModel name="firstname" class="form-control" id="firstname"
-                  placeholder="Prénom" required>
+               <input type="text" 
+                  class="form-control" id="firstname"
+                  placeholder="Prénom"
+                  formControlName="firstname"
+                  [ngClass]="{'is-invalid': addChildForm.get('firstname')?.dirty && addChildForm.get('firstname')?.invalid,
+                              'is-valid': addChildForm.get('firstname')?.touched &&  addChildForm.get('firstname')?.valid
+                  }"/>
+
+               <div *ngIf="addChildForm.get('firstname')?.hasError('required')" 
+                  class="invalid-feedback pl-1">
+                  <span>{{errorsValidation}}</span>
+              </div>
+              <div *ngIf="addChildForm.get('firstname')?.hasError('minlength')" 
+                  class="invalid-feedback pl-1">
+                  <span>Saisir 2 caractères min</span>
+              </div>
+              <div *ngIf="addChildForm.get('firstname')?.hasError('maxlength')" 
+                  class="invalid-feedback pl-1">
+                  <span>Saisir 30 caractères max</span>
+              </div>
+              <div *ngIf="addChildForm.get('firstname')?.hasError('pattern')" class="invalid-feedback pl-1">
+                  <span>Ce champs accepte uniquement des lettres</span>
+              </div>
             </div>
             <div class="form-group">
                <label for="birthDate">Date de naissance</label>
-               <input type="text" ngModel name="birthDate" class="form-control" id="birthDate"
-                  placeholder="17/09/2000" required>
+               <input type="text" 
+                  class="form-control" id="birthDate"
+                  placeholder="17/09/2000"
+                  formControlName="birthDate"
+                  [ngClass]="{'is-invalid': addChildForm.get('birthDate')?.dirty && addChildForm.get('birthDate')?.invalid,
+                              'is-valid': addChildForm.get('birthDate')?.touched && addChildForm.get('birthDate')?.valid
+                  }"/>
+
+               <div *ngIf="addChildForm.get('birthDate')?.hasError('required')"
+                  class="invalid-feedback pl-1">
+                  <span>{{errorsValidation}}</span>
+               </div>
+               <div *ngIf="addChildForm.get('birthDate')?.hasError('pattern')" 
+                  class="invalid-feedback pl-1">
+                  <span>Date au format jj/MM/aaaa ou mois de 30 jours</span>
+               </div>
             </div>
             <div class="form-group row">
                <div class="col-6">
                   <label for="beginContract">Début du Contrat</label>
-                  <input type="text" ngModel name="beginContract" class="form-control" id="beginContract"
-                     placeholder="01/09/2020" required>
+                  <input type="text"
+                     class="form-control" id="beginContract"
+                     placeholder="01/09/2020"
+                     formControlName="beginContract"
+                     [ngClass]="{'is-invalid': (addChildForm.get('beginContract')?.dirty 
+                     || addChildForm.get('beginContract')?.touched)
+                        && addChildForm.get('beginContract')?.invalid,
+                                 'is-valid': (addChildForm.get('beginContract')?.touched 
+                                 || addChildForm.get('beginContract')?.dirty) 
+                                 && addChildForm.get('beginContract')?.valid
+                     }"/>
+                     
+                  <div *ngIf="addChildForm.get('beginContract')?.hasError('required')"
+                     class="invalid-feedback pl-1">
+                     <span>{{errorsValidation}}</span>
+                  </div>
+                  <div *ngIf="addChildForm.get('beginContract')?.hasError('pattern')" 
+                     class="invalid-feedback pl-1">
+                     <span>Date au format jj/MM/aaaa ou mois de 30 jours</span>
+                  </div>
                </div>
                <div class="col-6">
                   <label for="endContract">Fin du Contrat</label>
-                  <input type="text" ngModel name="endContract" class="form-control" id="endContract"
-                     placeholder="01/09/2020">
+                  <input type="text"
+                     class="form-control" id="endContract"
+                     placeholder="01/09/2020"
+                     formControlName="endContract"
+                     [ngClass]="{'is-invalid': addChildForm.get('endContract')?.dirty && addChildForm.get('endContract')?.invalid,
+                                 'is-valid': addChildForm.get('endContract')?.dirty && addChildForm.get('endContract')?.valid
+                     }"/>
+
+                  <div *ngIf="addChildForm.get('endContract')?.hasError('pattern')" 
+                     class="invalid-feedback pl-1">
+                     <span>Date au format jj/MM/aaaa ou mois de 30 jours</span>
+                  </div>
                </div>
             </div>
             <div class="form-group row">
                <div class="col-6">
                   <label for="feesLunch" class="d-inline-block text-truncate">Tarif Repas</label>
-                  <input type="number" ngModel name="feesLunch" class="form-control" id="feesLunch"
-                     placeholder="2.00€" required>
+                  <input type="number" 
+                     class="form-control" id="feesLunch"
+                     placeholder="2.00€" 
+                     formControlName="feesLunch"
+                     [ngClass]="{'is-invalid': addChildForm.get('feesLunch')?.dirty && addChildForm.get('feesLunch')?.invalid,
+                                 'is-valid': addChildForm.get('feesLunch')?.touched && addChildForm.get('feesLunch')?.valid
+                     }"/>
+
+                  <div *ngIf="addChildForm.get('feesLunch')?.hasError('min')" 
+                     class="invalid-feedback pl-1">
+                     <span>Ce champs ne peut être infèrieur à 0</span>
+                  </div>
+                  <div *ngIf="addChildForm.get('feesLunch')?.hasError('max')" 
+                     class="invalid-feedback pl-1">
+                     <span>Ce champs ne peut être supèrieur à 50</span>
+                  </div>
                </div>
                <div class="col-6">
                   <label for="feesSnack" class="d-inline-block text-truncate">Tarif Goûter</label>
-                  <input type="number" ngModel name="feesSnack" class="form-control" id="feesSnack"
-                     placeholder="0.50€" required>
+                  <input type="number" 
+                     class="form-control" id="feesSnack"
+                     placeholder="0.50€" 
+                     formControlName="feesSnack"
+                     [ngClass]="{'is-invalid': addChildForm.get('feesSnack')?.dirty && (addChildForm.get('feesSnack')?.invalid),
+                                 'is-valid': addChildForm.get('feesSnack')?.touched && addChildForm.get('feesSnack')?.valid
+                     }"/>
+
+                  <div *ngIf="addChildForm.get('feesSnack')?.hasError('min')" 
+                     class="invalid-feedback pl-1">
+                     <span>Ce champs ne peut être infèrieur à 0</span>
+                  </div>
+                  <div *ngIf="addChildForm.get('feesSnack')?.hasError('max')" 
+                     class="invalid-feedback pl-1">
+                     <span>Ce champs ne peut être supèrieur à 50</span>
+                  </div>
                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                <label for="imageUrl">Image URL</label>
-               <input type="text" ngModel name="imageUrl" class="form-control mb-3" id="imageUrl"
-                  placeholder="Image URL" required>
-               <input class="btn btn-sm btn-danger" id="formFileSm" type="file" ngModel name="imageUrl"
-                  id="imageUrl">
+               <input type="url" 
+                  class="form-control" id="imageUrl"
+                  placeholder="Image URL" 
+                  formControlName="imageUrl"
+                  [ngClass]="{'is-invalid': addChildForm.get('imageUrl')?.dirty && addChildForm.get('imageUrl')?.invalid,
+                              'is-valid': addChildForm.get('imageUrl')?.touched && addChildForm.get('imageUrl')?.valid
+                  }"/>
+               <div *ngIf="addChildForm.get('imageUrl')?.hasError('required')" class="invalid-feedback pl-1">
+                  <span>{{errorsValidation}}</span>
+               </div>
+               <div *ngIf="addChildForm.get('imageUrl')?.hasError('pattern')" 
+                  class="invalid-feedback pl-1">
+                  <span>L'URL doit commencé par http://</span>
+            </div>
+               
+               <!-- <input class="btn btn-sm btn-danger" id="formFileSm" type="file" 
+               ngModel name="imageUrl"
+                  id="imageUrl"> -->
 
             </div>
             <div class="modal-footer">
                <button type="button" id="cancel-add-child-form" class="btn btn-secondary"
                   data-dismiss="modal">Annuler</button>
-               <button [disabled]="addForm.invalid" type="submit" class="btn btn-danger">Enregistrer</button>
+               <button [disabled]="addChildForm.invalid" type="submit" class="btn btn-danger">Enregistrer</button>
             </div>
          </form>
       </div>
@@ -100,6 +227,32 @@ aria-hidden="true">
 </div>
 </div>
 <!-- Add Child Modal end -->
+
+ <!-- Notification for Child  error-->
+ <div class="container">
+   <div 
+         class="col-lg-12 col-md-12 col-xl-12 mt-5 px-5">
+      <div  *ngIf="errorMsg" class="alert alert-warning" role="alert">
+         <h4 class="alert-heading d-flex align-items-end mb-1">Une erreur est survenue!
+            <span class=" material-icons color-gray ml-auto" (click)="hideError('errorMsg')">close</span>
+         </h4>
+         <p class="d-flex align-items-end">
+            <span class="material-icons color-gray mr-2 color-red">error</span>
+            {{errorMsg}}
+         </p>
+      </div>
+      <div *ngIf="successMsg" class="alert alert-success" role="alert">
+         <h4 class="alert-heading d-flex align-items-end mb-1">Opération réussie!
+            <span class=" material-icons color-gray ml-auto" (click)="hideError('errorMsg')">close</span>
+         </h4>
+         <p class="d-flex align-items-end">
+            <span class="material-icons color-gray mr-2 text-success">done</span>
+            {{successMsg}}
+         </p>
+      </div>
+   </div>
+</div>
+<!-- Notification for Child  error end -->
  
  
  

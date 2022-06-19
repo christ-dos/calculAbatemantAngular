@@ -28,7 +28,7 @@
                   id="searchChild" class="form-control bg-white-smoke shadow " style="font-family:Arial, FontAwesome"
                   placeholder="&#xF002;  Rechercher un Enfant" 
                   required
-                  pattern="[a-zA-Z]{1,30}" 
+                  pattern ="[a-z A-Z]{1,30}" 
                   #searchChildForm="ngModel" 
                   [ngClass]="{'is-invalid' : (searchChildForm?.touched || searchChildForm?.dirty) 
                             && !searchChildForm?.valid,
@@ -124,7 +124,6 @@
                      <i class="fa fa-trash" style="color: rgb(117, 107, 107);"></i>
                   </a>
                </div>
-
                <!--</div>-->
             </div>
          </div>
@@ -132,80 +131,6 @@
 
    </div>
    <!-- Main container end -->
-
-   <!-- Add Child Modal -->
-   <div class="modal fade" id="addChildModal" tabindex="-1" role="dialog" aria-labelledby="addChildModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-         <div class="modal-content">
-            <div class="modal-header bg-danger bg-gradient text-light">
-               <h2 class="modal-title" id="addChildModalLabel">Ajouter un Enfant</h2>
-               <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-               </button>
-            </div>
-            <div class="modal-body">
-               <form #addForm="ngForm" (ngSubmit)="onAddChild(addForm)">
-                  <div class="form-group">
-                     <label for="lastname">Nom</label>
-                     <input type="text" ngModel name="lastname" class="form-control" id="lastname" placeholder="Nom"
-                        required>
-                  </div>
-                  <div class="form-group">
-                     <label for="firstname">Prénom</label>
-                     <input type="text" ngModel name="firstname" class="form-control" id="firstname"
-                        placeholder="Prénom" required>
-                  </div>
-                  <div class="form-group">
-                     <label for="birthDate">Date de naissance</label>
-                     <input type="text" ngModel name="birthDate" class="form-control" id="birthDate"
-                        placeholder="17/09/2000" required>
-                  </div>
-                  <div class="form-group row">
-                     <div class="col-6">
-                        <label for="beginContract">Début du Contrat</label>
-                        <input type="text" ngModel name="beginContract" class="form-control" id="beginContract"
-                           placeholder="01/09/2020" required>
-                     </div>
-                     <div class="col-6">
-                        <label for="endContract">Fin du Contrat</label>
-                        <input type="text" ngModel name="endContract" class="form-control" id="endContract"
-                           placeholder="01/09/2020">
-                     </div>
-                  </div>
-                  <div class="form-group row">
-                     <div class="col-6">
-                        <label for="feesLunch" class="d-inline-block text-truncate">Tarif Repas</label>
-                        <input type="number" ngModel name="feesLunch" class="form-control" id="feesLunch"
-                           placeholder="2.00€" required>
-                     </div>
-                     <div class="col-6">
-                        <label for="feesSnack" class="d-inline-block text-truncate">Tarif Goûter</label>
-                        <input type="number" ngModel name="feesSnack" class="form-control" id="feesSnack"
-                           placeholder="0.50€" required>
-                     </div>
-                  </div>
-                  <div class="form-group">
-                     <label for="imageUrl">Image URL</label>
-                     <input type="text" ngModel name="imageUrl" class="form-control mb-3" id="imageUrl"
-                        placeholder="Image URL" required>
-                     <input class="btn btn-sm btn-danger" id="formFileSm" type="file" ngModel name="imageUrl"
-                        id="imageUrl" (change)="onSelectImage($event)">
-
-                  </div>
-                  <div class="modal-footer">
-                     <button type="button" id="cancel-add-child-form" class="btn btn-secondary"
-                        data-dismiss="modal">Annuler</button>
-                     <button [disabled]="addForm.invalid" type="submit" class="btn btn-danger"
-                        id="btn-add-child">Enregistrer</button>
-                  </div>
-               </form>
-            </div>
-         </div>
-      </div>
-   </div>
-   <!-- Add Child Modal end -->
-
 
    <!-- Add Monthly Modal -->
    <div class="modal fade" id="addMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="addMonthlyModalLabel"
@@ -264,8 +189,8 @@
                            'is-valid': addMonthlyForm.get('taxableSalary')?.dirty && addMonthlyForm.get('taxableSalary')?.valid
                            }"/>
 
-                        <div  class="invalid-feedback pl-1">
-                              <span>{{errorsValidation}}</span>
+                        <div class="invalid-feedback pl-1">
+                           <span>{{errorsValidation}}</span>
                         </div>
                      </div>
                      <div class="col-6">

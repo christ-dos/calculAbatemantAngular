@@ -255,7 +255,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
 
           this.addMonthlyInChildDetailsForm.patchValue({
             taxableSalary: this.taxableSalarySibling
-          })
+          });
           this.taxableSalarySiblingForm.reset();
         },
         error: err => {

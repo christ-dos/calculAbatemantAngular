@@ -19,6 +19,7 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   public addMonthlyForm!: FormGroup;
   public taxableSalarySiblingForm!: FormGroup;
+ 
 
   constructor(
     private childService: ChildService,
@@ -80,10 +81,10 @@ export class CalculAbatementHomeComponent implements OnInit {
     
     this.getAddMonthlyForm();
     this.getTaxableSalarySiblingFrom();
+    
   }
 
-
-
+ 
   public getTaxableSalarySiblingFrom(): void {
     this.taxableSalarySiblingForm = this.fb.group({
       netSalary: [null, [Validators.required, Validators.min(0), Validators.max(10000)]],
@@ -105,8 +106,8 @@ export class CalculAbatementHomeComponent implements OnInit {
     this.addMonthlyForm = this.fb.group({
       month: ["", [Validators.required]],
       year: ["",
-      [Validators.required, Validators.minLength(4), Validators.maxLength(4),
-      Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
+        [Validators.required, Validators.minLength(4), Validators.maxLength(4),
+        Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
       taxableSalary: ["",
         [Validators.required, Validators.min(0), Validators.max(10000)]],
       dayWorked: [null,
@@ -303,22 +304,22 @@ export class CalculAbatementHomeComponent implements OnInit {
     // }
   }
 
-  public onAddChild(addForm: NgForm): void {
-    document.getElementById('cancel-add-child-form')?.click();
+  // public onAddChild(): void {
+  //   document.getElementById('cancel-add-child-form')?.click();
 
-    this.childService.addChild(addForm.value).subscribe({
-      next: child => {
-        console.log(child);
-        this.getChildren();
-        addForm.reset();
-      },
-      error: err => {
-        this.errorMsg = err.message;
-      }
-    }
-    );
-    document.getElementById('btn-add-child');
-  }
+  //   this.childService.addChild(this.addChildForm.value).subscribe({
+  //     next: child => {
+  //       console.log(child);
+  //       this.getChildren();
+  //       this.addChildForm.reset();
+  //     },
+  //     error: err => {
+  //       this.errorMsg = err.message;
+  //     }
+  //   }
+  //   );
+  //   document.getElementById('btn-add-child');
+  // }
 
   public onAddMonthly(): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
