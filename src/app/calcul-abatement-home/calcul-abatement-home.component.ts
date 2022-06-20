@@ -19,7 +19,7 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   public addMonthlyForm!: FormGroup;
   public taxableSalarySiblingForm!: FormGroup;
- 
+  public editChildForm!: FormGroup;
 
   constructor(
     private childService: ChildService,
@@ -30,7 +30,6 @@ export class CalculAbatementHomeComponent implements OnInit {
     this.calculAbatementMonthlyComponent = new CalculAbatementMonthlyComponent(
       monthlyService, appComponent, childService, fb);
   }
-
 
   public children!: Child[];
   public editChild!: Child;
@@ -78,13 +77,54 @@ export class CalculAbatementHomeComponent implements OnInit {
   ngOnInit(): void {
     this.getChildren();
     this.getMonths()
-    
+
     this.getAddMonthlyForm();
     this.getTaxableSalarySiblingFrom();
-    
+    this. getEditChildForm();
+
   }
 
- 
+  public getEditChildForm(): void {
+    this.editChildForm = this.fb.group({
+      id: [""],
+      lastname: ["", [Validators.required, Validators.minLength(2),
+         Validators.maxLength(30), Validators.pattern(/^[a-zA-Z ]+$/)]],
+      firstname: ["", [Validators.required, Validators.minLength(2),
+         Validators.maxLength(30), Validators.pattern(/^[a-zA-Z ]+$/)]],
+      birthDate: ["",
+        [Validators.required,
+        Validators.pattern(/^(?:(?:(?:0[1-9]|[12]\d|3[01])\/(?:0[13578]|1[02])|(?:0[1-9]|[12]\d|30)\/(?:0[469]|11)|(?:0[1-9]|1\d|2[0-8])\/02)\/(?!0000)\d{4}|(?:(?:0[1-9]|[12]\d)\/02\/(?:(?!0000)(?:[02468][048]|[13579][26])00|(?!..00)\d{2}(?:[02468][048]|[13579][26]))))$/)]],
+      beginContract: ["",
+        [Validators.required,
+        Validators.pattern(/^(?:(?:(?:0[1-9]|[12]\d|3[01])\/(?:0[13578]|1[02])|(?:0[1-9]|[12]\d|30)\/(?:0[469]|11)|(?:0[1-9]|1\d|2[0-8])\/02)\/(?!0000)\d{4}|(?:(?:0[1-9]|[12]\d)\/02\/(?:(?!0000)(?:[02468][048]|[13579][26])00|(?!..00)\d{2}(?:[02468][048]|[13579][26]))))$/)]],
+      endContract: ["",
+        [Validators.pattern(/^(?:(?:(?:0[1-9]|[12]\d|3[01])\/(?:0[13578]|1[02])|(?:0[1-9]|[12]\d|30)\/(?:0[469]|11)|(?:0[1-9]|1\d|2[0-8])\/02)\/(?!0000)\d{4}|(?:(?:0[1-9]|[12]\d)\/02\/(?:(?!0000)(?:[02468][048]|[13579][26])00|(?!..00)\d{2}(?:[02468][048]|[13579][26]))))$/)]],
+      feesLunch: [null,
+        [Validators.min(0), Validators.max(50)]],
+      feesSnack: [null,
+        [Validators.min(0), Validators.max(50)]],
+      imageUrl: ["", [Validators.required, Validators.pattern(/^[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?$/)]]
+    });
+
+    const lastnameControl = this.editChildForm.get('lastname');
+    const firstnameControl = this.editChildForm.get('firstname');
+    const birthDateControl = this.editChildForm.get('birthDate');
+    const beginContractControl = this.editChildForm.get('beginContract');
+    const endContractControl = this.editChildForm.get('endContract');
+    const feesLunchControl = this.editChildForm.get('feesLunch');
+    const feesSnackControl = this.editChildForm.get('feesSnack');
+    const imageUrlControl = this.editChildForm.get('imageUrl');
+
+    this.formControlsValueChange(lastnameControl);
+    this.formControlsValueChange(firstnameControl);
+    this.formControlsValueChange(birthDateControl);
+    this.formControlsValueChange(beginContractControl);
+    this.formControlsValueChange(endContractControl);
+    this.formControlsValueChange(feesLunchControl);
+    this.formControlsValueChange(feesSnackControl);
+    this.formControlsValueChange(imageUrlControl);
+  }
+
   public getTaxableSalarySiblingFrom(): void {
     this.taxableSalarySiblingForm = this.fb.group({
       netSalary: [null, [Validators.required, Validators.min(0), Validators.max(10000)]],
@@ -247,7 +287,6 @@ export class CalculAbatementHomeComponent implements OnInit {
         this.errorMsg = err.message;
       }
     }
-
     );
   }
 
@@ -304,27 +343,10 @@ export class CalculAbatementHomeComponent implements OnInit {
     // }
   }
 
-  // public onAddChild(): void {
-  //   document.getElementById('cancel-add-child-form')?.click();
-
-  //   this.childService.addChild(this.addChildForm.value).subscribe({
-  //     next: child => {
-  //       console.log(child);
-  //       this.getChildren();
-  //       this.addChildForm.reset();
-  //     },
-  //     error: err => {
-  //       this.errorMsg = err.message;
-  //     }
-  //   }
-  //   );
-  //   document.getElementById('btn-add-child');
-  // }
-
   public onAddMonthly(): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
     this.addMonthlyForm.controls['childId'].setValue(this.addMonthlyChild.id);
-    console.log(JSON.stringify(this.addMonthlyForm.value));
+
     this.monthlyService.addMonthly(this.addMonthlyForm.value).subscribe({
       next: monthly => {
         console.log(monthly);
@@ -338,8 +360,7 @@ export class CalculAbatementHomeComponent implements OnInit {
           error: err => {
             this.erroMessage = err;
           }
-        }
-        );
+        });
         this.getChildren();
         this.addMonthlyForm.reset();
       }, error: err => {
@@ -350,10 +371,8 @@ export class CalculAbatementHomeComponent implements OnInit {
         } else {
           this.errorMsg = err.message;
         }
-
       }
-    }
-    );
+    });
   }
 
   public onCalculateTaxableSalarySibling() {
@@ -370,27 +389,27 @@ export class CalculAbatementHomeComponent implements OnInit {
 
           this.addMonthlyForm.patchValue({
             taxableSalary: this.taxableSalarySibling
-          })
+          });
           this.taxableSalarySiblingForm.reset();
         },
         error: err => {
           this.errorMsg = err.message;
         }
-      }
-      );
+      });
   }
 
-  public onUpdateChild(child: Child): void {
-    this.childService.updateChild(child).subscribe({
-      next: childUpdated => {
-        console.log(childUpdated);
-        this.getChildren();
-      },
-      error: err => {
-        this.errorMsg = err.message;
-      }
+  public onUpdateChild(): void {
+    if (this.editChildFormDatesIsValid()) {
+      this.childService.updateChild(this.editChildForm.value).subscribe({
+        next: childUpdated => {
+          console.log(childUpdated);
+          this.getChildren();
+        },
+        error: err => {
+          this.errorMsg = err.message;
+        }
+      });
     }
-    );
   }
 
   public onDeleteChild(childId: number): void {
@@ -402,9 +421,7 @@ export class CalculAbatementHomeComponent implements OnInit {
       error: err => {
         this.errorMsg = err.message;
       }
-    }
-
-    );
+    });
   }
 
   public searchChild(key: string): void {
@@ -413,12 +430,10 @@ export class CalculAbatementHomeComponent implements OnInit {
     setTimeout(() => {
       this.children.forEach((child) => {
         if (child.firstname.toLowerCase().indexOf(key.toLowerCase()) !== -1
-          || child.lastname.toLowerCase().indexOf(key.toLowerCase()) !== -1
-        ) {
+          || child.lastname.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
           results.push(child);
         }
-      }
-      )
+      });
       this.children = results;
       if (results.length === 0 || !key) {
         this.getChildren();
@@ -434,18 +449,19 @@ export class CalculAbatementHomeComponent implements OnInit {
     this.successMsg = '';
   }
 
-
   public onOpenModel(monthly: any, mode: string): void {
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
+
     if (mode === 'add') {
       button.setAttribute('data-target', '#addChildModal');
     }
     if (mode === 'edit') {
       this.editChild = monthly;
+      this.setUpdateChildModalValues();
       button.setAttribute('data-target', '#updateChildModal');
     }
     if (mode === 'delete') {
@@ -467,6 +483,71 @@ export class CalculAbatementHomeComponent implements OnInit {
     container?.appendChild(button);
     button.click();
   }
+
+  public setUpdateChildModalValues(): void {
+    this.editChildForm.setValue({
+      id: this.editChild.id,
+      lastname: this.editChild.lastname,
+      firstname: this.editChild.firstname,
+      birthDate: this.editChild.birthDate,
+      beginContract: this.editChild.beginContract,
+      endContract: this.editChild.endContract,
+      feesLunch: this.editChild.feesLunch,
+      feesSnack: this.editChild.feesSnack,
+      imageUrl: this.editChild.imageUrl,
+     
+    });
+  }
+
+  private editChildFormDatesIsValid(): boolean {
+    var currentYear: number = new Date().getFullYear();
+    var currentMonth: number = new Date().getMonth() + 1;
+    
+    var birthDateArrayOfString: string[] | null = this.getYearAndMonthOfDate(this.editChildForm.get('birthDate')?.value);
+    var birthDateMonth = +birthDateArrayOfString!![1];
+    var birthDateYear = +birthDateArrayOfString!![2];
+   
+    var beginContractArrayOfString: string[] | null = this.getYearAndMonthOfDate(this.editChildForm.get('beginContract')?.value);
+    var beginContractMonth: number = +beginContractArrayOfString!![1];
+    var beginContractYear = +beginContractArrayOfString!![2];
+   
+    var endContractArrayOfString: string[] | null = this.getYearAndMonthOfDate(this.editChildForm.get('endContract')?.value);
+    var endContractMonth!: number;
+    var endContractYear!: number;
+    if (!!endContractArrayOfString) {
+      endContractMonth = +endContractArrayOfString!![1];
+      endContractYear = +endContractArrayOfString!![2];
+    }
+
+    if (birthDateYear > currentYear || birthDateYear < 1952
+      || beginContractYear > currentYear || beginContractYear < 1952
+      || endContractYear > currentYear || (endContractYear !== 0 && endContractYear < 1952)) {
+      this.errorMsg = "L'année doit être comprise entre 1952 et " + currentYear;
+      return false;
+    }
+    if (birthDateYear === currentYear && birthDateMonth > currentMonth
+      || endContractYear === currentYear && endContractMonth > currentMonth) {
+      this.errorMsg = "Le mois ne peut être supèrieur à: " + currentMonth + "/" + currentYear;
+      return false;
+    }
+    if (endContractYear !== null && (endContractYear < beginContractYear || endContractYear === beginContractYear && endContractMonth < beginContractMonth)) {
+      this.errorMsg = "La date de fin du contrat ne peut se situer avant le début du contrat!";
+      return false;
+    }
+    return true;
+  }
+
+  private getYearAndMonthOfDate(date: string): string[] | null {
+    if (!!date) {
+      var dateSplit: string[] = date.split('/');
+      console.table(dateSplit);
+      return dateSplit;
+    }
+    return null;
+  }
+
 }
+
+
 
 

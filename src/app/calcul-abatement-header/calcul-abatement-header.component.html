@@ -29,6 +29,7 @@
    </div>
 </nav>
 <!-- Navbar end -->
+
 <!-- Add Child Modal -->
 <div class="modal fade" id="addChildModal" tabindex="-1" role="dialog" aria-labelledby="addChildModalLabel"
 aria-hidden="true">
@@ -209,7 +210,7 @@ aria-hidden="true">
                <div *ngIf="addChildForm.get('imageUrl')?.hasError('pattern')" 
                   class="invalid-feedback pl-1">
                   <span>L'URL doit commencé par http://</span>
-            </div>
+               </div>
                
                <!-- <input class="btn btn-sm btn-danger" id="formFileSm" type="file" 
                ngModel name="imageUrl"

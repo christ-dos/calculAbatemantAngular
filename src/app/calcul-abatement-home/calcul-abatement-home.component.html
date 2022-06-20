@@ -358,66 +358,195 @@
       <div class="modal-dialog" role="document">
          <div class="modal-content">
             <div class="modal-header bg-danger bg-gradient text-light">
-               <h2 class="modal-title" id="updateChildModalLabel">Editer un Enfant {{editChild?.lastname}}
+               <h2 class="modal-title" id="updateChildModalLabel">Editer un Enfant: {{editChild?.lastname}}
                   {{editChild?.firstname}}</h2>
                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                </button>
             </div>
             <div class="modal-body">
-               <form #editForm="ngForm">
+               <form novalidate [formGroup]="editChildForm">
                   <div class="form-group">
                      <label for="lastname">Nom</label>
-                     <input type="text" ngModel="{{editChild?.lastname}}" name="lastname" class="form-control"
-                        id="lastname" placeholder="Nom" required>
+                     <input type="text" 
+                        class="form-control" 
+                        id="lastname" placeholder="Nom"
+                        class="form-control" 
+                        formControlName="lastname"
+                        [ngClass]="{'is-invalid': editChildForm.get('lastname')?.dirty && editChildForm.get('lastname')?.invalid,
+                                    'is-valid': editChildForm.get('lastname')?.touched && editChildForm.get('lastname')?.valid
+                        }"/>
+   
+                     <div *ngIf="editChildForm.get('lastname')?.hasError('required')" 
+                        class="invalid-feedback pl-1">
+                        <span>{{errorsValidation}}</span>
+                     </div>
+                     <div *ngIf="editChildForm.get('lastname')?.hasError('minlength')" 
+                        class="invalid-feedback pl-1">
+                        <span>Saisir 2 caractères min</span>
+                     </div>
+                     <div *ngIf="editChildForm.get('lastname')?.hasError('maxlength')" 
+                        class="invalid-feedback pl-1">
+                        <span>Saisir 30 caractères max</span>
+                     </div>
+                     <div *ngIf="editChildForm.get('lastname')?.hasError('pattern')" class="invalid-feedback pl-1">
+                        <span>Ce champs accepte uniquement des lettres</span>
+                     </div>
                   </div>
                   <div class="form-group">
                      <label for="firstname">Prénom</label>
-                     <input type="text" ngModel="{{editChild?.firstname}}" name="firstname" class="form-control"
-                        id="firstname" placeholder="Prénom" required>
-                  </div>
-                  <input type="hidden" ngModel="{{editChild?.id}}" name="id" class="form-control" id="id"
-                     placeholder="Id">
-                  <div class="form-group">
-                     <label for="birthDate">Date de naissance</label>
-                     <input type="text" ngModel="{{editChild?.birthDate}}" name="birthDate" class="form-control"
-                        id="birthDate" placeholder="Date de naissance" required>
-                  </div>
-                  <div class="form-group row">
-                     <div class="col-6">
-                        <label for="beginContract">Début du Contrat</label>
-                        <input type="text" ngModel="{{editChild?.beginContract}}" name="beginContract"
-                           class="form-control" id="beginContract" placeholder="01/09/2020" required>
+                     <input type="text" 
+                        class="form-control" id="firstname"
+                        placeholder="Prénom"
+                        formControlName="firstname"
+                        [ngClass]="{'is-invalid': editChildForm.get('firstname')?.dirty && editChildForm.get('firstname')?.invalid,
+                                    'is-valid': editChildForm.get('firstname')?.touched &&  editChildForm.get('firstname')?.valid
+                        }"/>
+
+                     <div *ngIf="editChildForm.get('firstname')?.hasError('required')" 
+                         class="invalid-feedback pl-1">
+                         <span>{{errorsValidation}}</span>
                      </div>
-                     <div class="col-6">
-                        <label for="endContract">Fin du Contrat</label>
-                        <input type="text" ngModel="{{editChild?.endContract}}" name="endContract" class="form-control"
-                           id="endContract" placeholder="01/09/2020">
+                     <div *ngIf="editChildForm.get('firstname')?.hasError('minlength')" 
+                        class="invalid-feedback pl-1">
+                        <span>Saisir 2 caractères min</span>
+                     </div>
+                     <div *ngIf="editChildForm.get('firstname')?.hasError('maxlength')" 
+                        class="invalid-feedback pl-1">
+                        <span>Saisir 30 caractères max</span>
+                     </div>
+                     <div *ngIf="editChildForm.get('firstname')?.hasError('pattern')" 
+                        class="invalid-feedback pl-1">
+                        <span>Ce champs accepte uniquement des lettres</span>
+                     </div>
+               </div>
+               <!-- <input type="hidden" 
+                  class="form-control" 
+                  id="id"
+                  placeholder="Id"
+                  formControlName="id"> -->
+               <div class="form-group">
+                  <label for="birthDate">Date de naissance</label>
+                  <input type="text" 
+                     class="form-control" id="birthDate"
+                     placeholder="17/09/2000"
+                     formControlName="birthDate"
+                     [ngClass]="{'is-invalid': editChildForm.get('birthDate')?.dirty && editChildForm.get('birthDate')?.invalid,
+                                 'is-valid': editChildForm.get('birthDate')?.touched && editChildForm.get('birthDate')?.valid
+                     }"/>
+
+                  <div *ngIf="editChildForm.get('birthDate')?.hasError('required')"
+                     class="invalid-feedback pl-1">
+                     <span>{{errorsValidation}}</span>
+                  </div>
+                  <div *ngIf="editChildForm.get('birthDate')?.hasError('pattern')" 
+                     class="invalid-feedback pl-1">
+                     <span>Date au format jj/MM/aaaa ou mois de 30 jours</span>
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <div class="col-6">
+                     <label for="beginContract">Début du Contrat</label>
+                     <input type="text"
+                        class="form-control" id="beginContract"
+                        placeholder="01/09/2020"
+                        formControlName="beginContract"
+                        [ngClass]="{'is-invalid': (editChildForm.get('beginContract')?.dirty 
+                        || editChildForm.get('beginContract')?.touched)
+                           && editChildForm.get('beginContract')?.invalid,
+                                    'is-valid': (editChildForm.get('beginContract')?.touched 
+                                    || editChildForm.get('beginContract')?.dirty) 
+                                    && editChildForm.get('beginContract')?.valid
+                        }"/>
+                     
+                     <div *ngIf="editChildForm.get('beginContract')?.hasError('required')"
+                        class="invalid-feedback pl-1">
+                        <span>{{errorsValidation}}</span>
+                     </div>
+                     <div *ngIf="editChildForm.get('beginContract')?.hasError('pattern')" 
+                        class="invalid-feedback pl-1">
+                        <span>Date au format jj/MM/aaaa ou mois de 30 jours</span>
                      </div>
                   </div>
-                  <div class="form-group row">
-                     <div class="col-6">
-                        <label for="feesLunch" class="d-inline-block text-truncate">Tarif Repas</label>
-                        <input type="number" ngModel="{{editChild?.feesLunch}}" name="feesLunch" class="form-control"
-                           id="feesLunch" placeholder="2.00€" required>
+                  <div class="col-6">
+                     <label for="endContract">Fin du Contrat</label>
+                     <input type="text"
+                        class="form-control" id="endContract"
+                        placeholder="01/09/2020"
+                        formControlName="endContract"
+                        [ngClass]="{'is-invalid': editChildForm.get('endContract')?.dirty && editChildForm.get('endContract')?.invalid,
+                                    'is-valid': editChildForm.get('endContract')?.dirty && editChildForm.get('endContract')?.valid
+                        }"/>
+
+                     <div *ngIf="editChildForm.get('endContract')?.hasError('pattern')" 
+                        class="invalid-feedback pl-1">
+                        <span>Date au format jj/MM/aaaa ou mois de 30 jours</span>
                      </div>
-                     <div class="col-6">
-                        <label for="feesSnack" class="d-inline-block text-truncate">Tarif Goûter</label>
-                        <input type="number" ngModel="{{editChild?.feesSnack}}" name="feesSnack" class="form-control"
-                           id="feesSnack" placeholder="0.50€" required>
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <div class="col-6">
+                     <label for="feesLunch" class="d-inline-block text-truncate">Tarif Repas</label>
+                     <input type="number" 
+                        class="form-control" id="feesLunch"
+                        placeholder="2.00€" 
+                        formControlName="feesLunch"
+                        [ngClass]="{'is-invalid': editChildForm.get('feesLunch')?.dirty && editChildForm.get('feesLunch')?.invalid,
+                                    'is-valid': editChildForm.get('feesLunch')?.touched && editChildForm.get('feesLunch')?.valid
+                        }"/>
+
+                     <div *ngIf="editChildForm.get('feesLunch')?.hasError('min')" 
+                        class="invalid-feedback pl-1">
+                        <span>Ce champs ne peut être infèrieur à 0</span>
+                     </div>
+                     <div *ngIf="editChildForm.get('feesLunch')?.hasError('max')" 
+                        class="invalid-feedback pl-1">
+                        <span>Ce champs ne peut être supèrieur à 50</span>
                      </div>
                   </div>
-                  <div class="form-group">
-                     <label for="imageUrl">Image URL</label>
-                     <input type="text" ngModel="{{editChild?.imageUrl}}" name="imageUrl" class="form-control"
-                        id="imageUrl" placeholder="Image URL" required>
+                  <div class="col-6">
+                     <label for="feesSnack" class="d-inline-block text-truncate">Tarif Goûter</label>
+                     <input type="number" 
+                        class="form-control" id="feesSnack"
+                        placeholder="0.50€" 
+                        formControlName="feesSnack"
+                        [ngClass]="{'is-invalid': editChildForm.get('feesSnack')?.dirty && (editChildForm.get('feesSnack')?.invalid),
+                                    'is-valid': editChildForm.get('feesSnack')?.touched && editChildForm.get('feesSnack')?.valid
+                        }"/>
+
+                     <div *ngIf="editChildForm.get('feesSnack')?.hasError('min')" 
+                        class="invalid-feedback pl-1">
+                        <span>Ce champs ne peut être infèrieur à 0</span>
+                     </div>
+                     <div *ngIf="editChildForm.get('feesSnack')?.hasError('max')" 
+                        class="invalid-feedback pl-1">
+                        <span>Ce champs ne peut être supèrieur à 50</span>
+                     </div>
                   </div>
-                  <div class="modal-footer">
-                     <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Annuler</button>
-                     <button data-dismiss="modal" class="btn btn-danger"
-                        (click)="onUpdateChild(editForm.value)">Enregistrer</button>
-                  </div>
-               </form>
+               </div>
+               <div class="form-group">
+                  <label for="imageUrl">Image URL</label>
+                  <input type="url" 
+                     class="form-control" id="imageUrl"
+                     placeholder="Image URL" 
+                     formControlName="imageUrl"
+                     [ngClass]="{'is-invalid': editChildForm.get('imageUrl')?.dirty && editChildForm.get('imageUrl')?.invalid,
+                                 'is-valid': editChildForm.get('imageUrl')?.touched && editChildForm.get('imageUrl')?.valid
+                     }"/>
+               <div *ngIf="editChildForm.get('imageUrl')?.hasError('required')" class="invalid-feedback pl-1">
+                  <span>{{errorsValidation}}</span>
+               </div>
+               <div *ngIf="editChildForm.get('imageUrl')?.hasError('pattern')" 
+                  class="invalid-feedback pl-1">
+                  <span>L'URL doit commencé par http://</span>
+               </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Annuler</button>
+                  <button data-dismiss="modal" class="btn btn-danger"
+                     (click)="onUpdateChild()">Enregistrer</button>
+               </div>
+            </form>
             </div>
          </div>
       </div>

@@ -38,12 +38,6 @@ export class CalculAbatementHeaderComponent implements OnInit {
 
   public validationErrorsMessages: any = {
     required: "Ce champ est requis",
-   // min: "Le nombre ne peut être inferieur à 0",
-   // max: "Le nombre est trop grand",
-   // minlength: "Le champs doit contenir 2 caractères min",
-   // maxlength: "Le champs doit contenir 30 caractères max",
-    //pattern: "format incorrect!",
-
   };
 
   public ChildrenHeader!: Child[];
@@ -53,14 +47,20 @@ export class CalculAbatementHeaderComponent implements OnInit {
 
   public getAddChildForm(): void {
     this.addChildForm = this.fb.group({
-      lastname: ["", [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern(/^[a-zA-Z]+$/)]],
-      firstname: ["", [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern(/^[a-zA-Z]+$/)]],
+      lastname: ["", [Validators.required,
+         Validators.minLength(2),
+         Validators.maxLength(30), 
+         Validators.pattern(/^[a-zA-Z ]+$/)]],
+      firstname: ["", [Validators.required,
+         Validators.minLength(2),
+         Validators.maxLength(30),
+         Validators.pattern(/^[a-zA-Z ]+$/)]],
       birthDate: ["",
-        [Validators.required,     // mois qi finissent en 31 jours                  le mois de 30 jours                 28 jours en février       année 0000 refusé     mois de février
-        Validators.pattern(/^(?:(?:(?:0[1-9]|[12]\d|3[01])\/(?:0[13578]|1[02])|(?:0[1-9]|[12]\d|30)\/(?:0[469]|11)|(?:0[1-9]|1\d|2[0-8])\/02)\/(?!0000)\d{4}|(?:(?:0[1-9]|[12]\d)\/02\/(?:(?!0000)(?:[02468][048]|[13579][26])00|(?!..00)\d{2}(?:[02468][048]|[13579][26]))))$/)]],
+        [Validators.required,     
+         Validators.pattern(/^(?:(?:(?:0[1-9]|[12]\d|3[01])\/(?:0[13578]|1[02])|(?:0[1-9]|[12]\d|30)\/(?:0[469]|11)|(?:0[1-9]|1\d|2[0-8])\/02)\/(?!0000)\d{4}|(?:(?:0[1-9]|[12]\d)\/02\/(?:(?!0000)(?:[02468][048]|[13579][26])00|(?!..00)\d{2}(?:[02468][048]|[13579][26]))))$/)]],
       beginContract: ["",
         [Validators.required,
-        Validators.pattern(/^(?:(?:(?:0[1-9]|[12]\d|3[01])\/(?:0[13578]|1[02])|(?:0[1-9]|[12]\d|30)\/(?:0[469]|11)|(?:0[1-9]|1\d|2[0-8])\/02)\/(?!0000)\d{4}|(?:(?:0[1-9]|[12]\d)\/02\/(?:(?!0000)(?:[02468][048]|[13579][26])00|(?!..00)\d{2}(?:[02468][048]|[13579][26]))))$/)]],
+         Validators.pattern(/^(?:(?:(?:0[1-9]|[12]\d|3[01])\/(?:0[13578]|1[02])|(?:0[1-9]|[12]\d|30)\/(?:0[469]|11)|(?:0[1-9]|1\d|2[0-8])\/02)\/(?!0000)\d{4}|(?:(?:0[1-9]|[12]\d)\/02\/(?:(?!0000)(?:[02468][048]|[13579][26])00|(?!..00)\d{2}(?:[02468][048]|[13579][26]))))$/)]],
       endContract: ["",
         [Validators.pattern(/^(?:(?:(?:0[1-9]|[12]\d|3[01])\/(?:0[13578]|1[02])|(?:0[1-9]|[12]\d|30)\/(?:0[469]|11)|(?:0[1-9]|1\d|2[0-8])\/02)\/(?!0000)\d{4}|(?:(?:0[1-9]|[12]\d)\/02\/(?:(?!0000)(?:[02468][048]|[13579][26])00|(?!..00)\d{2}(?:[02468][048]|[13579][26]))))$/)]],
       feesLunch: [null,
@@ -68,7 +68,6 @@ export class CalculAbatementHeaderComponent implements OnInit {
       feesSnack: [null,
         [Validators.min(0), Validators.max(50)]],
       imageUrl: ["", [Validators.required, Validators.pattern(/^[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?$/)]]
-
     });
 
     const lastnameControl = this.addChildForm.get('lastname');
@@ -88,7 +87,6 @@ export class CalculAbatementHeaderComponent implements OnInit {
     this.formControlsValueChange(feesLunchControl);
     this.formControlsValueChange(feesSnackControl);
     this.formControlsValueChange(imageUrlControl);
-
   }
 
   public formControlsValueChange(formControl: AbstractControl | null): void {
@@ -106,15 +104,12 @@ export class CalculAbatementHeaderComponent implements OnInit {
       console.log(Object.keys(value.errors));
       this.errorsValidation = Object.keys(value.errors).map(
         key => this.validationErrorsMessages[key]).join(' ');
-
-      console.log("mon erreur:" + this.errorsValidation);
-
     }
   }
 
   public onAddChild(): void {
     document.getElementById('cancel-add-child-form')?.click();
-    if (this.addFormChildIsValid()) {
+    if (this.addChildFormDatesIsValid()) {
       this.childService.addChild(this.addChildForm.value).subscribe({
         next: child => {
           console.log(child);
@@ -143,10 +138,9 @@ export class CalculAbatementHeaderComponent implements OnInit {
       return dateSplit;
     }
     return null;
-
   }
 
-  private addFormChildIsValid(): boolean {
+  private addChildFormDatesIsValid(): boolean {
     var currentYear: number = new Date().getFullYear();
     var currentMonth: number = new Date().getMonth() + 1;
     

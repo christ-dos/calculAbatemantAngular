@@ -407,7 +407,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       lunch: this.editMonthly.lunch,
       snack: this.editMonthly.snack,
       childId: this.editMonthly.childId
-    })
+    });
   }
 
   public onOpenModel(monthly: any, mode: string): void {
@@ -436,4 +436,6 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     container?.appendChild(button);
     button.click();
   }
+
+  
 }
