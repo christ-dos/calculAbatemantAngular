@@ -18,57 +18,64 @@
    </div>
    <!-- for printing (hidden) end-->
    <div class="row px-5">
-      <div class="row d-print-none d-flex pr-0 pb-4 justify-content-md-center">
+      <div class="row d-print-none d-flex pr-0 pb-4 pt-1 justify-content-center align-items-start">
          <!-- Form search child-->
-         <div
-            class="col-8 col-md-6 col-lg-4 d-flex align-items-center justify-content-end justify-content-lg-end justify-content-md-end">
+         <div class="col-8 col-sm-7 col-md-5 col-lg-3 col-xl-3 d-inline-block mt-2 mr-md-3 mr-lg-5 mr-xl-0 pr-0">
             <form class="form-inline">
-               <input type="search" (ngModelChange)="this.searchChild(searchChildForm.value)" 
+               <input type="search" 
+                  (ngModelChange)="this.searchChild(searchChildForm.value)" 
                   ngModel name="searchChildForm"
-                  id="searchChild" class="form-control bg-white-smoke shadow " style="font-family:Arial, FontAwesome"
+                  id="searchChild" 
+                  class="form-control bg-white-smoke shadow" 
+                  style="font-family:Arial, FontAwesome"
                   placeholder="&#xF002;  Rechercher un Enfant" 
-                  required
                   pattern ="[a-z A-Z]{1,30}" 
                   #searchChildForm="ngModel" 
-                  [ngClass]="{'is-invalid' : (searchChildForm?.touched || searchChildForm?.dirty) 
+                  [ngClass]="{'is-invalid' : searchChildForm?.dirty
                             && !searchChildForm?.valid,
                            'is-valid'  : searchChildForm?.dirty && searchChildForm?.valid
                            }"/>
               
-               <div *ngIf="searchChildForm?.hasError('pattern')" class="invalid-feedback pl-1">
-                  <span>Uniquement des lettres maximum 30 caractères</span>
+               <div *ngIf="searchChildForm?.hasError('pattern')" 
+                  class="invalid-feedback d-flex pl-1">
+                  <span>Uniquement des lettres et maximum 30 caractères</span>
                </div>
-               <div *ngIf="searchChildForm?.hasError('required')" class="invalid-feedback pl-1">
+               <!-- <div *ngIf="searchChildForm?.hasError('required')" 
+                  class="invalid-feedback pl-1">
                   <span>Saisir une lettre pour rechercher un enfant</span>
-               </div>
+               </div> -->
             </form>
          </div>
          <!-- Form search end child-->
 
-         <button type="button" class="btn col-2 col-md-1 col-lg-1 pl-3 pl-md-0 d-flex justify-content-lg-end pr-lg-1"
+         <button type="button" 
+            class="btn col-2 col-md-1 col-lg-1 pl-3 pl-md-0 d-flex justify-content-lg-end pr-lg-1"
             data-bs-toggle="modal" data-bs-target="#summaryModal">
             <span *ngIf="children" class="material-icons color-pink fs-2 p-2 shadow rounded bg-white-smoke"
                data-md-tooltip="Rapport Annuel">summarize</span>
          </button>
          <button
             class="btn col-2 col-md-1 col-lg-1 justify-content-end pl-0 pr-md-0 text-secondary d-flex justify-content-lg-start"
-            printTitle="Listes Enfants" [useExistingCss]="true" printSectionId="main-container" ngxPrint>
+            printTitle="Listes Enfants" 
+            [useExistingCss]="true" printSectionId="main-container" ngxPrint>
             <span class="material-icons fs-2 p-2 shadow rounded text-secondary bg-white-smoke"
                data-md-tooltip="Imprimer">print</span>
          </button>
 
       </div>
-      <div *ngFor="let child of children" class="col-md-6 col-xl-3 mb-4">
+      <div *ngFor="let child of children | paginate: { itemsPerPage: 8, currentPage: page }" class="col-md-6 col-xl-3 mb-4">
          <div class="card m-b-30 shadow rounded " id="content">
             <div class="col-12 d-print-none">
                <span (click)="onOpenModel(child,'addMonthly')"
-                  class="material-icons color-pink fs-3 pt-1 float-right" data-md-tooltip="Déclaration Mensuelle"
+                  class="material-icons color-pink fs-3 pt-1 float-right" 
+                  data-md-tooltip="Déclaration Mensuelle"
                   id="AddMonthly" name="AddMonthly">post_add</span>
             </div>
             <div class="card-body row " id="card-body">
                <div class="col-6 ">
                   <a href="/monthly"><img src={{child?.imageUrl}} alt="image de profil" id="imageCard"
-                        class="img-thumbnail rounded-circle " max-width="100" cardImage></a>
+                        class="img-thumbnail rounded-circle " 
+                        max-width="100" cardImage></a>
 
 
                   <!--<a href="/monthly"><img src={{urlLink}} alt="image de profil" class="img-fluid rounded-circle"></a>
@@ -96,15 +103,24 @@
                </div>
             </div>
             <ul class="list-group list-group-flush px-1">
-               <li class="list-group-item font-italic" id="year-home-card"><strong> Année {{currentYear}}: </strong>
+               <li class="list-group-item font-italic" id="year-home-card">
+                  <strong> Année {{currentYear}}: </strong>
                </li>
-               <li class="list-group-item font-italic"><i class="fa fa-money float-right "></i>Salaire Imposable:
-                  {{child?.taxableSalary | currency: 'EUR'}}</li>
-               <li class="list-group-item font-italic "><i class="fa fa-money float-right"></i>Abatement Fiscal:
-                  {{child?.taxRelief | currency: 'EUR'}}</li>
-               <li class="list-group-item font-italic bg-light-pink rounded"><i
-                     class="fa fa-money float-right"></i>Somme à déclarer: {{child?.reportableAmounts | currency:
-                  'EUR'}}</li>
+               <li class="list-group-item font-italic">
+                  <i class="fa fa-money float-right "></i>
+                   Salaire Imposable: 
+                   {{child?.taxableSalary | currency: 'EUR'}}
+               </li>
+               <li class="list-group-item font-italic ">
+                  <i class="fa fa-money float-right"></i>
+                   Abatement Fiscal:
+                  {{child?.taxRelief | currency: 'EUR'}}
+               </li>
+               <li class="list-group-item font-italic bg-light-pink rounded">
+                  <i class="fa fa-money float-right"></i>
+                  Somme à déclarer: 
+                  {{child?.reportableAmounts | currency: 'EUR'}}
+               </li>
             </ul>
             <div class="card-body">
                <!-- <div class="btn-group btn-group-sm">-->
@@ -115,11 +131,14 @@
                   </a>
                </div>
                <div class="float-right d-print-none">
-                  <a (click)="onOpenModel(child,'edit')" class="btn" data-md-tooltip="Editer" data-placement="top"
+                  <a (click)="onOpenModel(child,'edit')" 
+                     class="btn" data-md-tooltip="Editer" data-placement="top"
                      data-original-title="Edit">
                      <i class="fa fa-pencil color-pink"></i>
                   </a>
-                  <a (click)="onOpenModel(child,'delete')" class="btn" data-md-tooltip="Supprimer" data-placement="top"
+                  <a (click)="onOpenModel(child,'delete')" 
+                     class="btn" data-md-tooltip="Supprimer" 
+                     data-placement="top"
                      data-original-title="Delete">
                      <i class="fa fa-trash" style="color: rgb(117, 107, 107);"></i>
                   </a>
@@ -128,6 +147,11 @@
             </div>
          </div>
       </div>
+      <div class="row mx-1 pl-3 pt-2">
+         <pagination-controls (pageChange)="page = $event" previousLabel="Précedent" nextLabel="Suivant"
+             [autoHide]="true" [responsive]="true" class="fs-6 text-center text-info my-pagination">
+         </pagination-controls>
+     </div>
 
    </div>
    <!-- Main container end -->
@@ -139,7 +163,7 @@
          <div class="modal-content">
             <div class="modal-header bg-danger bg-gradient text-light">
                <h2 class="modal-title" id="addMonthlyModalLabel">Ajouter Déclaration Mensuelle:
-                  {{addMonthlyChild?.lastname}} {{addMonthlyChild?.firstname}}</h2>
+                  {{addMonthlyChild?.lastname | titlecase}} {{addMonthlyChild?.firstname | titlecase}}</h2>
                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                </button>
@@ -170,7 +194,8 @@
                            ng-pattern="/0-9/" class="form-control" 
                            id="year" placeholder="2022" 
                            formControlName="year"
-                           [ngClass]="{'is-invalid': addMonthlyForm.get('year')?.dirty && addMonthlyForm.get('year')?.invalid,
+                           [ngClass]="{'is-invalid': addMonthlyForm.get('year')?.dirty 
+                              && addMonthlyForm.get('year')?.invalid,
                                        'is-valid':addMonthlyForm.get('year')?.valid
                            }"/>
 
@@ -185,8 +210,10 @@
                         <input type="number"  name="taxableSalary"
                            class="form-control" id="taxableSalary" placeholder="650.20 €" 
                            formControlName="taxableSalary"
-                           [ngClass]="{'is-invalid': addMonthlyForm.get('taxableSalary')?.dirty && addMonthlyForm.get('taxableSalary')?.invalid,
-                           'is-valid': addMonthlyForm.get('taxableSalary')?.dirty && addMonthlyForm.get('taxableSalary')?.valid
+                           [ngClass]="{'is-invalid': addMonthlyForm.get('taxableSalary')?.dirty 
+                              && addMonthlyForm.get('taxableSalary')?.invalid,
+                           'is-valid': addMonthlyForm.get('taxableSalary')?.dirty 
+                              && addMonthlyForm.get('taxableSalary')?.valid
                            }"/>
 
                         <div class="invalid-feedback pl-1">
@@ -194,7 +221,8 @@
                         </div>
                      </div>
                      <div class="col-6">
-                        <label for="calcul-taxable-salary-sibling-form" class="d-inline-block text-truncate">Salaire
+                        <label for="calcul-taxable-salary-sibling-form" 
+                           class="d-inline-block text-truncate">Salaire
                            Imposable Fraterie</label>
                         <button (click)="onOpenModel(null,'taxableSalarySibling')" type="button"
                            id="calcul-taxable-salary-sibling-form"
@@ -209,8 +237,10 @@
                         <input type="number"  class="form-control" id="dayWorked"
                            placeholder="20" 
                            formControlName="dayWorked"
-                           [ngClass]="{'is-invalid':addMonthlyForm.get('dayWorked')?.dirty &&  addMonthlyForm.get('dayWorked')?.invalid,
-                           'is-valid': addMonthlyForm.get('dayWorked')?.dirty && addMonthlyForm.get('dayWorked')?.valid
+                           [ngClass]="{'is-invalid':addMonthlyForm.get('dayWorked')?.dirty 
+                              && addMonthlyForm.get('dayWorked')?.invalid,
+                           'is-valid': addMonthlyForm.get('dayWorked')?.dirty 
+                              && addMonthlyForm.get('dayWorked')?.valid
                            }"/>
 
                         <div  class="invalid-feedback pl-1">
@@ -222,8 +252,10 @@
                         <input type="number"  name="hoursWorked" class="form-control" id="hoursWorked"
                            placeholder="8.00" 
                            formControlName="hoursWorked"
-                           [ngClass]="{'is-invalid':addMonthlyForm.get('hoursWorked')?.dirty &&  addMonthlyForm.get('hoursWorked')?.invalid,
-                           'is-valid': addMonthlyForm.get('hoursWorked')?.dirty && addMonthlyForm.get('hoursWorked')?.valid
+                           [ngClass]="{'is-invalid':addMonthlyForm.get('hoursWorked')?.dirty 
+                              && addMonthlyForm.get('hoursWorked')?.invalid,
+                           'is-valid': addMonthlyForm.get('hoursWorked')?.dirty 
+                              && addMonthlyForm.get('hoursWorked')?.valid
                            }"/>
 
                         <div class="invalid-feedback pl-1">
@@ -236,8 +268,10 @@
                         <label for="lunch">Repas</label>
                         <input type="number" name="lunch" class="form-control" id="lunch" placeholder="20"
                            formControlName="lunch"
-                           [ngClass]="{'is-invalid':addMonthlyForm.get('lunch')?.dirty &&  addMonthlyForm.get('lunch')?.invalid,
-                           'is-valid': addMonthlyForm.get('lunch')?.dirty && addMonthlyForm.get('lunch')?.valid
+                           [ngClass]="{'is-invalid':addMonthlyForm.get('lunch')?.dirty 
+                              &&  addMonthlyForm.get('lunch')?.invalid,
+                           'is-valid': addMonthlyForm.get('lunch')?.dirty 
+                              && addMonthlyForm.get('lunch')?.valid
                            }" />
 
                         <div class="invalid-feedback pl-1">
@@ -248,8 +282,10 @@
                         <label for="snack">Goûters</label>
                         <input type="number" name="snack" class="form-control" id="snack" placeholder="20"
                            formControlName="snack"
-                           [ngClass]="{'is-invalid':addMonthlyForm.get('snack')?.dirty &&  addMonthlyForm.get('snack')?.invalid,
-                           'is-valid': addMonthlyForm.get('snack')?.dirty && addMonthlyForm.get('snack')?.valid
+                           [ngClass]="{'is-invalid':addMonthlyForm.get('snack')?.dirty 
+                              &&  addMonthlyForm.get('snack')?.invalid,
+                           'is-valid': addMonthlyForm.get('snack')?.dirty 
+                              && addMonthlyForm.get('snack')?.valid
                            }" />
                         <div class="invalid-feedback pl-1">
                               <span>{{errorsValidation}}</span>
@@ -257,7 +293,8 @@
                      </div>
                   </div>
                   <div class="modal-footer">
-                     <button type="button" id="cancel-add-Monthly-form" class="btn btn-secondary"
+                     <button type="button" id="cancel-add-Monthly-form" 
+                        class="btn btn-secondary"
                         data-dismiss="modal">Annuler</button>
                      <button [disabled]="addMonthlyForm.invalid" type="submit"
                         class="btn bg-danger text-light">Enregistrer</button>
@@ -328,7 +365,7 @@
                               'is-valid': taxableSalarySiblingForm.get('netBrutCoefficient')?.dirty && taxableSalarySiblingForm.get('netBrutCoefficient')?.valid
                            }" />
 
-                        <div  *ngIf="!taxableSalarySiblingForm.get('netBrutCoefficient')?.hasError('pattern')" 
+                        <div *ngIf="!taxableSalarySiblingForm.get('netBrutCoefficient')?.hasError('pattern')" 
                            class="invalid-feedback pl-1">
                            <span>{{errorsValidation}}</span>
                         </div>
@@ -340,10 +377,14 @@
                   </div>
 
                   <div class="modal-footer">
-                     <button type="button" id="cancel-taxable-salary-sibling-form" class="btn btn-secondary"
+                     <button type="button" 
+                        id="cancel-taxable-salary-sibling-form"
+                        class="btn btn-secondary"
                         data-dismiss="modal">Annuler</button>
-                     <button [disabled]="taxableSalarySiblingForm.invalid" type="submit"
-                        class="btn btn-danger">Enregistrer</button>
+                     <button [disabled]="taxableSalarySiblingForm.invalid" 
+                        type="submit"
+                        class="btn btn-danger">Enregistrer
+                     </button>
                   </div>
                </form>
             </div>
@@ -358,8 +399,8 @@
       <div class="modal-dialog" role="document">
          <div class="modal-content">
             <div class="modal-header bg-danger bg-gradient text-light">
-               <h2 class="modal-title" id="updateChildModalLabel">Editer un Enfant: {{editChild?.lastname}}
-                  {{editChild?.firstname}}</h2>
+               <h2 class="modal-title" id="updateChildModalLabel">Editer un Enfant: {{editChild?.lastname | titlecase}}
+                  {{editChild?.firstname | titlecase}}</h2>
                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                </button>
@@ -373,8 +414,10 @@
                         id="lastname" placeholder="Nom"
                         class="form-control" 
                         formControlName="lastname"
-                        [ngClass]="{'is-invalid': editChildForm.get('lastname')?.dirty && editChildForm.get('lastname')?.invalid,
-                                    'is-valid': editChildForm.get('lastname')?.touched && editChildForm.get('lastname')?.valid
+                        [ngClass]="{'is-invalid': editChildForm.get('lastname')?.dirty 
+                           && editChildForm.get('lastname')?.invalid,
+                                    'is-valid': editChildForm.get('lastname')?.touched 
+                                    && editChildForm.get('lastname')?.valid
                         }"/>
    
                      <div *ngIf="editChildForm.get('lastname')?.hasError('required')" 
@@ -399,8 +442,10 @@
                         class="form-control" id="firstname"
                         placeholder="Prénom"
                         formControlName="firstname"
-                        [ngClass]="{'is-invalid': editChildForm.get('firstname')?.dirty && editChildForm.get('firstname')?.invalid,
-                                    'is-valid': editChildForm.get('firstname')?.touched &&  editChildForm.get('firstname')?.valid
+                        [ngClass]="{'is-invalid': editChildForm.get('firstname')?.dirty 
+                           && editChildForm.get('firstname')?.invalid,
+                                    'is-valid': editChildForm.get('firstname')?.touched 
+                                       && editChildForm.get('firstname')?.valid
                         }"/>
 
                      <div *ngIf="editChildForm.get('firstname')?.hasError('required')" 
@@ -420,11 +465,6 @@
                         <span>Ce champs accepte uniquement des lettres</span>
                      </div>
                </div>
-               <!-- <input type="hidden" 
-                  class="form-control" 
-                  id="id"
-                  placeholder="Id"
-                  formControlName="id"> -->
                <div class="form-group">
                   <label for="birthDate">Date de naissance</label>
                   <input type="text" 
@@ -559,17 +599,22 @@
       <div class="modal-dialog" role="document">
          <div class="modal-content">
             <div class="modal-header bg-danger bg-gradient text-light">
-               <h2 class="modal-title" id="deleteChildModalLabel">Supprimer un Enfant</h2>
-               <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+               <h2 class="modal-title" 
+                  id="deleteChildModalLabel">Supprimer un Enfant
+               </h2>
+               <button type="button" class="close text-light"
+                   data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                </button>
             </div>
             <div class="modal-body">
-               <p>Etes-vous vraiment sûr de vouloir supprimer l'enfant {{deleteChild?.lastname}}
-                  {{deleteChild?.firstname}}? </p>
+               <p>Etes-vous vraiment sûr de vouloir supprimer l'enfant {{deleteChild?.lastname | titlecase}}
+                  {{deleteChild?.firstname | titlecase}}? </p>
                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
-                  <button (click)="onDeleteChild(deleteChild.id)" class="btn btn-danger"
+                  <button type="button" class="btn btn-secondary" 
+                     data-dismiss="modal">Non</button>
+                  <button (click)="onDeleteChild(deleteChild.id)" 
+                     class="btn btn-danger"
                      data-dismiss="modal">Oui</button>
                </div>
             </div>
@@ -636,23 +681,29 @@
                      </div>
                   </div>
                   <div class="mb-3 row">
-                     <label for="sumTaxableSalary" class="col-sm-5 col-form-label">Salaire Imposable Total: </label>
+                     <label for="sumTaxableSalary" 
+                        class="col-sm-5 col-form-label">Salaire Imposable Total: </label>
                      <div class="col-sm-4 pl-4 pl-sm-3">
-                        <input type="text" readonly class="form-control-plaintext" id="sumTaxableSalary"
+                        <input type="text" readonly 
+                           class="form-control-plaintext" id="sumTaxableSalary"
                            value="{{sumTaxableSalary |  currency: 'EUR'}}">
                      </div>
                   </div>
                   <div class="mb-3 row">
-                     <label for="sumTaxRelief" class="col-sm-5 col-form-label">Abatement Fiscal Total: </label>
+                     <label for="sumTaxRelief" 
+                        class="col-sm-5 col-form-label">Abatement Fiscal Total: </label>
                      <div class="col-sm-4 pl-4 pl-sm-3">
-                        <input type="text" readonly class="form-control-plaintext" name="sumTaxRelief" id="sumTaxRelief"
+                        <input type="text" readonly 
+                           class="form-control-plaintext" name="sumTaxRelief" id="sumTaxRelief"
                            value="{{sumTaxRelief |  currency: 'EUR'}}">
                      </div>
                   </div>
                   <div class="mb-3 row bg-light-pink font-weight-bold">
-                     <label for="sumReportableAmounts" class="col-sm-5 col-form-label">Total à déclarer: </label>
+                     <label for="sumReportableAmounts" 
+                        class="col-sm-5 col-form-label">Total à déclarer: </label>
                      <div class="col-sm-4 pl-4 pl-sm-3">
-                        <input type="text" readonly class="form-control-plaintext font-weight-bold"
+                        <input type="text" readonly 
+                           class="form-control-plaintext font-weight-bold"
                            name="sumReportableAmounts" id="sumReportableAmounts"
                            value="{{sumReportableAmount |  currency: 'EUR'}}">
                      </div>
@@ -660,7 +711,8 @@
 
                   <div class="row modal-footer d-print-none justify-content-between pl-0 align-items-end">
                      <div class="col-5">
-                        <button class="btn text-secondary pb-0" printTitle="Rapport Annuel" [useExistingCss]="true"
+                        <button class="btn text-secondary pb-0" printTitle="Rapport Annuel" 
+                           [useExistingCss]="true"
                            printSectionId="print-modal-body" ngxPrint>
                            <span class="material-icons fs-2 p-2 shadow rounded text-secondary">print</span>
                         </button>
@@ -694,7 +746,7 @@
          </div>
          <div *ngIf="successMsg" class="alert alert-success" role="alert">
             <h4 class="alert-heading d-flex align-items-end mb-1">Opération réussie!
-               <span class=" material-icons color-gray ml-auto" (click)="hideError('errorMsg')">close</span>
+               <span class=" material-icons color-gray ml-auto" (click)="hideError('')">close</span>
             </h4>
             <p class="d-flex align-items-end">
                <span class="material-icons color-gray mr-2 text-success">done</span>

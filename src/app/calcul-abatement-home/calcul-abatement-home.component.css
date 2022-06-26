@@ -11,8 +11,8 @@
    }
 
    .bg-light-gray {
-    background-color: #d9d6d647;
-}
+       background-color: #d9d6d647;
+   }
 
    .bg-white-smoke {
        background-color: whitesmoke;
@@ -32,6 +32,7 @@
        height: 120px;
    }
 
-  /* input::placeholder {
-    color: white;
-  }*/
+   .my-pagination /deep/ .ngx-pagination .current {
+       background: #d61626;
+       border-radius: 50%;
+   }

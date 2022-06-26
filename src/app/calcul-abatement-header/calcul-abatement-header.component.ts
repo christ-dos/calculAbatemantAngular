@@ -110,10 +110,14 @@ export class CalculAbatementHeaderComponent implements OnInit {
   public onAddChild(): void {
     document.getElementById('cancel-add-child-form')?.click();
     if (this.addChildFormDatesIsValid()) {
+      this.addChildForm.patchValue({
+        firstname: this.addChildForm.value.firstname.toLocaleLowerCase(),
+        lastname: this.addChildForm.value.lastname.toLocaleLowerCase(),
+      });
       this.childService.addChild(this.addChildForm.value).subscribe({
         next: child => {
           console.log(child);
-          this.successMsg = "Enfant: " + this.addChildForm.get('firstname')?.value + " " + this.addChildForm.get('lastname')?.value + " ajouter avec succés!"
+          this.successMsg = "Enfant: " + this.addChildForm.get('firstname')?.value + " " + this.addChildForm.get('lastname')?.value + " ajouté avec succés!"
           this.addChildForm.reset();
         },
         error: err => {

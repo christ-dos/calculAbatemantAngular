@@ -1,28 +1,50 @@
 <div class="container" id="main-container">
-   <!-- <ng-container *ngIf="errorMsg">
-      <div class="alert alert-warning d-flex align-items-center mt-2 d-print-none">
-          <span class="material-icons color-gray mr-2">error</span>
-          {{errorMsg}}
-          <span class="material-icons color-gray ml-auto" (click)="hideError()">close</span>
-      </div>
-  </ng-container> -->
    <form #monthliesByYearAndByChildIdForm="ngForm"
       (ngSubmit)="onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm)">
       <div class="form-group justify-content-center row">
          <div class="col-3 mt-4 ">
-            <label for="childName" class="d-inline-block text-truncate ml-2">Enfant</label>
-            <select class="form-select form-control text-truncate mb-5 shadow-sm" aria-label="Children select"
-               name="selectChild" id="selectChild" [(ngModel)]="childId" required>
-               <option value=""> Sectionner un enfant</option>
-               <option *ngFor="let child of children" [value]="child?.id" name="id" id="id">{{child.firstname}}
-                  {{child.lastname}}</option>
+            <label for="selectChild" class="d-inline-block text-truncate ml-2">Enfant</label>
+            <select 
+               class="form-select form-control text-truncate mb-5 shadow-sm" 
+               aria-label="Children select"
+               name="selectChild" id="selectChild" 
+               [(ngModel)]="childId" 
+               required>
+               <option>Choisir</option>
+               <option *ngFor="let child of children" [value]="child?.id" name="id" id="id">
+                  {{child.firstname | titlecase}} {{child.lastname | titlecase}}
+               </option>
             </select>
          </div>
 
          <div class="col-3 col-lg-2 mt-4">
             <label for="year" class="d-inline-block text-truncate ml-2">Année</label>
-            <input type="text" name="year" class="form-control shadow-sm" 
-            ngModel id="year" placeholder="2022" required>
+            <input type="text" name="year" 
+            class="form-control shadow-sm" 
+            ngModel id="year" 
+            placeholder="2022" 
+            required 
+            maxlength="4"
+            minlength="4" 
+            pattern="[0-9]+"
+            #yearFilterVar="ngModel" 
+            [ngClass]="{'is-invalid' : (yearFilterVar?.touched || yearFilterVar?.dirty) 
+                  && !yearFilterVar?.valid,
+                        'is-valid'  : yearFilterVar?.valid
+            }"/>
+
+            <div *ngIf="yearFilterVar?.hasError('required')"
+               class=" invalid-feedback pl-1">
+               <span>Champ requis</span>
+            </div>
+            <div *ngIf="yearFilterVar?.hasError('minlength')"
+               class=" invalid-feedback pl-1">
+               <span>4 caractères min</span>
+            </div>
+            <div *ngIf="yearFilterVar?.hasError('pattern')"
+               class=" invalid-feedback pl-1">
+               <span>Uniquement des nombres</span>
+            </div>
          </div>
          <div class="col-2 col-lg-1 mb-5 d-flex align-items-end " data-md-tooltip="Chercher">
             <button [disabled]="monthliesByYearAndByChildIdForm.invalid"
@@ -39,8 +61,8 @@
             class="material-icons color-pink p-2 mb-2 fs-2 shadow rounded p-2" data-md-tooltip="Déclaration Mensuelle"
             id="AddMonthly" name="AddMonthly">post_add</span>
          <div class="align-self-end ml-3 mb-2 pb-0" *ngFor="let child of children">
-            <span *ngIf="child.id == childId" class="fs-3 text-info text-truncate"> {{child.firstname}}
-               {{child.lastname}}</span>
+            <span *ngIf="child.id == childId" class="fs-3 text-info text-truncate"> {{child.firstname | titlecase}}
+               {{child.lastname | titlecase}}</span>
          </div>
       </div>
       <table class="table table-condensed table-striped borderless shadow mb-0">
@@ -226,8 +248,8 @@
    <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header bg-gradient text-light" style="background-color: rgba(206, 50, 50, 0.856);">
-            <h5 class="modal-title" id="taxableSalarySiblingModalLabel">Calculer Salaire Imposable net (cas fraterie)
-            </h5>
+            <h2 class="modal-title" id="taxableSalarySiblingModalLabel">Calculer Salaire Imposable net (cas fraterie)
+            </h2>
             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close"
                style="background-color: rgba(206, 50, 50, 0.856);">
                <span aria-hidden="true">&times;</span>
@@ -241,12 +263,12 @@
                      <label for="netSalary" class="d-inline-block text-truncate">Salaire net</label>
                      <input type="number" 
                         class="form-control" 
-                        id="maintenanceCost"
-                        placeholder="30.50€"
-                        formControlName="maintenanceCost" 
-                        [ngClass]="{'is-invalid':(taxableSalarySiblingForm.get('maintenanceCost')?.dirty || taxableSalarySiblingForm.get('maintenanceCost')?.touched)  
-                           &&  taxableSalarySiblingForm.get('maintenanceCost')?.invalid,
-                           'is-valid': taxableSalarySiblingForm.get('maintenanceCost')?.dirty && taxableSalarySiblingForm.get('maintenanceCost')?.valid
+                        id="netSalary"
+                        placeholder="500.50€"
+                        formControlName="netSalary" 
+                        [ngClass]="{'is-invalid':(taxableSalarySiblingForm.get('netSalary')?.dirty || taxableSalarySiblingForm.get('netSalary')?.touched)  
+                           &&  taxableSalarySiblingForm.get('netSalary')?.invalid,
+                           'is-valid': taxableSalarySiblingForm.get('netSalary')?.dirty && taxableSalarySiblingForm.get('netSalary')?.valid
                         }" />
 
                      <div class="invalid-feedback pl-1">
@@ -481,13 +503,22 @@
          class="col-lg-12 col-md-12 col-xl-12 mt-5 px-5">
       <div class="alert alert-warning" role="alert">
          <h4 class="alert-heading d-flex align-items-end mb-1">Une erreur est survenue!
-            <span class=" material-icons color-gray ml-auto" (click)="hideError()">close</span>
+            <span class=" material-icons color-gray ml-auto" (click)="hideError('errorMsg')">close</span>
          </h4>
          <p class="d-flex align-items-end">
             <span class="material-icons color-gray mr-2 color-red">error</span>
             {{errorMsg}}
          </p>
         </div>
+   </div>
+   <div *ngIf="successMsg" class="alert alert-success" role="alert">
+      <h4 class="alert-heading d-flex align-items-end mb-1">Opération réussie!
+         <span class=" material-icons color-gray ml-auto" (click)="hideError('')">close</span>
+      </h4>
+      <p class="d-flex align-items-end">
+         <span class="material-icons color-gray mr-2 text-success">done</span>
+         {{successMsg}}
+      </p>
    </div>
 </div>
 <!-- Notification for Monthly  error end -->

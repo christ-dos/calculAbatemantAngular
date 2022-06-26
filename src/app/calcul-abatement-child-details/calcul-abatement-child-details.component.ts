@@ -44,7 +44,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
 
   public errorMsg!: String;
   public errorsValidation!: String;
-  
+
   public months!: String[];
   public sumTaxableSalary!: number;
   public sumDaysWorked!: number;
@@ -111,8 +111,6 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
 
   }
 
-
-
   public getAddMonthlyInChildDetailsForm(): void {
     this.addMonthlyInChildDetailsForm = this.fb.group({
       month: ["", [Validators.required]],
@@ -176,7 +174,6 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       childId: [""]
     });
 
-    // const monthlyId = this.editMonthlyForm.get('monthlyId');
     const monthControl = this.editMonthlyForm.get('month');
     const yearControl = this.editMonthlyForm.get('year');
     const taxableSalaryControl = this.editMonthlyForm.get('taxableSalary');
@@ -185,7 +182,6 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     const lunchControl = this.editMonthlyForm.get('lunch');
     const snackControl = this.editMonthlyForm.get('snack');
 
-    // this.formControlsValueChange(monthlyId);
     this.formControlsValueChange(monthControl);
     this.formControlsValueChange(yearControl);
     this.formControlsValueChange(taxableSalaryControl);
@@ -218,14 +214,13 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
       error: err => {
         this.errorMsg = err.message;
       }
-    }
-    );
+    });
   }
 
   public onAddMonthly(): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
     this.addMonthlyInChildDetailsForm.controls['childId'].setValue(this.childDetails.id);
-    //console.log(this.addMonthlyInChildDetailsForm);
+
     this.monthlyService.addMonthly(this.addMonthlyInChildDetailsForm.value).subscribe({
       next: monthly => {
         console.log(monthly);
@@ -237,8 +232,7 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
         this.errorMsg = "La déclaration mensuelle pour: "
           + this.addMonthlyInChildDetailsForm.value.month + " " + this.addMonthlyInChildDetailsForm.value.year + " existe déjà!";
       }
-    }
-    );
+    });
   }
 
   public onCalculateTaxableSalarySibling() {
@@ -436,6 +430,4 @@ export class CalculAbatementChildDetailsComponent implements OnInit {
     container?.appendChild(button);
     button.click();
   }
-
-  
 }

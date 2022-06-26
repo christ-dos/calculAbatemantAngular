@@ -6,23 +6,31 @@
             <img src="./assets/logoAppAssMat.png" class="img-fluid ml-2"/>
          </a>
       </div>
-      <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler hidden-sm-up" type="button" 
+         data-toggle="collapse" data-target="#navbarColor02" 
+         aria-controls="navbarColor02" aria-expanded="false" 
+         aria-label="Toggle navigation">
          <span class="navbar-toggler-icon "></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarColor02">
          <div class="col-6 d-flex justify-content-start ">
             <ul class="navbar-nav mr-auto my-lg-0 fs-5">
                <li class="nav-item ">
-                  <a  class="nav-link" routerLink="home" routerLinkActive="active">Home</a>
+                  <a  class="nav-link" routerLink="home" 
+                  routerLinkActive="active">Home</a>
                </li>
                   <li class="nav-item ">
-                  <a class="nav-link" routerLink="monthlies" routerLinkActive="active">Déclaration Mensuelle</a>
+                  <a class="nav-link" routerLink="monthlies" 
+                     routerLinkActive="active">Déclaration Mensuelle</a>
                </li>
             </ul>
           </div>
          <div class="col-6 d-flex justify-content-lg-end justify-content-sm-start">
             <div class=" d-flex align-items-end color-light-pink pb-sm-2 p-2 pb-lg-0">
-               <span (click)="this.calculAbatementHomeComponent.onOpenModel(null,'add')" class="material-icons  fs-3" data-md-tooltip="Ajouter Enfant">person_add</span>
+               <span (click)="this.calculAbatementHomeComponent.onOpenModel(null,'add')" 
+                  class="material-icons  fs-3" 
+                  data-md-tooltip="Ajouter Enfant">person_add
+               </span>
             </div>
          </div>
       </div>
@@ -37,7 +45,8 @@ aria-hidden="true">
    <div class="modal-content">
       <div class="modal-header bg-danger bg-gradient text-light">
          <h2 class="modal-title" id="addChildModalLabel">Ajouter un Enfant</h2>
-         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+         <button type="button" class="close text-light" data-dismiss="modal" 
+            aria-label="Close">
             <span aria-hidden="true">&times;</span>
          </button>
       </div>
@@ -49,9 +58,12 @@ aria-hidden="true">
                   class="form-control" 
                   id="lastname" placeholder="Nom"
                   class="form-control" 
+                  
                   formControlName="lastname"
-                  [ngClass]="{'is-invalid': addChildForm.get('lastname')?.dirty && addChildForm.get('lastname')?.invalid,
-                              'is-valid': addChildForm.get('lastname')?.touched && addChildForm.get('lastname')?.valid
+                  [ngClass]="{'is-invalid': addChildForm.get('lastname')?.dirty 
+                     && addChildForm.get('lastname')?.invalid,
+                              'is-valid': addChildForm.get('lastname')?.touched 
+                              && addChildForm.get('lastname')?.valid
                   }"/>
 
                <div *ngIf="addChildForm.get('lastname')?.hasError('required')" 
@@ -66,7 +78,8 @@ aria-hidden="true">
                   class="invalid-feedback pl-1">
                   <span>Saisir 30 caractères max</span>
               </div>
-              <div *ngIf="addChildForm.get('lastname')?.hasError('pattern')" class="invalid-feedback pl-1">
+              <div *ngIf="addChildForm.get('lastname')?.hasError('pattern')" 
+               class="invalid-feedback pl-1">
                   <span>Ce champs accepte uniquement des lettres</span>
               </div>
             </div>
@@ -76,8 +89,10 @@ aria-hidden="true">
                   class="form-control" id="firstname"
                   placeholder="Prénom"
                   formControlName="firstname"
-                  [ngClass]="{'is-invalid': addChildForm.get('firstname')?.dirty && addChildForm.get('firstname')?.invalid,
-                              'is-valid': addChildForm.get('firstname')?.touched &&  addChildForm.get('firstname')?.valid
+                  [ngClass]="{'is-invalid': addChildForm.get('firstname')?.dirty 
+                     && addChildForm.get('firstname')?.invalid,
+                              'is-valid': addChildForm.get('firstname')?.touched 
+                              && addChildForm.get('firstname')?.valid
                   }"/>
 
                <div *ngIf="addChildForm.get('firstname')?.hasError('required')" 
@@ -102,8 +117,10 @@ aria-hidden="true">
                   class="form-control" id="birthDate"
                   placeholder="17/09/2000"
                   formControlName="birthDate"
-                  [ngClass]="{'is-invalid': addChildForm.get('birthDate')?.dirty && addChildForm.get('birthDate')?.invalid,
-                              'is-valid': addChildForm.get('birthDate')?.touched && addChildForm.get('birthDate')?.valid
+                  [ngClass]="{'is-invalid': addChildForm.get('birthDate')?.dirty 
+                     && addChildForm.get('birthDate')?.invalid,
+                              'is-valid': addChildForm.get('birthDate')?.touched 
+                              && addChildForm.get('birthDate')?.valid
                   }"/>
 
                <div *ngIf="addChildForm.get('birthDate')?.hasError('required')"

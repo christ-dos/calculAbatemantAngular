@@ -31,6 +31,7 @@ export class CalculAbatementHomeComponent implements OnInit {
       monthlyService, appComponent, childService, fb);
   }
 
+  public page: number = 1;
   public children!: Child[];
   public editChild!: Child;
   public deleteChild!: Child;
@@ -50,7 +51,6 @@ export class CalculAbatementHomeComponent implements OnInit {
   public summaryYear!: String;
 
   public yearPrecedingCurrentYear: String = new String(new Date().getFullYear() - 1);
-  public erroMessage!: String;
   public months!: String[];
   public currentYear: String = this.appComponent.currentYear;
   public currentMonth!: String;
@@ -210,7 +210,7 @@ export class CalculAbatementHomeComponent implements OnInit {
         this.children = children;
 
         if (children.length) {
-          this.erroMessage = "Aucun enfant trouvé !"
+          this.errorMsg = "Aucun enfant trouvé !"
         }
         this.calculAbatementMonthlyComponent.getMonths();
         this.children.forEach((child) => {
@@ -256,7 +256,7 @@ export class CalculAbatementHomeComponent implements OnInit {
         child.taxableSalary = this.taxableSalary;
       },
       error: err => {
-        this.erroMessage = err;
+        this.errorMsg = err;
       }
     }
     );
@@ -358,7 +358,7 @@ export class CalculAbatementHomeComponent implements OnInit {
             this.addMonthlyChild = childById;
           },
           error: err => {
-            this.erroMessage = err;
+            this.errorMsg = err;
           }
         });
         this.getChildren();
@@ -400,9 +400,14 @@ export class CalculAbatementHomeComponent implements OnInit {
 
   public onUpdateChild(): void {
     if (this.editChildFormDatesIsValid()) {
+      this.editChildForm.patchValue({
+        firstname: this.editChild.firstname.toLocaleLowerCase(),
+        lastname: this.editChild.lastname.toLocaleLowerCase(),
+      });
       this.childService.updateChild(this.editChildForm.value).subscribe({
         next: childUpdated => {
           console.log(childUpdated);
+          this.successMsg = "Enfant: " + this.editChildForm.get('firstname')?.value + " " + this.editChildForm.get('lastname')?.value + " a été mis à jour avec succès!"
           this.getChildren();
         },
         error: err => {

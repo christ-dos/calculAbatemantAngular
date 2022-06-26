@@ -1,11 +1,4 @@
 <div class="container " id="main-container">
-    <!-- <ng-container *ngIf="errorMsg">
-        <div class="alert alert-warning d-flex align-items-center mt-2 p-2 d-print-none">
-            <span class="material-icons color-gray mr-2">error</span>
-            {{errorMsg}}
-            <span class="material-icons color-gray ml-auto" (click)="hideError()">close</span>
-        </div>
-    </ng-container> -->
     <div class="col-xl-1 col-lg-1 col-md-2 col-sm-3 col-4 rounded-circle bg-light-pink bg-gradient shadow d-none d-print-block"
         id="logo">
         <a class="navbar-brand" href="#">
@@ -32,13 +25,13 @@
             <div class="col-10 col-sm-4 col-md-4 col-lg-4">
                 <input type="text" readonly
                     class="form-control-plaintext text-info fs-6 pl-5 pl-sm-5 pl-md-0 font-weight-bold" id="firstname"
-                    value="{{childDetails?.firstname}}">
+                    value="{{childDetails?.firstname | titlecase}}">
             </div>
             <label for="lastname" class="col-2 col-sm-1 col-md-2 col-lg-2 py-0 col-form-label pb-1">Nom:</label>
             <div class="col-10 col-sm-4 col-md-4 col-lg-4 pl-md-0 pt-0">
                 <input type="text" readonly
                     class="form-control-plaintext text-info fs-6 pb-1 pl-5 pl-sm-5 pl-md-0 pb-0 font-weight-bold"
-                    id="lastname" value="{{childDetails?.lastname}}">
+                    id="lastname" value="{{childDetails?.lastname | titlecase}}">
             </div>
         </div>
         <div class="row align-items-end pb-1">
@@ -79,7 +72,8 @@
             <label for="taxableSalary" class="col-2 col-sm-2 col-md-2 col-lg-2 mr-sm-0 col-form-label pb-0">Salaire
                 Imposable: </label>
             <div class="col-4 col-sm-3 col-md-4 col-lg-4 pl-4 pl-lg-3">
-                <input type="text" readonly class="form-control-plaintext text-info pb-0" id="taxableSalary"
+                <input type="text" readonly class="form-control-plaintext text-info pb-0 pl-0 pl-md-1" 
+                    id="taxableSalary"
                     value="{{childDetails?.taxableSalary | currency: 'EUR'}}">
             </div>
             <label for="taxRelief" class="col-2 col-sm-2  col-md-2 col-lg-2 col-form-label pb-0">Abatement
@@ -92,7 +86,7 @@
         <div class="row align-items-end pb-1">
             <label for="reportableAmounts" class="col-2 col-sm-2 col-md-2 col-lg-2 col-form-label pb-0 ">Somme à
                 déclarer:</label>
-            <div class="col-4 col-sm-4 col-md-4 col-lg-2 pl-0">
+            <div class="col-4 col-sm-4 col-md-4 col-lg-2 pl-0 pl-md-1">
                 <input type="text" readonly
                     class="form-control-plaintext text-info bg-light-magenta rounded-pill pb-0 font-weight-bold pl-4 pl-lg-3 py-1"
                     id="reportableAmounts" value="{{childDetails?.reportableAmounts| currency: 'EUR'}}">
@@ -112,25 +106,26 @@
             <div class="col-10 col-lg-11 pr-0  d-flex justify-content-end align-items-start">
                 <div class="col-8 d-flex flex-column align-items-end pr-0">
                     <input type="text" name="year" 
+                        class=" col-5 col-lg-2 form-control-plaintext border border-secondary rounded-pill mr-2  px-auto shadow-sm"
+                        ngModel 
+                        id="year" placeholder="Année" 
+                        required 
                         maxlength="4"
                         minlength="4" 
                         pattern="[0-9]{4}"
-                        class=" col-5 col-lg-2 form-control-plaintext border border-secondary rounded-pill mr-2  px-auto shadow-sm"
-                        ngModel id="year" placeholder="Année" 
-                        required 
                         #yearFilterVar="ngModel" 
                         [ngClass]="{'is-invalid' : (yearFilterVar?.touched || yearFilterVar?.dirty) 
                             && !yearFilterVar?.valid,
                                     'is-valid'  : yearFilterVar?.valid
-                                }"/>
+                        }"/>
+
                     <div *ngIf="yearFilterVar?.hasError('required')"
-                        class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0 alert alert-danger p-0 mb-0">
+                        class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0 p-0 mb-0">
                         <span>Entrer une année</span>
                     </div>
                     <div *ngIf="yearFilterVar?.hasError('minlength')"
-                        class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0 alert alert-danger p-0 mb-0">
+                        class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0  p-0 mb-0">
                         <span>4 caractères min</span>
-
                     </div>
                     <div *ngIf="yearFilterVar?.hasError('pattern')"
                         class=" invalid-feedback col-6 col-sm-5 col-md-5 col-lg-2 pl-4 pl-sm-1 pl-md-0 pr-lg-0 p-0 mb-0">
@@ -223,13 +218,16 @@
                         <div class="col-6">
                             <label for="month">Mois</label>
                             <select class="form-select form-group mb-0" aria-label="MonthSelect" id="month"
-                                formControlName="month" [ngClass]="{'is-invalid':(addMonthlyInChildDetailsForm.get('month')?.touched && addMonthlyInChildDetailsForm.get('month')?.pristine),
+                                formControlName="month" 
+                                [ngClass]="{'is-invalid':(addMonthlyInChildDetailsForm.get('month')?.touched 
+                                && addMonthlyInChildDetailsForm.get('month')?.pristine),
                                 'is-valid': addMonthlyInChildDetailsForm.get('month')?.valid}">
                                 <option *ngFor="let month of this.calculAbatementMonthlyComponent.months"
                                     [ngValue]="month" name="monthSelected" id="monthSelected">{{month}}
                                 </option>
                             </select>
-                            <div *ngIf="addMonthlyInChildDetailsForm.get('month')?.pristine && addMonthlyInChildDetailsForm.get('month')?.invalid"
+                            <div *ngIf="addMonthlyInChildDetailsForm.get('month')?.pristine 
+                                && addMonthlyInChildDetailsForm.get('month')?.invalid"
                                 class="invalid-feedback pl-1 p-0">
                                 <span>Selectionner le mois</span>
                             </div>
@@ -237,21 +235,30 @@
                         <div class="col-6">
                             <label for="year">Année</label>
                             <input type="text" ng-pattern="/0-9/" class="form-control" id="year" placeholder="2022"
-                                formControlName="year" [ngClass]="{'is-invalid': addMonthlyInChildDetailsForm.get('year')?.dirty && addMonthlyInChildDetailsForm.get('year')?.invalid,
+                                formControlName="year" 
+                                [ngClass]="{'is-invalid': addMonthlyInChildDetailsForm.get('year')?.dirty 
+                                    && addMonthlyInChildDetailsForm.get('year')?.invalid,
                                         'is-valid':addMonthlyInChildDetailsForm.get('year')?.valid
-                              }" />
+                                }" />
+
                             <div class="invalid-feedback pl-1">
                                 <span>{{errorsValidation}}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row  d-flex align-items-end">
+                    <div class="form-group row d-flex align-items-end">
                         <div class="col-6">
                             <label for="taxableSalary">Salaire Imposable</label>
-                            <input type="number" name="taxableSalary" class="form-control" id="taxableSalary"
-                                placeholder="650.20 €" formControlName="taxableSalary" [ngClass]="{'is-invalid': addMonthlyInChildDetailsForm.get('taxableSalary')?.dirty && addMonthlyInChildDetailsForm.get('taxableSalary')?.invalid,
-                                'is-valid': addMonthlyInChildDetailsForm.get('taxableSalary')?.dirty && addMonthlyInChildDetailsForm.get('taxableSalary')?.valid
+                            <input type="number" name="taxableSalary" 
+                                class="form-control" id="taxableSalary"
+                                placeholder="650.20 €" 
+                                formControlName="taxableSalary" 
+                                [ngClass]="{'is-invalid': addMonthlyInChildDetailsForm.get('taxableSalary')?.dirty 
+                                    && addMonthlyInChildDetailsForm.get('taxableSalary')?.invalid,
+                                'is-valid': addMonthlyInChildDetailsForm.get('taxableSalary')?.dirty 
+                                    && addMonthlyInChildDetailsForm.get('taxableSalary')?.valid
                                 }" />
+
                             <div class="invalid-feedback pl-1">
                                 <span>{{errorsValidation}}</span>
                             </div>
@@ -269,19 +276,28 @@
                         <div class="col-6">
                             <label for="dayWorked">Jours (plus de 8h par jour)</label>
                             <input type="number" class="form-control" id="dayWorked" placeholder="20"
-                                formControlName="dayWorked" [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('dayWorked')?.dirty &&  addMonthlyInChildDetailsForm.get('dayWorked')?.invalid,
+                                formControlName="dayWorked" 
+                                [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('dayWorked')?.dirty 
+                                    &&  addMonthlyInChildDetailsForm.get('dayWorked')?.invalid,
                                 'is-valid': addMonthlyInChildDetailsForm.get('dayWorked')?.dirty && addMonthlyInChildDetailsForm.get('dayWorked')?.valid
                                 }" />
+
                             <div class="invalid-feedback pl-1">
                                 <span>{{errorsValidation}}</span>
                             </div>
                         </div>
                         <div class="col-6">
                             <label for="hoursWorked">Heures (moins de 8h par jour)</label>
-                            <input type="number" name="hoursWorked" class="form-control" id="hoursWorked"
-                                placeholder="8.00" formControlName="hoursWorked" [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('hoursWorked')?.dirty &&  addMonthlyInChildDetailsForm.get('hoursWorked')?.invalid,
-                                'is-valid': addMonthlyInChildDetailsForm.get('hoursWorked')?.dirty && addMonthlyInChildDetailsForm.get('hoursWorked')?.valid
+                            <input type="number" name="hoursWorked" 
+                                class="form-control" id="hoursWorked"
+                                placeholder="8.00" 
+                                formControlName="hoursWorked" 
+                                [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('hoursWorked')?.dirty 
+                                    &&  addMonthlyInChildDetailsForm.get('hoursWorked')?.invalid,
+                                'is-valid': addMonthlyInChildDetailsForm.get('hoursWorked')?.dirty 
+                                    && addMonthlyInChildDetailsForm.get('hoursWorked')?.valid
                             }" />
+
                             <div class="invalid-feedback pl-1">
                                 <span>{{errorsValidation}}</span>
                             </div>
@@ -291,19 +307,28 @@
                         <div class="col-6">
                             <label for="lunch">Repas</label>
                             <input type="number" name="lunch" class="form-control" id="lunch" placeholder="20"
-                                formControlName="lunch" [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('lunch')?.dirty &&  addMonthlyInChildDetailsForm.get('lunch')?.invalid,
-                                'is-valid': addMonthlyInChildDetailsForm.get('lunch')?.dirty && addMonthlyInChildDetailsForm.get('lunch')?.valid
+                                formControlName="lunch" 
+                                [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('lunch')?.dirty 
+                                    &&  addMonthlyInChildDetailsForm.get('lunch')?.invalid,
+                                'is-valid': addMonthlyInChildDetailsForm.get('lunch')?.dirty 
+                                    && addMonthlyInChildDetailsForm.get('lunch')?.valid
                                 }" />
+
                             <div class="invalid-feedback pl-1">
                                 <span>{{errorsValidation}}</span>
                             </div>
                         </div>
                         <div class="col-6">
                             <label for="snack">Goûters</label>
-                            <input type="number" name="snack" class="form-control" id="snack" placeholder="20"
-                                formControlName="snack" [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('snack')?.dirty &&  addMonthlyInChildDetailsForm.get('snack')?.invalid,
-                                'is-valid': addMonthlyInChildDetailsForm.get('snack')?.dirty && addMonthlyInChildDetailsForm.get('snack')?.valid
+                            <input type="number" name="snack" 
+                                class="form-control" id="snack" placeholder="20"
+                                formControlName="snack" 
+                                [ngClass]="{'is-invalid':addMonthlyInChildDetailsForm.get('snack')?.dirty 
+                                    &&  addMonthlyInChildDetailsForm.get('snack')?.invalid,
+                                'is-valid': addMonthlyInChildDetailsForm.get('snack')?.dirty 
+                                    && addMonthlyInChildDetailsForm.get('snack')?.valid
                                 }" />
+
                             <div class="invalid-feedback pl-1">
                                 <span>{{errorsValidation}}</span>
                             </div>
