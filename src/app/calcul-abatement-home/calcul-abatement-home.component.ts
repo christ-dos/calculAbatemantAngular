@@ -197,9 +197,6 @@ export class CalculAbatementHomeComponent implements OnInit {
       console.log(Object.keys(value.errors));
       this.errorsValidation = Object.keys(value.errors).map(
         key => this.validationErrorsMessages[key]).join(' ');
-
-      console.log("mon erreur:" + this.errorsValidation);
-
     }
   }
 
@@ -209,7 +206,7 @@ export class CalculAbatementHomeComponent implements OnInit {
         console.log(children);
         this.children = children;
 
-        if (children.length) {
+        if (!children.length) {
           this.errorMsg = "Aucun enfant trouvé !"
         }
         this.calculAbatementMonthlyComponent.getMonths();
@@ -364,13 +361,7 @@ export class CalculAbatementHomeComponent implements OnInit {
         this.getChildren();
         this.addMonthlyForm.reset();
       }, error: err => {
-        if (err.message === "Cette déclaration existe déjà !") {
-          this.errorMsg = "La déclaration mensuelle pour: "
-            + this.addMonthlyForm.value.month + " "
-            + this.addMonthlyForm.value.year + " existe déjà!";
-        } else {
           this.errorMsg = err.message;
-        }
       }
     });
   }

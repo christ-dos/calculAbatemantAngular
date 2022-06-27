@@ -122,7 +122,6 @@ export class CalculAbatementHeaderComponent implements OnInit {
         },
         error: err => {
           this.errorMsg = err.message;
-          console.log("Formulaire invalid, erreur: " + this.errorMsg);
         }
       });
     } 
@@ -181,9 +180,6 @@ export class CalculAbatementHeaderComponent implements OnInit {
     }
     return true;
   }
-
-
-
 
   // public getChildren() : void {;
   //   this.childService.getAllChildren().subscribe(
