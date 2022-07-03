@@ -348,7 +348,7 @@ export class CalculAbatementHomeComponent implements OnInit {
       next: monthly => {
         console.log(monthly);
         this.successMsg = "Déclaration Mensuelle: " + this.addMonthlyForm.get('month')?.value + " " + this.addMonthlyForm.value.year + " ajouté avec succés pour: "
-          + this.addMonthlyChild?.firstname + " " + this.addMonthlyChild?.lastname + "!";
+          + this.addMonthlyChild?.firstname.toUpperCase() + " " + this.addMonthlyChild?.lastname.toUpperCase() + "!";
         this.childService.getChildById(monthly.childId).subscribe({
           next: childById => {
             console.log(childById);
@@ -392,13 +392,13 @@ export class CalculAbatementHomeComponent implements OnInit {
   public onUpdateChild(): void {
     if (this.editChildFormDatesIsValid()) {
       this.editChildForm.patchValue({
-        firstname: this.editChild.firstname.toLocaleLowerCase(),
-        lastname: this.editChild.lastname.toLocaleLowerCase(),
+        firstname: this.editChildForm.value.firstname.toLowerCase(),
+        lastname: this.editChildForm.value.lastname.toLowerCase(),
       });
       this.childService.updateChild(this.editChildForm.value).subscribe({
         next: childUpdated => {
           console.log(childUpdated);
-          this.successMsg = "Enfant: " + this.editChildForm.get('firstname')?.value + " " + this.editChildForm.get('lastname')?.value + " a été mis à jour avec succès!"
+          this.successMsg = "Enfant: " + childUpdated.firstname.toUpperCase() + " " + childUpdated.lastname.toUpperCase() + " a été mis à jour avec succès!"
           this.getChildren();
         },
         error: err => {

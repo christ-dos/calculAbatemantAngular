@@ -117,7 +117,7 @@ export class CalculAbatementHeaderComponent implements OnInit {
       this.childService.addChild(this.addChildForm.value).subscribe({
         next: child => {
           console.log(child);
-          this.successMsg = "Enfant: " + this.addChildForm.get('firstname')?.value + " " + this.addChildForm.get('lastname')?.value + " ajouté avec succés!"
+          this.successMsg = "Enfant: " + this.addChildForm.get('firstname')?.value.toUpperCase() + " " + this.addChildForm.get('lastname')?.value.toUpperCase() + " ajouté avec succés!"
           this.addChildForm.reset();
         },
         error: err => {

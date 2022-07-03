@@ -248,8 +248,8 @@ aria-hidden="true">
 
  <!-- Notification for Child  error-->
  <div class="container">
-   <div 
-         class="col-lg-12 col-md-12 col-xl-12 mt-5 px-5">
+   <div style="position: relative; bottom: 0; right: 0;" 
+   class="col-lg-12 col-md-12 col-xl-12 mt-5">
       <div  *ngIf="errorMsg" class="alert alert-warning" role="alert">
          <h4 class="alert-heading d-flex align-items-end mb-1">Une erreur est survenue!
             <span class=" material-icons color-gray ml-auto" (click)="hideError('errorMsg')">close</span>
