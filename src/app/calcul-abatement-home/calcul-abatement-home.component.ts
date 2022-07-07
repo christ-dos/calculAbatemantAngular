@@ -514,11 +514,14 @@ export class CalculAbatementHomeComponent implements OnInit {
       endContractMonth = +endContractArrayOfString!![1];
       endContractYear = +endContractArrayOfString!![2];
     }
-
     if (birthDateYear > currentYear || birthDateYear < 1952
       || beginContractYear > currentYear || beginContractYear < 1952
       || endContractYear > currentYear || (endContractYear !== 0 && endContractYear < 1952)) {
       this.errorMsg = "L'année doit être comprise entre 1952 et " + currentYear;
+      return false;
+    }
+    if(birthDateYear > beginContractYear || birthDateYear === beginContractYear && birthDateMonth > beginContractMonth){
+      this.errorMsg = "La date de début de contrat ne peut être antérieur à la date de naissance";
       return false;
     }
     if (birthDateYear === currentYear && birthDateMonth > currentMonth

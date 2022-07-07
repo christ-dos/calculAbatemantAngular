@@ -67,8 +67,6 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     this.getAddMonthlyForm();
     this.getEditMonthlyForm();
     this.getTaxableSalarySiblingFrom();
-
-
   }
 
   public getTaxableSalarySiblingFrom(): void {
@@ -85,9 +83,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     this.formControlsValueChange(netSalaryControl);
     this.formControlsValueChange(maintenanceCostControl);
     this.formControlsValueChange(netBrutCoefficientControl);
-
   }
-
 
   public getAddMonthlyForm(): void {
     this.addMonthlyModalForm = this.fb.group({
@@ -166,15 +162,12 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     this.formControlsValueChange(hoursWorkedControl);
     this.formControlsValueChange(lunchControl);
     this.formControlsValueChange(snackControl);
-
-
   }
 
   public formControlsValueChange(fromControl: AbstractControl | null): void {
     fromControl?.valueChanges.subscribe(value => {
       console.log(value);
       this.setMessage(fromControl);
-
     });
   }
 
@@ -185,9 +178,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
       console.log(Object.keys(value.errors));
       this.errorsValidation = Object.keys(value.errors).map(
         key => this.validationErrorsMessages[key]).join(' ');
-
-      console.log("mon erreur:" + this.errorsValidation);
-
+      console.log(this.errorsValidation);
     }
   }
 
@@ -209,12 +200,12 @@ export class CalculAbatementMonthlyComponent implements OnInit {
             console.log(monthlies);
 
             if (!monthlies.length) {
-              this.errorMsg = "Aucun déclaration mensuelle trouvé pour l'année: " + monthliesByYearAndByChildIdForm.value.year;
+              this.errorMsg = "Aucun déclaration mensuelle trouvé pour l'année: " 
+              + monthliesByYearAndByChildIdForm.value.year;
             }
 
             this.sumTaxableSalary = this.monthlies.reduce((accumulator, monthly) => {
               return accumulator + monthly.taxableSalary;
-
             }, 0);
 
             this.sumDaysWorked = this.monthlies.reduce((accumulator, monthly) => {
@@ -269,7 +260,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     );
   }
 
-  public getMonths(): void { // todo verfier si cette methode est utile ici???
+  public getMonths(): void {
     this.monthlyService.getMonths().subscribe({
       next: months => {
         console.log(months);
@@ -285,7 +276,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   public onAddMonthly(): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
     this.addMonthlyModalForm.controls['childId'].setValue(this.childId);
-   
+
     if (this.addMonthlyModalForm.value.childId === "Choisir") {
       this.errorMsg = "Veuillez choisir un enfant"
     } else {
@@ -295,14 +286,14 @@ export class CalculAbatementMonthlyComponent implements OnInit {
           this.getMonthliesByYearAndChildId(this.addMonthlyModalForm.value.year,
             this.addMonthlyModalForm.value.childId)
 
-            this.successMsg = "Déclaration mensuelle ajouté avec succés pour " 
+          this.successMsg = "Déclaration mensuelle ajouté avec succés pour "
             + this.addMonthlyModalForm.value.month + " " + this.addMonthlyModalForm.value.year;
-  
+
           this.addMonthlyModalForm.reset();
           document.getElementById('search-monthlies')?.click();
         },
         error: err => {
-         this.errorMsg = err.message;
+          this.errorMsg = err.message;
         }
       }
       );
@@ -311,6 +302,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
 
   public onCalculateTaxableSalarySibling() {
     document.getElementById('cancel-taxable-salary-sibling-form')?.click();
+
     this.monthlyService.getTaxableSalarySibling(
       this.taxableSalarySiblingForm.value.netSalary,
       this.taxableSalarySiblingForm.value.netBrutCoefficient,
@@ -333,7 +325,6 @@ export class CalculAbatementMonthlyComponent implements OnInit {
   }
 
   public onUpdateMonthly(): void {
-    console.log(JSON.stringify(this.editMonthlyForm.value));
     this.monthlyService.updateMonthly(this.editMonthlyForm.value).subscribe({
       next: monthly => {
         console.log(monthly);
@@ -348,7 +339,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
       },
       error: err => {
         this.errorMsg = err.message;
-       }
+      }
     }
     );
   }
@@ -364,7 +355,6 @@ export class CalculAbatementMonthlyComponent implements OnInit {
         this.errorMsg = err.message;
       }
     }
-
     );
   }
 
@@ -379,7 +369,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
       lunch: this.editMonthly.lunch,
       snack: this.editMonthly.snack,
       childId: this.editMonthly.childId
-    })
+    });
   }
 
   public onOpenModel(monthly: any, mode: string): void {

@@ -509,16 +509,16 @@
             <span class="material-icons color-gray mr-2 color-red">error</span>
             {{errorMsg}}
          </p>
-        </div>
-   </div>
-   <div *ngIf="successMsg" class="alert alert-success" role="alert">
-      <h4 class="alert-heading d-flex align-items-end mb-1">Opération réussie!
-         <span class=" material-icons color-gray ml-auto" (click)="hideError('')">close</span>
-      </h4>
-      <p class="d-flex align-items-end">
-         <span class="material-icons color-gray mr-2 text-success">done</span>
-         {{successMsg}}
-      </p>
+      </div>
+      <div *ngIf="successMsg" class="alert alert-success" role="alert">
+         <h4 class="alert-heading d-flex align-items-end mb-1">Opération réussie!
+            <span class=" material-icons color-gray ml-auto" (click)="hideError('')">close</span>
+         </h4>
+         <p class="d-flex align-items-end">
+            <span class="material-icons color-gray mr-2 text-success">done</span>
+            {{successMsg}}
+         </p>
+      </div>
    </div>
 </div>
 <!-- Notification for Monthly  error end -->
