@@ -1,5 +1,3 @@
-
-
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { AppComponent } from '../app.component';
@@ -71,8 +69,8 @@ export class CalculAbatementHomeComponent implements OnInit {
     pattern: "Uniquement les nombres sont acceptés"
   };
 
-  @ViewChild('content', { static: false })
-  public el!: ElementRef;
+  // @ViewChild('content', { static: false })
+  // public el!: ElementRef;
 
   ngOnInit(): void {
     this.getChildren();
@@ -81,7 +79,6 @@ export class CalculAbatementHomeComponent implements OnInit {
     this.getAddMonthlyForm();
     this.getTaxableSalarySiblingFrom();
     this. getEditChildForm();
-
   }
 
   public getEditChildForm(): void {
@@ -139,7 +136,6 @@ export class CalculAbatementHomeComponent implements OnInit {
     this.formControlsValueChange(netSalaryControl);
     this.formControlsValueChange(maintenanceCostControl);
     this.formControlsValueChange(netBrutCoefficientControl);
-
   }
 
   public getAddMonthlyForm(): void {
@@ -152,17 +148,13 @@ export class CalculAbatementHomeComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(10000)]],
       dayWorked: [null,
         [Validators.required, Validators.min(0), Validators.max(31)]],
-
       hoursWorked: [null,
         [Validators.min(0), Validators.max(350)]],
-
       lunch: [null,
         [Validators.min(0), Validators.max(100)]],
-
       snack: [null,
         [Validators.min(0), Validators.max(100)]],
       childId: [""]
-
     });
 
     const monthControl = this.addMonthlyForm.get('month');
@@ -186,19 +178,10 @@ export class CalculAbatementHomeComponent implements OnInit {
     formControl?.valueChanges.subscribe(value => {
       console.log(value);
       this.setMessage(formControl);
-
     });
   }
 
-  private setMessage(value: AbstractControl): void {
-    this.errorsValidation = '';
-
-    if ((value.touched || value.dirty || value.untouched || value.pristine) && value.errors) {
-      console.log(Object.keys(value.errors));
-      this.errorsValidation = Object.keys(value.errors).map(
-        key => this.validationErrorsMessages[key]).join(' ');
-    }
-  }
+ 
 
   public getChildren(): void {
     this.childService.getAllChildren().subscribe({
@@ -236,7 +219,6 @@ export class CalculAbatementHomeComponent implements OnInit {
 
         const currentMonthNumber = this.appComponent.currentMonth;
         this.currentMonth = this.months[currentMonthNumber];
-        console.log(this.currentMonth);
       },
       error: err => {
         this.errorMsg = err.message;
@@ -244,7 +226,6 @@ export class CalculAbatementHomeComponent implements OnInit {
     }
     );
   }
-
 
   public getTaxableSalary(child: Child, year: String): void {
     this.childService.getTaxableSalary(child.id, year).subscribe({
@@ -321,24 +302,21 @@ export class CalculAbatementHomeComponent implements OnInit {
     }, 900);
   }
 
-  public onSelectImage(event: any): void {
+  // public onSelectImage(event: any): void { todo a revoir pour implementer telechargement d'une photo via pc utilisateur
 
-    this.selectedFile = <File>event.target.files[0];
-
-    //Todo clean code
-    // if(event.target.files){
-    //  var reader = new FileReader();
-    // reader.readAsDataURL(event.target.files[0]);
-    // reader.onload = (event: any) => {
-    // this.urlLink = event.target.result ;
-    // let imageUrl = document.getElementById('imageUrl')?.setAttribute("src", this.urlLink);
-    // imageUrl = event.target.result ;
-    console.log(this.selectedFile.name);
-
-
-    //}
-    // }
-  }
+  //   this.selectedFile = <File>event.target.files[0];
+  //   //Todo clean code
+  //   // if(event.target.files){
+  //   //  var reader = new FileReader();
+  //   // reader.readAsDataURL(event.target.files[0]);
+  //   // reader.onload = (event: any) => {
+  //   // this.urlLink = event.target.result ;
+  //   // let imageUrl = document.getElementById('imageUrl')?.setAttribute("src", this.urlLink);
+  //   // imageUrl = event.target.result ;
+  //   console.log(this.selectedFile.name);
+  //   //}
+  //   // }
+  // }
 
   public onAddMonthly(): void {
     document.getElementById('cancel-add-Monthly-form')?.click();
@@ -395,6 +373,7 @@ export class CalculAbatementHomeComponent implements OnInit {
         firstname: this.editChildForm.value.firstname.toLowerCase(),
         lastname: this.editChildForm.value.lastname.toLowerCase(),
       });
+
       this.childService.updateChild(this.editChildForm.value).subscribe({
         next: childUpdated => {
           console.log(childUpdated);
@@ -491,7 +470,6 @@ export class CalculAbatementHomeComponent implements OnInit {
       feesLunch: this.editChild.feesLunch,
       feesSnack: this.editChild.feesSnack,
       imageUrl: this.editChild.imageUrl,
-     
     });
   }
 
@@ -510,6 +488,7 @@ export class CalculAbatementHomeComponent implements OnInit {
     var endContractArrayOfString: string[] | null = this.getYearAndMonthOfDate(this.editChildForm.get('endContract')?.value);
     var endContractMonth!: number;
     var endContractYear!: number;
+
     if (!!endContractArrayOfString) {
       endContractMonth = +endContractArrayOfString!![1];
       endContractYear = +endContractArrayOfString!![2];
@@ -545,6 +524,15 @@ export class CalculAbatementHomeComponent implements OnInit {
     return null;
   }
 
+  private setMessage(value: AbstractControl): void {
+    this.errorsValidation = '';
+
+    if ((value.touched || value.dirty || value.untouched || value.pristine) && value.errors) {
+      console.log(Object.keys(value.errors));
+      this.errorsValidation = Object.keys(value.errors).map(
+        key => this.validationErrorsMessages[key]).join(' ');
+    }
+  }
 }
 
 

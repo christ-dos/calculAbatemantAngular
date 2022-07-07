@@ -40,10 +40,6 @@
                   class="invalid-feedback d-flex pl-1">
                   <span>Uniquement des lettres et maximum 30 caractères</span>
                </div>
-               <!-- <div *ngIf="searchChildForm?.hasError('required')" 
-                  class="invalid-feedback pl-1">
-                  <span>Saisir une lettre pour rechercher un enfant</span>
-               </div> -->
             </form>
          </div>
          <!-- Form search end child-->
@@ -61,7 +57,6 @@
             <span class="material-icons fs-2 p-2 shadow rounded text-secondary bg-white-smoke"
                data-md-tooltip="Imprimer">print</span>
          </button>
-
       </div>
       <div *ngFor="let child of children | paginate: { itemsPerPage: 8, currentPage: page }" class="col-md-6 col-xl-3 mb-4">
          <div class="card m-b-30 shadow rounded " id="content">
@@ -77,24 +72,21 @@
                         class="img-thumbnail rounded-circle " 
                         max-width="100" cardImage></a>
 
-
                   <!--<a href="/monthly"><img src={{urlLink}} alt="image de profil" class="img-fluid rounded-circle"></a>
                  -->
-                  <form class="md-form">
-                     <div class="file-field">
-
+                  <!-- <form class="md-form">
+                     <div class="file-field"> -->
                         <!--<img src = {{urlLink}} class=" img-fluid rounded-circle" alt="example placeholder avatar">-->
-
-
                         <!-- <div class="d-flex justify-content-center">
-                      <div class="btn btn-mdb-color btn-rounded float-left form-group">
+                        <div class="btn btn-mdb-color btn-rounded float-left form-group">
                         <input type="file" class="bg-info ">
                         <mat-icon class="btn">add_a_photo</mat-icon>
                       </div>
                   
                     </div>-->
-                     </div>
-                  </form>
+                     <!-- </div>
+                  </form> -->
+
                </div>
                <div class="col-6 card-title align-self-center mb-0 ">
                   <h2 class="text-truncate">{{child?.lastname | titlecase}} </h2>
@@ -123,7 +115,6 @@
                </li>
             </ul>
             <div class="card-body">
-               <!-- <div class="btn-group btn-group-sm">-->
                <div class="float-left d-print-none">
                   <a class="btn" data-md-tooltip="Details" data-placement="top" data-original-title="details">
                      <mat-icon class="material-icons fs-5 color-pink" [routerLink]="['/child/details/', child.id]">info
@@ -143,7 +134,6 @@
                      <i class="fa fa-trash" style="color: rgb(117, 107, 107);"></i>
                   </a>
                </div>
-               <!--</div>-->
             </div>
          </div>
       </div>
