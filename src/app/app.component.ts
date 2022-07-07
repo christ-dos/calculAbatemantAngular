@@ -25,18 +25,8 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.currentYear = new String(new Date().getFullYear());
     this.currentMonth = new Date().getMonth();
-   // this.getChildren();
-   
   }
 
-  public getChildren(): void {
-    this.childService.getAllChildren().subscribe(
-      (response: Child[]) => {
-        console.log(response);
-        this.children = response;
-        },
-        );
-      }
 
 
   

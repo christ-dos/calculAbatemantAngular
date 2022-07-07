@@ -26,7 +26,7 @@ export class ErrorIntercept implements HttpInterceptor {
                     } else {
                         // server-side error
                         console.log('This is server side error');
-                        if(error == null){
+                        if (error == null) {
                             console.log("aucune erreur!")
                         }
                         errorMessage = `Error Status: ${error.status},
@@ -34,10 +34,8 @@ export class ErrorIntercept implements HttpInterceptor {
                         Error Message: ${error.error.message}`;
                         console.log(errorMessage);
                     }
-                    console.log(JSON.stringify(error));
-                   
                     return throwError(() => new Error(error?.error?.message));
                 })
-            )
+            );
     }
 }
