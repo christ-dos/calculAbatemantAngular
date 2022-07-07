@@ -1,3 +1,5 @@
+
+<!--Main container-->
 <div class="container" id="main-container">
    <form #monthliesByYearAndByChildIdForm="ngForm"
       (ngSubmit)="onGetMonthliesByYearAndChildId(monthliesByYearAndByChildIdForm)">
@@ -96,8 +98,7 @@
          <tfoot>
             <tr>
                <td class="text-center bg-middle-magenta text-secondary font-weight-bold">Total Annuel</td>
-               <td class="text-center font-weight-bold bg-light-magenta text-secondary">{{sumTaxableSalary | currency:
-                  'EUR'}}</td>
+               <td class="text-center font-weight-bold bg-light-magenta text-secondary">{{sumTaxableSalary | currency:'EUR'}}</td>
                <td class="text-center font-weight-bold bg-light-magenta text-secondary">{{sumDaysWorked}}</td>
                <td class="text-center font-weight-bold bg-light-magenta text-secondary">{{sumHoursWorked}}</td>
                <td class="text-center font-weight-bold bg-light-magenta text-secondary">{{sumLunches}}</td>
@@ -108,6 +109,7 @@
       </table>
    </div>
 </div>
+<!--Main container end-->
 
 <!-- Add Monthly Modal -->
 <div class="modal fade" id="addMonthlyModal" tabindex="-1" role="dialog" aria-labelledby="addMonthlyModalLabel"
@@ -137,7 +139,6 @@
                         class="invalid-feedback pl-1 ">
                         <span>Selectionner le mois</span>
                      </div>
-                     <!-- <input type="hidden" ngModel="{{monthSelected}}" name="month" class="form-control" id="month" placeholder="JANVIER" > -->
                   </div>
                   <div class="col-6">
                      <label for="year">Année</label>
@@ -313,7 +314,6 @@
                      </div>
                   </div>
                </div>
-
                <div class="modal-footer">
                   <button type="button" id="cancel-taxable-salary-sibling-form" class="btn btn-secondary"
                      data-dismiss="modal">Annuler</button>
@@ -387,11 +387,6 @@
                            <span>{{errorsValidation}}</span>
                      </div>
                   </div>
-                  <!--    <div class="col-6">
-                   <label for="calcul-taxable-salary-sibling-form" class="d-inline-block text-truncate">Salaire Imposable Fraterie</label>
-                   <button (click)="onOpenModel(null,'taxableSalarySibling')" type="button" id="calcul-taxable-salary-sibling-form" 
-                   class="btn btn-danger d-inline-block text-truncate m-0" data-toggle="modal" >Calculer</button> 
-                </div>  -->
                </div>
                <div class="form-group row">
                   <div class="col-6">
@@ -448,11 +443,6 @@
                      <div class="invalid-feedback pl-1">
                         <span>{{errorsValidation}}</span>
                      </div>
-                     <!-- <input type="hidden" ngModel="{{editMonthly?.childId}}" name="childId" class="form-control"
-                        id="childId" placeholder="ChildId">
-                     <input type="hidden" ngModel="{{editMonthly?.monthlyId}}" name="monthlyId" class="form-control"
-                        id="monthlyId" placeholder="MonthlyId"> -->
-
                   </div>
                </div>
                <div class="modal-footer">

@@ -25,7 +25,6 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     private fb: FormBuilder
   ) { }
 
-
   public monthlies!: Monthly[];
   public children!: Child[];
   public childId!: number;
@@ -95,13 +94,10 @@ export class CalculAbatementMonthlyComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(10000)]],
       dayWorked: [null,
         [Validators.required, Validators.min(0), Validators.max(31)]],
-
       hoursWorked: [null,
         [Validators.min(0), Validators.max(350)]],
-
       lunch: [null,
         [Validators.min(0), Validators.max(100)]],
-
       snack: [null,
         [Validators.min(0), Validators.max(100)]],
       childId: [this.childId]
@@ -135,13 +131,10 @@ export class CalculAbatementMonthlyComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(10000)]],
       dayWorked: [null,
         [Validators.required, Validators.min(0), Validators.max(31)]],
-
       hoursWorked: [null,
         [Validators.min(0), Validators.max(350)]],
-
       lunch: [null,
         [Validators.min(0), Validators.max(100)]],
-
       snack: [null,
         [Validators.min(0), Validators.max(100)]],
       childId: [""]
@@ -200,8 +193,8 @@ export class CalculAbatementMonthlyComponent implements OnInit {
             console.log(monthlies);
 
             if (!monthlies.length) {
-              this.errorMsg = "Aucun déclaration mensuelle trouvé pour l'année: " 
-              + monthliesByYearAndByChildIdForm.value.year;
+              this.errorMsg = "Aucun déclaration mensuelle trouvé pour l'année: "
+                + monthliesByYearAndByChildIdForm.value.year;
             }
 
             this.sumTaxableSalary = this.monthlies.reduce((accumulator, monthly) => {
@@ -285,7 +278,6 @@ export class CalculAbatementMonthlyComponent implements OnInit {
           console.log(monthly);
           this.getMonthliesByYearAndChildId(this.addMonthlyModalForm.value.year,
             this.addMonthlyModalForm.value.childId)
-
           this.successMsg = "Déclaration mensuelle ajouté avec succés pour "
             + this.addMonthlyModalForm.value.month + " " + this.addMonthlyModalForm.value.year;
 
@@ -378,6 +370,7 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
+
     if (mode === 'editMonthly') {
       this.editMonthly = monthly;
       this.setUpdateMonthlyModalValues();
@@ -397,5 +390,4 @@ export class CalculAbatementMonthlyComponent implements OnInit {
     container?.appendChild(button);
     button.click();
   }
-
 }
