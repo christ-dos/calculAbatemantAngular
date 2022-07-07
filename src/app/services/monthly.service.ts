@@ -5,14 +5,13 @@ import { environment } from "src/environments/environment";
 import { Monthly } from "../models/monthly.model";
 
 
-
 @Injectable({
     providedIn: 'root'
 })
 export class MonthlyService {
     private apiCalculAbatementUrl = environment.apiBaseUrl;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {}
 
     public addMonthly(monthly: Monthly): Observable<Monthly> {
         return this.http.post<Monthly>(`${this.apiCalculAbatementUrl}/monthly/add`, monthly);

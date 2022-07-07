@@ -10,7 +10,6 @@ export class Monthly{
         public hoursWorked: number,
         public childId: number
    ){}
-
 }
    
     

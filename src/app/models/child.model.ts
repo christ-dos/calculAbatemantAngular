@@ -17,6 +17,5 @@ export class Child{
        public feesSnack: number,
        public monthlies?: Monthly[]
   ){} 
-
 }
 
